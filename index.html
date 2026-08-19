@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demamáluis · Depapáluis — Tapas y vinoteca en Ourense</title>
+<meta name="description" content="Bar de tapas y vinoteca familiar en el Casco Antiguo de Ourense. Pulpo, tomate de la huerta, champiñones y tostas. 4,7★ con 748 reseñas. Servir con calma.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cormorant+Garamond:wght@300;400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c9a15f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 2h8l-1 7a3 3 0 0 1-6 0z'/%3E%3Cpath d='M12 9v10'/%3E%3Cpath d='M8 19h8'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --background: oklch(0.16 0.014 45);
+    --foreground: oklch(0.94 0.014 80);
+    --card: oklch(0.2 0.018 45);
+    --muted-foreground: oklch(0.72 0.02 80);
+    --border: oklch(0.74 0.1 78 / 22%);
+    --gold: oklch(0.76 0.1 79);
+    --gold-soft: oklch(0.66 0.07 76);
+    --primary-foreground: oklch(0.16 0.014 45);
+    --gradient-hero: linear-gradient(to bottom, oklch(0.12 0.012 45 / 0.28), oklch(0.12 0.012 45 / 0.62) 60%, oklch(0.16 0.014 45) 100%);
+    --shadow-warm: 0 16px 34px -18px oklch(0.05 0.01 45 / 0.75);
+  }
+  *{margin:0;padding:0;box-sizing:border-box; cursor:default;}
+  html{scroll-behavior:smooth; font-size:107.5%;}
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, oklch(0.42 0.06 55 / 0.18), transparent 60%),
+      radial-gradient(ellipse 900px 500px at 90% 15%, oklch(0.42 0.06 55 / 0.14), transparent 55%),
+      repeating-linear-gradient(115deg, oklch(1 0 0 / 0.012) 0px, oklch(1 0 0 / 0.012) 1px, transparent 1px, transparent 3px),
+      var(--background);
+    color:var(--foreground);
+    font-family:'Jost',ui-sans-serif,system-ui,sans-serif; font-weight:400; letter-spacing:0.01em;
+    line-height:1.6; font-size:1.05rem;
+  }
+  h1,h2,h3{font-family:'Cormorant Garamond',serif; font-weight:400;}
+  .script{font-family:'Caveat',cursive; font-weight:700; line-height:0.95;}
+  ::selection{background:var(--gold); color:var(--primary-foreground);}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1180px; margin:0 auto; padding-left:24px; padding-right:24px;}
+  .eyebrow{font-size:0.72rem; letter-spacing:0.34em; text-transform:uppercase; color:var(--gold-soft);}
+  .hairline{height:1px; background:linear-gradient(to right,transparent,var(--gold),transparent); opacity:0.5;}
+  .hairline.center{margin-left:auto; margin-right:auto;}
+
+  /* header */
+  header.topbar{position:fixed; inset:0 0 auto 0; z-index:50; background:oklch(0.14 0.014 45 / 0.88); backdrop-filter:blur(10px); border-bottom:1px solid var(--border);}
+  #scroll-progress{position:fixed; top:0; left:0; height:2px; width:0%; background:var(--gold); z-index:60; transition:width 80ms linear;}
+  .topbar-inner{max-width:1180px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:24px; padding:16px 24px;}
+  .brand{font-family:'Caveat',cursive; font-weight:700; font-size:1.5rem; color:var(--gold); text-shadow:0 2px 10px oklch(0.1 0.01 45 / 0.8); white-space:nowrap; flex-shrink:0;}
+  .brand .brand-dot{opacity:0.6; margin:0 2px;}
+  @media(min-width:640px){ .brand{font-size:1.75rem;} }
+  nav.mainnav{display:none; align-items:center; gap:6px; font-size:0.92rem; font-weight:500; letter-spacing:0.03em; color:oklch(0.94 0.014 80 / 0.88);}
+  nav.mainnav a{padding:9px 16px; border-radius:3px; transition:color 300ms ease, background 300ms ease;}
+  nav.mainnav a:hover{color:var(--gold); background:oklch(0.76 0.1 79 / 0.1);}
+  @media(min-width:768px){ nav.mainnav{display:flex;} }
+  .langsel{display:flex; align-items:center; gap:4px; border-radius:2px; border:1px solid oklch(0.76 0.1 79 / 40%); background:oklch(0.16 0.014 45 / 0.7); padding:5px; backdrop-filter:blur(4px);}
+  .langsel button{border:none; background:none; cursor:pointer; border-radius:2px; padding:5px 7px; line-height:0; opacity:0.5; transition:all 300ms ease; filter:grayscale(0.6);}
+  .langsel button.active{opacity:1; filter:grayscale(0); background:oklch(0.76 0.1 79 / 0.18); box-shadow:0 0 0 1px oklch(0.76 0.1 79 / 0.5) inset;}
+  .langsel button:not(.active):hover{opacity:0.85; filter:grayscale(0.2);}
+  .langsel svg{display:block; width:22px; height:16px; border-radius:2px;}
+
+  /* hero */
+  .hero{position:relative; min-height:100svh; display:flex; align-items:center; justify-content:center; overflow:hidden; padding:0 24px;}
+  .hero img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:contrast(1.06) saturate(1.08) brightness(0.72);}
+  .hero .overlay{position:absolute; inset:0; background:var(--gradient-hero);}
+  .hero-inner{position:relative; max-width:760px; margin:0 auto; padding:96px 0; text-align:center;}
+  .hero-inner h1{font-size:4.2rem; margin-top:24px;}
+  .hero-inner h1 .dot{color:var(--gold); margin:0 10px;}
+  @media(min-width:640px){ .hero-inner h1{font-size:5.2rem;} }
+  @media(min-width:768px){ .hero-inner h1{font-size:6.4rem;} }
+  .hero-sub{margin-top:12px; font-family:'Jost',sans-serif; font-size:0.85rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold-soft);}
+  .hero-desc{max-width:560px; margin:40px auto 0; font-size:1rem; line-height:1.7; color:oklch(0.94 0.014 80 / 0.85);}
+  .rating-pill{margin-top:40px; display:inline-flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:16px; border-radius:2px; border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.65); padding:16px 24px; backdrop-filter:blur(6px);}
+  .rating-num{font-family:'Cormorant Garamond',serif; font-size:1.9rem; color:var(--gold);}
+  .rating-stars{font-size:1.1rem; letter-spacing:0.2em; color:var(--gold);}
+  .rating-text{font-size:0.9rem; color:oklch(0.94 0.014 80 / 0.85);}
+  .cta-row{margin-top:48px; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:16px;}
+  .btn-gold, .btn-gold-outline{display:inline-flex; align-items:center; justify-content:center; border-radius:2px; padding:16px 36px; font-size:0.72rem; letter-spacing:0.24em; text-transform:uppercase; transition:all 400ms ease; cursor:pointer; font-family:'Jost',sans-serif;}
+  .btn-gold{background:var(--gold); color:var(--primary-foreground); border:1px solid var(--gold);}
+  .btn-gold:hover{background:var(--gold-soft); border-color:var(--gold-soft);}
+  .btn-gold-outline{border:1px solid oklch(0.76 0.1 79 / 0.5); color:var(--gold); background:transparent;}
+  .btn-gold-outline:hover{border-color:var(--gold); background:oklch(0.76 0.1 79 / 0.1);}
+
+  section{padding:64px 24px;}
+  @media(min-width:768px){ section{padding:92px 24px;} }
+  .center{text-align:center;}
+
+  /* values strip — continuous marquee */
+  .values-strip{padding:20px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:oklch(0.13 0.014 45 / 0.6); overflow:hidden;}
+  .marquee-track{display:flex; align-items:center; gap:56px; flex-wrap:nowrap; width:max-content; will-change:transform; animation:marquee 32s linear infinite;}
+  .values-strip:hover .marquee-track{animation-play-state:paused;}
+  @keyframes marquee{ from{transform:translate3d(0,0,0);} to{transform:translate3d(-50%,0,0);} }
+  .value-item{display:flex; align-items:center; gap:12px; white-space:nowrap;}
+  .value-item .ico{width:20px; height:20px; color:var(--gold); flex-shrink:0; opacity:0.85;}
+  .value-item span.txt{font-family:'Cormorant Garamond',serif; font-size:1.3rem; letter-spacing:0.02em; color:oklch(0.76 0.1 79 / 0.55);}
+  .value-sep{color:oklch(0.76 0.1 79 / 0.3); font-size:1.1rem;}
+
+  /* organic divider */
+  .organic-divider{display:block; width:100%; height:20px; opacity:0.45;}
+
+  /* taberna strip — text-led divider between sections */
+  .taberna-strip{position:relative; padding:44px 24px; text-align:center; border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:oklch(0.13 0.014 45 / 0.5);}
+  .taberna-strip .ts-ico{width:26px; height:26px; color:var(--gold); opacity:0.8; margin:0 auto 14px;}
+  .taberna-strip p{max-width:620px; margin:0 auto; font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-style:italic; line-height:1.55; color:oklch(0.94 0.014 80 / 0.9);}
+  @media(min-width:768px){ .taberna-strip p{font-size:1.55rem;} }
+  .taberna-strip p .gold{color:var(--gold); font-style:normal;}
+
+  /* interactive spotlight cursor */
+  .spot{position:relative; isolation:isolate;}
+  .spot::before{content:'';position:absolute; inset:-1px; z-index:-1; pointer-events:none; opacity:0; transition:opacity 350ms ease; border-radius:inherit;
+    background:radial-gradient(140px circle at var(--sx,50%) var(--sy,50%), oklch(0.76 0.1 79 / 0.4), transparent 72%);}
+  .spot:hover::before{opacity:1;}
+  .spot:hover{cursor:pointer;}
+
+  /* about */
+  .about-grid{display:grid; gap:64px; align-items:center;}
+  @media(min-width:768px){ .about-grid{grid-template-columns:1.1fr 0.9fr;} }
+  .about-grid h2{font-size:3.5rem; color:var(--gold); margin-top:20px;}
+  @media(min-width:768px){ .about-grid h2{font-size:4.4rem;} }
+  .about-text{margin-top:28px;}
+  .about-text p{margin-top:18px; color:var(--muted-foreground); line-height:1.75; font-size:1.05rem;}
+  .wall-photo{position:relative; border-radius:6px; overflow:hidden; border:1px solid var(--border); transform:rotate(-1.2deg); box-shadow:var(--shadow-warm);}
+  .wall-photo img{width:100%; height:auto; display:block; filter:contrast(1.05) saturate(1.05);}
+  .wall-photo figcaption{padding:14px 18px; font-size:0.82rem; line-height:1.6; color:var(--muted-foreground); background:oklch(0.2 0.018 45 / 0.6);}
+  .about-aside{margin-top:16px; font-size:0.92rem; color:var(--gold-soft); font-style:italic;}
+
+  /* section headings shared */
+  .sec-title{font-size:3rem; margin-top:20px;}
+  @media(min-width:768px){ .sec-title{font-size:3.7rem;} }
+  .sec-title .gold{color:var(--gold); display:block; font-size:3rem;}
+  @media(min-width:768px){ .sec-title .gold{font-size:3.7rem;} }
+
+  /* dishes */
+  .dishes-grid{margin-top:56px; display:grid; gap:52px 36px; grid-template-columns:1fr;}
+  @media(min-width:640px){ .dishes-grid{grid-template-columns:1fr 1fr;} }
+  @media(min-width:1024px){ .dishes-grid{grid-template-columns:1fr 1fr 1fr;} }
+  .dish:last-child{grid-column:1 / -1; max-width:340px; margin:0 auto;}
+  @media(min-width:640px) and (max-width:1023px){ .dish:last-child{max-width:none; grid-column:1 / -1;} .dish:last-child figure{max-width:340px; margin:0 auto;} .dish:last-child h3, .dish:last-child p{text-align:center;} }
+  .dish figure{position:relative; overflow:hidden; aspect-ratio:4/5; border-radius:3px; border:1px solid var(--border);}
+  .dish figure img{width:100%; height:100%; object-fit:cover; filter:contrast(1.08) saturate(0.96) brightness(0.98) sepia(0.08) hue-rotate(-4deg); transition:transform 800ms cubic-bezier(.16,1,.3,1), filter 500ms ease;}
+  .dish figure:hover img{transform:scale(1.045); filter:contrast(1.1) saturate(1) brightness(1.03) sepia(0.05) hue-rotate(-4deg);}
+  .dish figure::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center, transparent 55%, oklch(0.08 0.01 45 / 0.4) 100%);}
+  .dish h3{margin-top:20px; font-size:1.55rem;}
+  .dish p.script{margin-top:2px; font-size:2.1rem; color:var(--gold);}
+  .dish p.desc{margin-top:12px; font-size:1rem; line-height:1.7; color:var(--muted-foreground);}
+
+  /* menu */
+  .menu-grid{margin-top:48px; display:grid; gap:48px; grid-template-columns:1fr;}
+  @media(min-width:768px){ .menu-grid{grid-template-columns:1fr 1fr; gap:56px;} }
+  .menu-card{border-radius:8px; border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.4); padding:28px;}
+  @media(min-width:768px){ .menu-card{padding:36px;} }
+  .menu-card h3{font-family:'Caveat',cursive; font-weight:700; font-size:3rem; color:var(--gold);}
+  .menu-cols{margin-top:24px; display:flex; align-items:baseline; justify-content:flex-end; gap:32px; font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted-foreground);}
+  .menu-list{margin-top:16px; list-style:none;}
+  .menu-card > .menu-list{margin-top:28px;}
+  .menu-list li{display:flex; align-items:baseline; gap:12px; padding:11px 6px; border-radius:3px;}
+  .menu-list .name{font-size:1rem; color:oklch(0.94 0.014 80 / 0.92);}
+  .menu-list .dots{flex:1; height:1px; background:var(--border); transform:translateY(-2px);}
+  .menu-list .price{font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--gold); white-space:nowrap;}
+  .menu-list .half{width:64px; text-align:right; font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--muted-foreground);}
+  .menu-list .full{width:64px; text-align:right; font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--gold);}
+  .menu-note{margin-top:40px; text-align:center; font-size:0.85rem; color:var(--muted-foreground);}
+  .menu-pricenote{margin-top:14px; text-align:center; font-size:0.78rem; color:var(--muted-foreground); font-style:italic; max-width:560px; margin-left:auto; margin-right:auto;}
+
+  .menu-filters{display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:36px;}
+  .menu-filter{border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.4); color:var(--muted-foreground); border-radius:20px; padding:9px 20px; font-size:0.82rem; letter-spacing:0.04em; transition:all 300ms ease;}
+  .menu-filter.active{border-color:var(--gold); color:var(--gold); background:oklch(0.76 0.1 79 / 0.12);}
+  .menu-filter:hover{border-color:var(--gold-soft); color:var(--foreground);}
+  .menu-list li.hidden-cat{display:none;}
+
+  /* allergen legend */
+  .allergen-legend{margin-top:28px; display:flex; flex-wrap:wrap; justify-content:center; gap:16px; font-size:0.78rem; color:var(--muted-foreground);}
+  .allergen-legend span{display:inline-flex; align-items:center; gap:6px;}
+  .allergen-note{margin-top:10px; text-align:center; font-size:0.72rem; color:var(--muted-foreground); font-style:italic;}
+  .al{display:inline-flex; align-items:center; gap:4px; margin-left:6px; opacity:0.75;}
+  .al svg{width:13px; height:13px; color:var(--gold-soft); flex-shrink:0;}
+  .allergen-legend .al svg{width:15px; height:15px;}
+
+  /* reviews */
+  .reviews-box{margin:36px auto 0; max-width:440px; border-radius:8px; border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.55); padding:32px;}
+  .reviews-inner{display:flex; flex-direction:column; align-items:center; gap:16px;}
+  .stars-anim{display:flex; align-items:center; gap:8px;}
+  .star{position:relative; font-size:1.9rem; line-height:1; color:oklch(0.72 0.02 80 / 0.35);}
+  .star .fill{position:absolute; inset:0; overflow:hidden; width:0%; color:var(--gold);}
+  .count-num{font-family:'Cormorant Garamond',serif; font-size:3.6rem; font-variant-numeric:tabular-nums; color:var(--foreground);}
+  @media(min-width:768px){ .count-num{font-size:4.4rem;} }
+  .reviews-sub{font-size:0.95rem; color:var(--muted-foreground);}
+  .reviews-sub .gold{color:var(--gold);}
+  .reviews-note{margin-top:28px; font-size:0.92rem; color:var(--muted-foreground);}
+
+  /* rating distribution chart */
+  .rd-wrap{max-width:480px; margin:40px auto 0; display:flex; flex-direction:column; gap:8px;}
+  .rd-row{display:grid; grid-template-columns:44px 1fr 34px; align-items:center; gap:10px;}
+  .rd-label{font-size:0.8rem; color:var(--muted-foreground); text-align:right; display:flex; align-items:center; justify-content:flex-end; gap:3px;}
+  .rd-track{height:8px; border-radius:4px; background:oklch(0.72 0.02 80 / 0.15); overflow:hidden;}
+  .rd-fill{height:100%; border-radius:4px; background:linear-gradient(90deg, var(--gold-soft), var(--gold)); width:0%; transition:width 900ms cubic-bezier(.16,1,.3,1);}
+  .rd-count{font-size:0.78rem; color:var(--muted-foreground); font-variant-numeric:tabular-nums;}
+
+  /* review filters */
+  .rc-filters{display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:32px;}
+  .rc-filter{border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.4); color:var(--muted-foreground); border-radius:20px; padding:8px 18px; font-size:0.8rem; transition:all 300ms ease;}
+  .rc-filter.active{border-color:var(--gold); color:var(--gold); background:oklch(0.76 0.1 79 / 0.12);}
+  .rc-filter:hover{border-color:var(--gold-soft); color:var(--foreground);}
+
+  /* real reviews carousel — paginated, draggable, autoplay */
+  .rc-wrap{position:relative; margin-top:32px;}
+  .rc-viewport{overflow:hidden; cursor:grab;}
+  .rc-viewport.dragging{cursor:grabbing;}
+  .rc-track{display:flex; transition:transform 450ms cubic-bezier(.16,1,.3,1); touch-action:pan-y;}
+  .rc-track.no-transition{transition:none;}
+  .rc-page{flex:0 0 100%; display:grid; grid-template-columns:1fr; gap:18px; padding:4px;}
+  @media(min-width:640px){ .rc-page{grid-template-columns:1fr 1fr;} }
+  @media(min-width:1024px){ .rc-page{grid-template-columns:repeat(5,1fr);} }
+  .rc-nav{display:flex; align-items:center; justify-content:center; gap:20px; margin-top:28px;}
+  .rc-arrow{width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.5); color:var(--gold); display:flex; align-items:center; justify-content:center; transition:all 300ms ease;}
+  .rc-arrow svg{width:16px; height:16px;}
+  .rc-arrow:hover{border-color:var(--gold); background:oklch(0.76 0.1 79 / 0.12);}
+  .rc-arrow:disabled{opacity:0.3; cursor:default;}
+  .rc-progress{font-size:0.76rem; color:var(--muted-foreground); font-variant-numeric:tabular-nums; min-width:52px; text-align:center;}
+  .rc-dots{display:flex; gap:8px; justify-content:center; margin-top:14px;}
+  .rc-dot{width:7px; height:7px; border-radius:50%; background:oklch(0.72 0.02 80 / 0.3); transition:all 300ms ease; cursor:pointer;}
+  .rc-dot.active{background:var(--gold); width:20px; border-radius:4px;}
+  .rc-card{position:relative; border-radius:8px; border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.45); padding:22px; display:flex; flex-direction:column; gap:12px; transition:border-color 300ms ease, background 300ms ease, transform 300ms ease; user-select:none;}
+  .rc-card:hover{transform:translateY(-4px); border-color:oklch(0.76 0.1 79 / 0.45); background:oklch(0.22 0.018 45 / 0.6);}
+  .rc-gmark{position:absolute; top:16px; right:16px; width:16px; height:16px; opacity:0.55;}
+  .rc-head{display:flex; align-items:center; gap:12px;}
+  .rc-avatar{width:38px; height:38px; border-radius:50%; color:oklch(0.16 0.014 45); display:flex; align-items:center; justify-content:center; font-family:'Cormorant Garamond',serif; font-weight:600; font-size:1.15rem; flex-shrink:0;}
+  .rc-name{font-size:0.92rem; font-weight:500;}
+  .rc-time{font-size:0.76rem; color:var(--muted-foreground);}
+  .rc-stars{font-size:0.85rem; letter-spacing:0.12em;}
+  .rc-stars .on{color:var(--gold);}
+  .rc-stars .off{color:oklch(0.72 0.02 80 / 0.3);}
+  .rc-text{font-size:0.88rem; line-height:1.6; color:oklch(0.94 0.014 80 / 0.85);}
+  .rc-badge{margin-top:24px; text-align:center; font-size:0.76rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted-foreground);}
+
+  /* press / other platforms */
+  .press-grid{margin-top:48px; display:grid; gap:18px; grid-template-columns:1fr;}
+  @media(min-width:768px){ .press-grid{grid-template-columns:1fr 1fr 1fr;} }
+  .press-card{display:block; border-radius:8px; border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.4); padding:22px; text-align:center; transition:all 300ms ease;}
+  .press-card:hover{border-color:var(--gold); background:oklch(0.76 0.1 79 / 0.08);}
+  .press-card .p-logo{font-family:'Cormorant Garamond',serif; font-size:1.15rem; color:var(--gold); font-weight:500;}
+  .press-card .p-fact{margin-top:8px; font-size:0.85rem; color:oklch(0.94 0.014 80 / 0.85); line-height:1.5;}
+  .press-card .p-link{margin-top:10px; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold-soft);}
+
+  /* newsletter / loyalty */
+  .news-panel{max-width:560px; margin:56px auto 0; text-align:center; border-radius:8px; border:1px dashed oklch(0.42 0.06 55 / 0.5); padding:30px 26px;}
+  .news-panel h3{font-family:'Cormorant Garamond',serif; font-size:1.5rem; color:var(--foreground);}
+  .news-panel p{margin-top:8px; font-size:0.88rem; color:var(--muted-foreground); line-height:1.6;}
+  .news-form{margin-top:20px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;}
+  .news-form input{flex:1; min-width:200px; background:oklch(0.16 0.014 45); border:1px solid var(--border); border-radius:3px; padding:12px 16px; color:var(--foreground); font-family:'Jost',sans-serif; font-size:0.9rem;}
+  .news-form input:focus{outline:none; border-color:var(--gold);}
+  .news-note{margin-top:14px; font-size:0.74rem; color:var(--muted-foreground); font-style:italic;}
+
+  /* location */
+  .loc-grid{margin-top:48px; display:grid; gap:44px; grid-template-columns:1fr;}
+  @media(min-width:768px){ .loc-grid{grid-template-columns:1fr 1fr;} }
+  .loc-stack > div{margin-bottom:36px;}
+  .loc-stack .val{margin-top:12px; font-family:'Cormorant Garamond',serif; font-size:1.5rem;}
+  .loc-stack .small{margin-top:8px; font-size:0.85rem; color:var(--muted-foreground);}
+  .loc-stack .desc{margin-top:12px; font-size:0.85rem; line-height:1.7; color:var(--muted-foreground);}
+  .ig-link{margin-top:16px; display:inline-block; border-bottom:1px solid oklch(0.76 0.1 79 / 0.5); padding-bottom:4px; font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); transition:border-color 400ms ease;}
+  .ig-link:hover{border-color:var(--gold);}
+  .map-frame{height:100%; min-height:340px; overflow:hidden; border-radius:10px; border:1px solid var(--border);}
+  .map-frame iframe{width:100%; height:100%; min-height:340px; border:0; filter:grayscale(0.35) contrast(1.05);}
+
+  /* instagram */
+  .ig-section{max-width:640px; margin:0 auto; text-align:center;}
+  .ig-section h2{font-size:3.4rem; color:var(--gold); margin-top:20px;}
+  @media(min-width:768px){ .ig-section h2{font-size:4rem;} }
+  .ig-section p{margin-top:24px; font-size:0.9rem; line-height:1.7; color:var(--muted-foreground);}
+
+  footer{border-top:1px solid var(--border); padding:64px 24px;}
+  .foot-inner{max-width:960px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:24px; text-align:center;}
+  .foot-inner .script{font-size:2.6rem; color:var(--gold);}
+  .foot-inner p{max-width:420px; font-size:0.9rem; line-height:1.7; color:var(--muted-foreground);}
+  .foot-links{display:flex; flex-wrap:wrap; justify-content:center; gap:32px; font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted-foreground);}
+  .foot-links a:hover{color:var(--gold);}
+  .foot-credit{margin-top:8px; font-size:0.78rem; color:var(--muted-foreground);}
+  .foot-credit a{color:var(--gold-soft); border-bottom:1px solid oklch(0.66 0.07 76 / 0.4);}
+  .foot-credit a:hover{color:var(--gold); border-color:var(--gold);}
+
+  .reveal{opacity:0; transform:translateY(22px); transition:opacity 800ms ease, transform 800ms cubic-bezier(.16,1,.3,1);}
+  .reveal.visible{opacity:1; transform:none;}
+
+  [data-i18n]{transition:opacity 200ms ease;}
+
+  /* ambient cursor glow, follows mouse everywhere */
+  #cursor-glow{position:fixed; top:0; left:0; width:340px; height:340px; border-radius:50%; pointer-events:none; z-index:2;
+    background:radial-gradient(circle, oklch(0.76 0.1 79 / 0.10), transparent 70%);
+    transform:translate(-50%,-50%); mix-blend-mode:screen; transition:opacity 300ms ease; opacity:0;}
+</style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="#top" class="brand">Demamáluis <span class="brand-dot">·</span> Depapáluis</a>
+    <nav class="mainnav">
+      <a href="#platos" class="spot" data-i18n="nav.dishes">Los de siempre</a>
+      <a href="#carta" class="spot" data-i18n="nav.menu">Carta</a>
+      <a href="#resenas" class="spot" data-i18n="nav.reviews">Reseñas</a>
+      <a href="#ubicacion" class="spot" data-i18n="nav.location">Ubicación</a>
+    </nav>
+    <div class="langsel" role="group" aria-label="Idioma">
+      <button type="button" class="active spot" data-lang="es" aria-label="Español" title="Español">
+        <svg viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg"><rect width="3" height="2" fill="#AA151B"/><rect y="0.5" width="3" height="1" fill="#F1BF00"/></svg>
+      </button>
+      <button type="button" class="spot" data-lang="gl" aria-label="Galego" title="Galego">
+        <svg viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg"><rect width="3" height="2" fill="#ffffff"/><line x1="0" y1="0" x2="3" y2="2" stroke="#0075BF" stroke-width="0.42"/></svg>
+      </button>
+      <button type="button" class="spot" data-lang="en" aria-label="English" title="English">
+        <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+          <clipPath id="uk-t"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
+          <g clip-path="url(#uk-t)">
+            <path d="M0,0 v30 h60 v-30 z" fill="#00247d"/>
+            <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/>
+            <path d="M0,0 L60,30 M60,0 L0,30" stroke="#cf142b" stroke-width="2"/>
+            <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+            <path d="M30,0 v30 M0,15 h60" stroke="#cf142b" stroke-width="6"/>
+          </g>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <header class="hero" id="top">
+    <img src="demamaluis-assets/fachada.jpg" alt="Fachada de Demamáluis Delicatessen en la Rúa do Paxaro, Ourense">
+    <div class="overlay"></div>
+    <div class="hero-inner">
+      <p class="eyebrow" data-i18n="hero.eyebrow">Casco Antiguo de Ourense</p>
+      <h1 class="script">Demamáluis<span class="dot">·</span>Depapáluis</h1>
+      <p class="hero-sub" data-i18n="hero.sub">Delicatessen · Tapas &amp; Vinoteca</p>
+      <div class="hairline center" style="width:190px; margin-top:40px;"></div>
+      <p class="hero-desc" data-i18n="hero.desc">Dos barras, una familia y el ruido bueno de las noches de vino en la Rúa do Paxaro. Se entra sin prisa y se sale con ganas de volver.</p>
+
+      <div class="rating-pill">
+        <span class="rating-num">4,7</span>
+        <span class="rating-stars" aria-hidden="true">★★★★★</span>
+        <span class="rating-text" data-i18n="hero.reviews">748 reseñas en Google</span>
+      </div>
+
+      <div class="cta-row">
+        <a href="https://www.google.com/maps/search/?api=1&query=Demam%C3%A1luis%20Delicatessen%20R%C3%BAa%20do%20Paxaro%202%20Ourense" target="_blank" rel="noreferrer" class="btn-gold spot" data-i18n="cta.directions">Cómo llegar</a>
+        <a href="#carta" class="btn-gold-outline spot" data-i18n="cta.menu">Ver la carta</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="values-strip">
+    <div class="marquee-track" id="marquee-track"></div>
+  </div>
+
+  <section id="nosotros">
+    <div class="wrap about-grid">
+      <div class="reveal">
+        <p class="eyebrow" data-i18n="about.eyebrow">Quiénes somos</p>
+        <h2 class="script" data-i18n="about.title">Servir con calma</h2>
+        <div class="hairline" style="margin-top:32px; width:160px;"></div>
+        <div class="about-text">
+          <p data-i18n="about.p1">Esto lo llevamos nosotros dos, con nuestros nombres puestos en la puerta y en media carta. Una barra es de mamá Luis y la otra de papá Luis, y entre las dos se cocina lo mismo: comida de casa, hecha con tiempo.</p>
+          <p data-i18n="about.p2">No tenemos prisa y no queremos tenerla. Nos gusta preguntar qué tal va el día, recomendar el vino que abrimos hoy y que el tomate lo traigamos de nuestra huerta, no de una caja.</p>
+          <p class="about-aside" data-i18n="about.aside">Ah, y no preguntéis quién paga — hay un cartel en la barra que ya lo explica.</p>
+        </div>
+      </div>
+      <div class="reveal">
+        <figure class="wall-photo">
+          <img src="demamaluis-assets/logo-pared.jpg" alt="Logotipo pintado a mano en la pared exterior de Demamáluis">
+          <figcaption data-i18n="about.wallCaption">Pintado a mano en la fachada, en la Rúa do Paxaro.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="platos">
+    <div class="wrap">
+      <div class="reveal center">
+        <p class="eyebrow" data-i18n="dishes.eyebrow">Los de siempre</p>
+        <h2 class="script sec-title">
+          <span data-i18n="dishes.title1">Platos que no cambian</span>
+          <span class="gold" data-i18n="dishes.title2">porque no hace falta</span>
+        </h2>
+        <div class="hairline center" style="margin-top:32px; width:160px;"></div>
+      </div>
+
+      <div class="dishes-grid">
+        <article class="dish reveal spot">
+          <figure><img src="demamaluis-assets/tomate.png" alt="Tomates grandes de huerta propia sobre la barra" loading="lazy"></figure>
+          <h3 data-i18n="dish.tomate.name">Tomate casero</h3>
+          <p class="script" data-i18n="dish.tomate.tag">De la huerta a la barra</p>
+          <p class="desc" data-i18n="dish.tomate.text">Nuestro tomate no necesita nada más que aceite y sal. Sale de la huerta propia, no de una caja.</p>
+        </article>
+
+        <article class="dish reveal spot">
+          <figure><img src="demamaluis-assets/pulpo.png" alt="Plato de pulpo á feira con pimentón y aceite" loading="lazy"></figure>
+          <h3 data-i18n="dish.pulpo.name">Pulpo</h3>
+          <p class="script" data-i18n="dish.pulpo.tag">El de toda la vida</p>
+          <p class="desc" data-i18n="dish.pulpo.text">Pimentón, aceite y el punto de siempre. No hace falta reinventarlo, hace falta hacerlo bien.</p>
+        </article>
+
+        <article class="dish reveal spot">
+          <figure><img src="demamaluis-assets/chicharrones.png" alt="Chicharrones crujientes servidos con una botella de vino blanco" loading="lazy"></figure>
+          <h3 data-i18n="dish.chicharrones.name">Chicharrones</h3>
+          <p class="script" data-i18n="dish.chicharrones.tag">Crujientes, sin pedir perdón</p>
+          <p class="desc" data-i18n="dish.chicharrones.text">Un clásico de la casa que no se anda con rodeos.</p>
+        </article>
+
+        <article class="dish reveal spot">
+          <figure><img src="demamaluis-assets/champinones.png" alt="Champiñones a la plancha en brochetas sobre pan" loading="lazy"></figure>
+          <h3 data-i18n="dish.champinones.name">Champiñones "demamáluis"</h3>
+          <p class="script" data-i18n="dish.champinones.tag">La receta que lleva su nombre</p>
+          <p class="desc" data-i18n="dish.champinones.text">El plato que aparece en las dos cartas, porque en esta casa las recetas también se comparten.</p>
+        </article>
+
+        <article class="dish reveal spot">
+          <figure><img src="demamaluis-assets/miniburguer.png" alt="Miniburguer casera con pan brioche y albahaca" loading="lazy"></figure>
+          <h3 data-i18n="dish.miniburguer.name">Miniburguer "demamáluis"</h3>
+          <p class="script" data-i18n="dish.miniburguer.tag">Lleva nuestro nombre</p>
+          <p class="desc" data-i18n="dish.miniburguer.text">Así que ya te imaginas el cuidado que le ponemos.</p>
+        </article>
+
+        <article class="dish reveal spot">
+          <figure><img src="demamaluis-assets/solomillo.png" alt="Tapa de solomillo con micuit de pato en plato blanco" loading="lazy"></figure>
+          <h3 data-i18n="dish.solomillo.name">Solomillo con micuit de pato</h3>
+          <p class="script" data-i18n="dish.solomillo.tag">El lujo discreto de la barra</p>
+          <p class="desc" data-i18n="dish.solomillo.text">Para los días que piden un poco más que una tapa rápida.</p>
+        </article>
+
+        <article class="dish reveal spot">
+          <figure><img src="demamaluis-assets/padron.png" alt="Ración de pimientos de Padrón fritos con sal gruesa" loading="lazy"></figure>
+          <h3 data-i18n="dish.padron.name">Pimientos de Padrón</h3>
+          <p class="script" data-i18n="dish.padron.tag">Unos pican y otros no</p>
+          <p class="desc" data-i18n="dish.padron.text">El dicho de siempre, tal cual. Nadie sabe cuál te va a tocar.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="taberna-strip reveal">
+    <svg class="ts-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 4 13c0-5 5-10 15-10 0 10-5 15-10 15Z"/><path d="M4 13c3 0 6 1 8 3"/></svg>
+    <p data-i18n="panel1">Pan de Cea, tomate de <span class="gold">huerta propia</span> y el vino que toque ese día — así se cocina aquí.</p>
+  </div>
+
+  <section id="carta">
+    <div class="wrap">
+      <div class="reveal center">
+        <p class="eyebrow" data-i18n="menu.eyebrow">La carta</p>
+        <h2 class="script sec-title" style="font-size:3.5rem;" data-i18n="menu.title">Dos caras, una misma casa</h2>
+        <div class="hairline center" style="margin-top:32px; width:160px;"></div>
+      </div>
+
+      <div class="menu-filters">
+        <button type="button" class="menu-filter active spot" data-filter="all" data-i18n="filter.all">Todos</button>
+        <button type="button" class="menu-filter spot" data-filter="entrantes" data-i18n="filter.entrantes">Entrantes</button>
+        <button type="button" class="menu-filter spot" data-filter="carne" data-i18n="filter.carne">Carne</button>
+        <button type="button" class="menu-filter spot" data-filter="pescado" data-i18n="filter.pescado">Pescado</button>
+      </div>
+
+      <div class="menu-grid">
+        <div class="menu-card reveal">
+          <h3>demamáluis</h3>
+          <div class="hairline" style="margin-top:24px;"></div>
+          <ul class="menu-list">
+            <li class="spot" data-cat="carne"><span class="name" data-i18n="m.miniburger">Miniburger "demamáluis" (1 ud.)</span><span class="dots"></span><span class="price">4,00€</span><span class="al" data-al="g,l"></span></li>
+            <li class="spot" data-cat="carne"><span class="name" data-i18n="m.tostaSolomillo">Tosta de solomillo, queso de vaca y pimiento asado</span><span class="dots"></span><span class="price">5,50€</span><span class="al" data-al="g,l"></span></li>
+            <li class="spot" data-cat="carne"><span class="name" data-i18n="m.tostaRaxo">Tosta de raxo, queso curado de oveja y mermelada de pimiento</span><span class="dots"></span><span class="price">5,50€</span><span class="al" data-al="g,l"></span></li>
+            <li class="spot" data-cat="pescado"><span class="name" data-i18n="m.tostaBacalao">Tosta de bacalao ahumado y tomate confitado</span><span class="dots"></span><span class="price">5,50€</span><span class="al" data-al="g,f"></span></li>
+            <li class="spot" data-cat="pescado"><span class="name" data-i18n="m.tostaSardina">Tosta de sardina ahumada, tomate asado y mermelada de mango</span><span class="dots"></span><span class="price">5,50€</span><span class="al" data-al="g,f"></span></li>
+            <li class="spot" data-cat="entrantes"><span class="name" data-i18n="m.croquetas">Croquetas "da Carmen" (6 ud.)</span><span class="dots"></span><span class="price">11,00€</span><span class="al" data-al="g,l,e"></span></li>
+            <li class="spot" data-cat="entrantes"><span class="name" data-i18n="m.empanada">Porción de empanada (1 ud.)</span><span class="dots"></span><span class="price">4,50€</span><span class="al" data-al="g"></span></li>
+            <li class="spot" data-cat="entrantes"><span class="name" data-i18n="m.tortilla">Media tortilla española</span><span class="dots"></span><span class="price">5,70€</span><span class="al" data-al="e"></span></li>
+            <li class="spot" data-cat="pescado"><span class="name" data-i18n="m.vieiras">Vieiras a la plancha (6 ud.)</span><span class="dots"></span><span class="price">15,00€</span><span class="al" data-al="s"></span></li>
+            <li class="spot" data-cat="entrantes"><span class="name" data-i18n="m.postre1">Postre casero</span><span class="dots"></span><span class="price">5,00€</span><span class="al" data-al="l,e"></span></li>
+            <li class="spot" data-cat="entrantes"><span class="name" data-i18n="m.pan1">Ración de pan de Cea</span><span class="dots"></span><span class="price">1,60€</span><span class="al" data-al="g"></span></li>
+          </ul>
+        </div>
+
+        <div class="menu-card reveal">
+          <h3>depapáluis</h3>
+          <div class="hairline" style="margin-top:24px;"></div>
+          <div class="menu-cols"><span data-i18n="m.half">1/2 ración</span><span data-i18n="m.full">Ración</span></div>
+          <ul class="menu-list">
+            <li class="spot" data-cat="carne"><span class="name" data-i18n="m.caldeiro">Carne ao caldeiro</span><span class="dots"></span><span class="half">13,00€</span><span class="full">22,50€</span><span class="al" data-al="c"></span></li>
+            <li class="spot" data-cat="carne"><span class="name" data-i18n="m.lacon">Lacón con grelos</span><span class="dots"></span><span class="half">11,00€</span><span class="full">18,00€</span><span class="al" data-al="c"></span></li>
+            <li class="spot" data-cat="carne"><span class="name" data-i18n="m.oreja">Ración de Oreja Cocida</span><span class="dots"></span><span class="half">—</span><span class="full">8,00€</span><span class="al" data-al="c"></span></li>
+            <li class="spot" data-cat="carne"><span class="name" data-i18n="m.carpaccio">Carpaccio de cachucha</span><span class="dots"></span><span class="half">—</span><span class="full">15,00€</span><span class="al" data-al="c"></span></li>
+            <li class="spot" data-cat="pescado"><span class="name" data-i18n="m.pulpoFeira">Pulpo á feira</span><span class="dots"></span><span class="half">—</span><span class="full">17,00€</span><span class="al" data-al="m"></span></li>
+            <li class="spot" data-cat="pescado"><span class="name" data-i18n="m.mejillones">Mejillones Tigre (8 uds.)</span><span class="dots"></span><span class="half">—</span><span class="full">16,00€</span><span class="al" data-al="g,l,s"></span></li>
+            <li class="spot" data-cat="pescado"><span class="name" data-i18n="m.boquerones">Boquerones a la vinagreta</span><span class="dots"></span><span class="half">—</span><span class="full">8,50€</span><span class="al" data-al="f"></span></li>
+            <li class="spot" data-cat="entrantes"><span class="name" data-i18n="m.champis">Champiñones "demamáluis"</span><span class="dots"></span><span class="half">—</span><span class="full">10,00€</span><span class="al" data-al=""></span></li>
+            <li class="spot" data-cat="entrantes"><span class="name" data-i18n="m.ensalada">Ensalada de tomate</span><span class="dots"></span><span class="half">5,00€</span><span class="full">9,00€</span><span class="al" data-al=""></span></li>
+            <li class="spot" data-cat="pescado"><span class="name" data-i18n="m.ensaladaVentresca">Ensalada de tomate con ventresca</span><span class="dots"></span><span class="half">—</span><span class="full">16,00€</span><span class="al" data-al="f"></span></li>
+            <li class="spot" data-cat="carne"><span class="name" data-i18n="m.zorza">Zorza "da Julia"</span><span class="dots"></span><span class="half">10,00€</span><span class="full">16,00€</span><span class="al" data-al="c"></span></li>
+            <li class="spot" data-cat="carne"><span class="name" data-i18n="m.morunitos">Morunitos "depapáluis" (6 ud.)</span><span class="dots"></span><span class="half">—</span><span class="full">12,50€</span><span class="al" data-al="c"></span></li>
+            <li class="spot" data-cat="entrantes"><span class="name" data-i18n="m.postre2">Postre casero</span><span class="dots"></span><span class="half">—</span><span class="full">5,50€</span><span class="al" data-al="l,e"></span></li>
+            <li class="spot" data-cat="entrantes"><span class="name" data-i18n="m.pan2">Ración de pan de Cea</span><span class="dots"></span><span class="half">—</span><span class="full">1,80€</span><span class="al" data-al="g"></span></li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="menu-note" data-i18n="menu.note">Servicio en terraza: suplemento de 0,20€ por bebida y 0,40€ por plato.</p>
+      <p class="menu-pricenote" data-i18n="menu.pricenote">"Postre casero" y "Ración de pan de Cea" aparecen con precio distinto en cada cara de la carta — se muestran tal cual, sin unificar.</p>
+
+      <div class="allergen-legend">
+        <span><span class="al" data-al="g"></span> <span data-i18n="al.gluten">Gluten</span></span>
+        <span><span class="al" data-al="l"></span> <span data-i18n="al.lacteos">Lácteos</span></span>
+        <span><span class="al" data-al="e"></span> <span data-i18n="al.huevo">Huevo</span></span>
+        <span><span class="al" data-al="s"></span> <span data-i18n="al.marisco">Marisco</span></span>
+        <span><span class="al" data-al="f"></span> <span data-i18n="al.pescado">Pescado</span></span>
+        <span><span class="al" data-al="m"></span> <span data-i18n="al.moluscos">Moluscos</span></span>
+      </div>
+      <p class="allergen-note" data-i18n="al.note">Alérgenos orientativos según ingredientes habituales — confirma siempre en barra.</p>
+    </div>
+  </section>
+
+  <section id="resenas">
+    <div class="wrap" style="max-width:760px;">
+      <div class="reveal center" id="reviews-trigger">
+        <p class="eyebrow" data-i18n="reviews.eyebrow">Lo que dicen</p>
+        <h2 class="script sec-title">
+          <span data-i18n="reviews.title1">Casi ochocientas veces</span>
+          <span class="gold" data-i18n="reviews.title2">gracias</span>
+        </h2>
+
+        <div class="reviews-box">
+          <div class="reviews-inner">
+            <div class="stars-anim" id="stars" aria-hidden="true"></div>
+            <p class="count-num" id="review-count">0</p>
+            <p class="reviews-sub"><span data-i18n="reviews.sub1">reseñas en Google, con una media de</span> <span class="gold">4,7 <span data-i18n="reviews.sub2">sobre 5</span></span></p>
+          </div>
+          <div class="hairline" style="margin:28px 0;"></div>
+          <a href="https://www.google.com/maps/search/?api=1&query=Demam%C3%A1luis%20Delicatessen%20R%C3%BAa%20do%20Paxaro%202%20Ourense" target="_blank" rel="noreferrer" class="btn-gold-outline spot" data-i18n="reviews.cta">Ver las 748 reseñas en Google</a>
+        </div>
+        <p class="reviews-note" data-i18n="reviews.note">Aquí no ponemos frases nuestras en boca de nadie. Si quieres leer lo que escribe la gente, está todo en Google.</p>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="reveal">
+        <div class="rd-wrap" id="rd-wrap"></div>
+      </div>
+      <div class="rc-filters" id="rc-filters">
+        <button type="button" class="rc-filter active spot" data-filter="all" data-i18n="rcf.all">Todas</button>
+        <button type="button" class="rc-filter spot" data-filter="5" data-i18n="rcf.five">Solo 5★</button>
+        <button type="button" class="rc-filter spot" data-filter="recent" data-i18n="rcf.recent">Más recientes</button>
+      </div>
+      <div class="rc-wrap reveal">
+        <div class="rc-viewport" id="rc-viewport"><div class="rc-track" id="rc-track"></div></div>
+        <div class="rc-nav">
+          <button type="button" class="rc-arrow spot" id="rc-prev" aria-label="Anteriores">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <span class="rc-progress" id="rc-progress">1 / 1</span>
+          <button type="button" class="rc-arrow spot" id="rc-next" aria-label="Siguientes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+        <div class="rc-dots" id="rc-dots"></div>
+        <p class="rc-badge" data-i18n="reviews.badge">Reseñas reales, tal cual se escribieron en Google — pulsa una tarjeta para verla en Google</p>
+
+        <div class="press-grid">
+          <a href="https://www.tripadvisor.es/Restaurant_Review-g644337-d19359700-Reviews-Demamaluis-Ourense_Province_of_Ourense_Galicia.html" target="_blank" rel="noreferrer" class="press-card spot">
+            <div class="p-logo">TripAdvisor</div>
+            <p class="p-fact" data-i18n="press.trip">4,7/5 · Bar tapería delicatessen, comida casera</p>
+            <div class="p-link" data-i18n="press.view">Ver ficha →</div>
+          </a>
+          <a href="https://planaje.com/comida/criticas-gastronomicas/restaurantes/critica-restaurante-demamaluis-ourense/" target="_blank" rel="noreferrer" class="press-card spot">
+            <div class="p-logo">Planaje</div>
+            <p class="p-fact" data-i18n="press.planaje">"Uno de los mejores establecimientos" — crítica gastronómica</p>
+            <div class="p-link" data-i18n="press.read">Leer la crítica →</div>
+          </a>
+          <a href="https://kitking.es/reservar/demamaluis-depapaluis/" target="_blank" rel="noreferrer" class="press-card spot">
+            <div class="p-logo">Kitking</div>
+            <p class="p-fact" data-i18n="press.kitking">4,7/5 · Ficha verificada del local</p>
+            <div class="p-link" data-i18n="press.view2">Ver ficha →</div>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="taberna-strip reveal">
+    <svg class="ts-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8l-1 7a3 3 0 0 1-6 0z"/><path d="M12 9v10"/><path d="M8 19h8"/></svg>
+    <p data-i18n="panel2">Producto de la tierra, servido <span class="gold">sin prisa</span> — esa es toda la receta.</p>
+  </div>
+
+  <section id="ubicacion">
+    <div class="wrap">
+      <div class="reveal center">
+        <p class="eyebrow" data-i18n="location.eyebrow">Dónde estamos</p>
+        <h2 class="sec-title" style="font-family:'Cormorant Garamond',serif; font-size:2.6rem;" data-i18n="location.title">En pleno Casco Antiguo</h2>
+        <div class="hairline center" style="margin-top:32px; width:160px;"></div>
+      </div>
+
+      <div class="loc-grid">
+        <div class="reveal loc-stack">
+          <div>
+            <p class="eyebrow" data-i18n="location.address">Dirección</p>
+            <p class="val">Rúa do Paxaro, 2</p>
+            <p class="val">Rúa Viriato, 12</p>
+            <p class="small" data-i18n="location.addressSub">Casco Antiguo de Ourense</p>
+          </div>
+          <div class="hairline"></div>
+          <div>
+            <p class="eyebrow" data-i18n="location.noRes">No cogemos reservas</p>
+            <p class="desc" data-i18n="location.noResText">La terraza y el aforo van por orden de llegada. Si está lleno, espera un poco: casi siempre se libera algo y mientras tanto te ponemos una copa.</p>
+          </div>
+          <div class="hairline"></div>
+          <div>
+            <p class="eyebrow" data-i18n="location.hours">Horario</p>
+            <p class="desc" data-i18n="location.hoursText">El horario cambia según la temporada y los festivos, así que lo vamos contando en Instagram. Ahí está siempre lo último.</p>
+            <a href="https://www.instagram.com/demamaluis/" target="_blank" rel="noreferrer" class="ig-link spot" data-i18n="location.hoursLink">Ver horario en @demamaluis</a>
+          </div>
+          <a href="https://www.google.com/maps/search/?api=1&query=Demam%C3%A1luis%20Delicatessen%20R%C3%BAa%20do%20Paxaro%202%20Ourense" target="_blank" rel="noreferrer" class="btn-gold spot" data-i18n="cta.directions">Cómo llegar</a>
+        </div>
+
+        <div class="reveal map-frame">
+          <iframe title="Mapa de Demamáluis Delicatessen en Rúa do Paxaro 2, Ourense" src="https://www.google.com/maps?q=R%C3%BAa%20do%20Paxaro%202%2C%20Ourense&z=17&output=embed" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="instagram">
+    <div class="ig-section reveal">
+      <p class="eyebrow" data-i18n="ig.eyebrow">El día a día</p>
+      <h2 class="script" data-i18n="ig.title">¿Qué tal va el día?</h2>
+      <p data-i18n="ig.text">Lo que entra hoy, el vino que abrimos y el cierre de agosto: todo lo contamos ahí.</p>
+      <a href="https://www.instagram.com/demamaluis/" target="_blank" rel="noreferrer" class="btn-gold-outline spot" style="margin-top:36px;">@demamaluis en Instagram</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <p class="script">Demamáluis · Depapáluis</p>
+    <p data-i18n="footer.text">Rúa do Paxaro 2 · Rúa Viriato 12, Ourense. Sin reservas, sin prisa y con la puerta abierta. Nos vemos en la barra.</p>
+    <div class="hairline" style="width:160px;"></div>
+    <div class="foot-links">
+      <a href="#carta" class="spot" data-i18n="nav.menu">Carta</a>
+      <a href="#ubicacion" class="spot" data-i18n="nav.location">Ubicación</a>
+      <a href="https://www.instagram.com/demamaluis/" target="_blank" rel="noreferrer" class="spot">Instagram</a>
+    </div>
+    <p class="foot-credit">Desarrollado por <a href="https://wa.me/34611573580?text=Hola%20Brian%2C%20vengo%20de%20la%20web%20de%20Demam%C3%A1luis" target="_blank" rel="noreferrer">Brian</a> — Sistemas de IA para negocios reales. Ya funciona en Ourense.</p>
+  </div>
+</footer>
+
+<script>
+  // icon library (inline SVG, replaces emoji)
+  const ICONS = {
+    leaf: '<path d="M11 20A7 7 0 0 1 4 13c0-5 5-10 15-10 0 10-5 15-10 15Z"/><path d="M4 13c3 0 6 1 8 3"/>',
+    heart: '<path d="M19 14c1.5-1.5 3-3.5 3-6a4.5 4.5 0 0 0-8-2.8A4.5 4.5 0 0 0 6 7.2c0 2.4 1.5 4.4 3 6l5 5Z"/>',
+    wine: '<path d="M8 2h8l-1 7a3 3 0 0 1-6 0z"/><path d="M12 9v10"/><path d="M8 19h8"/>',
+    g: '<path d="M12 2c2 3 2 6 0 9-2-3-2-6 0-9Z"/><path d="M12 11v11"/><path d="M8 6c1.5 1 2.5 2.5 3 4"/><path d="M16 6c-1.5 1-2.5 2.5-3 4"/>',
+    l: '<path d="M9 2h6l1 3-1 2v13a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V7L8 5Z"/>',
+    e: '<ellipse cx="12" cy="14" rx="6" ry="8"/>',
+    s: '<path d="M12 3c3 1 5 4 5 8 0 5-2 9-5 10-3-1-5-5-5-10 0-4 2-7 5-8Z"/><path d="M12 3v18"/>',
+    f: '<path d="M4 12c3-4 8-6 13-4 2 1 3 2.5 3 4s-1 3-3 4c-5 2-10 0-13-4Z"/><circle cx="16" cy="11" r="0.6" fill="currentColor"/><path d="M2 9c1 1 1.5 2 1.5 3S3 14 2 15"/>',
+    m: '<path d="M12 3c4 0 7 3 7 7 0 3-1 5-2 7M12 3c-4 0-7 3-7 7 0 3 1 5 2 7"/><path d="M9 20c0-2 1-3 1-5M12 20c0-2 0.5-3.5 0-6M15 20c0-2-1-3-1-5"/>',
+    c: '<path d="M6 12c-2.5 0-4 2-3.5 4.5C3 19 5 20 7 19c1.5-.7 1-2.3 2.3-3M18 12c2.5 0 4 2 3.5 4.5-.5 2.5-2.5 3.5-4.5 2.5-1.5-.7-1-2.3-2.3-3"/><path d="M9.3 16c-1.8-1.6-2.8-4-2.1-6.6C8.1 6 11 4 14 4.7c2.7.6 4.4 3.2 4.4 5.9 0 2.3-1 4-2.7 5.3"/>',
+  };
+  function iconSvg(name) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS[name] || ''}</svg>`;
+  }
+  document.querySelectorAll('.al[data-al]').forEach(el => {
+    el.innerHTML = el.dataset.al.split(',').filter(Boolean).map(iconSvg).join('');
+  });
+
+  // continuous values marquee
+  const marqueeItems = [
+    { icon:'leaf', key:'value1' },
+    { icon:'heart', key:'value2' },
+    { icon:'wine', key:'value3' },
+  ];
+  const marqueeTrack = document.getElementById('marquee-track');
+  function buildMarquee(lang) {
+    const set = marqueeItems.map(it => `<div class="value-item">${iconSvg(it.icon)}<span class="txt">${dict[lang][it.key]}</span></div><span class="value-sep">✦</span>`).join('');
+    marqueeTrack.innerHTML = set + set;
+  }
+
+  // ambient cursor glow
+  const cursorGlow = document.createElement('div');
+  cursorGlow.id = 'cursor-glow';
+  document.body.appendChild(cursorGlow);
+  window.addEventListener('mousemove', (e) => {
+    cursorGlow.style.opacity = '1';
+    cursorGlow.style.left = e.clientX + 'px';
+    cursorGlow.style.top = e.clientY + 'px';
+  });
+  window.addEventListener('mouseleave', () => { cursorGlow.style.opacity = '0'; });
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.2 });
+  revealEls.forEach(el => io.observe(el));
+
+  // stars markup
+  const starsWrap = document.getElementById('stars');
+  for (let i = 0; i < 5; i++) {
+    const s = document.createElement('span');
+    s.className = 'star';
+    s.innerHTML = '★<span class="fill">★</span>';
+    starsWrap.appendChild(s);
+  }
+  const fills = starsWrap.querySelectorAll('.fill');
+
+  // animated review counter + stars
+  let played = false;
+  const countEl = document.getElementById('review-count');
+  const trigger = document.getElementById('reviews-trigger');
+  const TOTAL = 748, RATING = 4.7;
+
+  function playCounter() {
+    if (played) return;
+    played = true;
+    const duration = 1900;
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      countEl.textContent = Math.round(eased * TOTAL).toLocaleString('es-ES');
+      const filled = eased * RATING;
+      fills.forEach((f, i) => {
+        const pct = Math.max(0, Math.min(1, filled - i)) * 100;
+        f.style.width = pct + '%';
+      });
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  const reviewIo = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) playCounter(); });
+  }, { threshold: 0.35 });
+  reviewIo.observe(trigger);
+
+  // menu category filter
+  document.querySelectorAll('.menu-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.menu-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      document.querySelectorAll('.menu-list li').forEach(li => {
+        const show = filter === 'all' || li.dataset.cat === filter;
+        li.classList.toggle('hidden-cat', !show);
+      });
+    });
+  });
+
+  // spotlight cursor on interactive elements
+  document.querySelectorAll('.spot').forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--sx', (e.clientX - r.left) + 'px');
+      el.style.setProperty('--sy', (e.clientY - r.top) + 'px');
+    });
+  });
+
+  // real Google reviews (pasted verbatim by the owner)
+  const reviews = [
+    { name:'H. P', rating:5, time:'Hace un mes', text:'Gran sitio para tomarte un buen vermut, el primer día probé un vermut de la zona, Povarelo q me gustó, peroooooo una señora de gafas amabilísima al ver mi…' },
+    { name:'Cristina Muñoz Navarrete', rating:5, time:'Hace una semana', text:'Hoy estuvimos visitando Orense y paramos a comer en este lugar. Y realmente fue espectacular lo que comimos. Nos decidimos por la oreja, carne o caldeiro y el…' },
+    { name:'Paco Perez', rating:5, time:'Hace un mes', text:'Sitiazo. Hemos venido unos días a conocer Ourense y este ha sido nuestro descubrimiento. Todo esta re bueno, desde la carne o caldeiro, zorza, la empanada de…' },
+    { name:'Marta Jorge', rating:1, time:'Hace 3 semanas', text:'Comida expectacular! Personal muy amable 😉👌 nos recomendaros los más top. Nuestro paso x Ourense excelente sitio!! Recomendable 💯…' },
+    { name:'Jorgeguigil Gg', rating:5, time:'Hace 3 meses', text:'Muy buen lugar para comer, nos atendieron rápido, la comida perfecta (sobre todo la carne ao caldeiro) y un ambiente…' },
+    { name:'iker sama betrian', rating:5, time:'Hace 2 semanas', text:'Excelente comida, a destacar la tortilla de patata, la mini hamburguesa y el caldeiro.' },
+    { name:'Claudia González Sánchez', rating:5, time:'Hace un mes', text:'Hemos cenado en este sitio y volveríamos a repetir muchas veces más. Comida excelente, buen precio. Trato bonito y cercano. Repetiría…' },
+    { name:'Dolores M.G', rating:5, time:'Hace 3 semanas', text:'La tortilla estaba buenísima, igual que los boquerones. ¡Todo estaba muy rico! El trato de Luis, excepcional!!…' },
+    { name:'Mistery Plow', rating:5, time:'Hace 3 meses', text:'Acabamos de cenar 2 adultos y dos niñas y espectacular todo, la atención de todos de 10 desde la camarera hasta el cocinero preguntándonos que tal todo?…' },
+    { name:'Juan Rafael Fernández Ribeiro', rating:5, time:'Hace 11 meses', text:'Simplemente maravilloso, fuimos a cenar 2 personas y pagamos menos de 50€, todo estupendo, la tortilla de vicio y sus tostas igual…' },
+    { name:'Fernando Rv', rating:5, time:'Hace 8 meses', text:'Un restaurante espectacular! Fuimos un día a Orense de paso y nos coincidió pasar por éste lugar a cenar…' },
+    { name:'ALBERTO de Miguel', rating:5, time:'Hace 3 meses', text:'Un sitio muy pequeño en cuanto a espacio pero grande en cuanto a sabores. Unas tapas y tostas realmente exquisitas, acompañadas de buenos vinos de la zona.' },
+    { name:'igone2605', rating:5, time:'Hace una semana', text:'Fuimos a cenar y salimos encantados. Todo exquisito, buen producto y excelentes recomendaciones, Yolanda un amor. Volveremos.' },
+    { name:'David del Moral López', rating:5, time:'Hace 5 meses', text:'El caldo de la imagen venía incluido con la consumición. Muy buen servicio, restaurante acogedor y con buena comida.' },
+    { name:'Diego Delgado Duran', rating:5, time:'Hace un mes', text:'Un local con encanto, y con una oferta en pinchos excelente, las hamburguesas mini son mi debilidad, lo que acompañado de un trato excelente…' },
+    { name:'Ivan G', rating:2, time:'Hace 4 meses', text:'Las croquetas estaban nadando, mejillones tigre picaban, pero no se distinguía el sabor del mismo y a mayores traían cáscaras en el interior.' },
+    { name:'Marta Iglesias', rating:4, time:'Hace 7 meses', text:'Servicio y ambiente de 10. La mujer, encantadora. La comida rica. La tortilla nos flojeó un poco.' },
+    { name:'José Luis Moreno', rating:5, time:'Hace 6 meses', text:'Un lugar excepcional que no conocía. El trato fue realmente magnífico. Me encantó. Lugar referente en mis viajes a Ourense.' },
+    { name:'ligia lewis', rating:5, time:'Hace 7 meses', text:'Si estas en Ourense no dejes de visitar este pequeño lugar con unas tapas super deliciosas! Recomiendo las mini hamburguesas, las vieiras y la carne típica de la región.' },
+    { name:'Shireen Eksteen', rating:5, time:'Hace 7 meses', text:'Trato excelente desde el primer momento. Comimos genial, todo estaba muy rico. Destacamos especialmente la tosta de sardina, el pulpo y la tapa de champiñones.' },
+    { name:'claudia molina', rating:5, time:'Hace 7 meses', text:'Increíble sinceramente, son encantadores y la comida es una locura. Yo sin duda repetiré y si pudiera comería todos los días allí.' },
+    { name:'Mon Cho Solo', rating:5, time:'Hace un año', text:'Nos ha encantado el sitio, la comida increíble! El servicio muy atento! Y por mejorar algo la climatización sobre todo en días calurosos, pero el sitio es para repetir!' },
+    { name:'Carlos Gesto Rodríguez', rating:5, time:'Hace un año', text:'Fuimos ayer mi pareja y yo. No hay palabras para describir la comida. La tosta de sardina es un espectáculo, con una mermelada de mango súper sabrosa.' }
+  ];
+
+  // rating distribution (real, computed from the data above)
+  const rdWrap = document.getElementById('rd-wrap');
+  const dist = [5,4,3,2,1].map(star => reviews.filter(r => r.rating === star).length);
+  const maxDist = Math.max(...dist);
+  [5,4,3,2,1].forEach((star, i) => {
+    const row = document.createElement('div');
+    row.className = 'rd-row reveal';
+    row.innerHTML = `<span class="rd-label">${star} <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M12 2l2.9 6.5 7.1.6-5.4 4.7 1.7 7-6.3-3.9L5.7 21l1.7-7-5.4-4.7 7.1-.6z"/></svg></span><div class="rd-track"><div class="rd-fill" data-w="${maxDist ? (dist[i]/maxDist*100) : 0}"></div></div><span class="rd-count">${dist[i]}</span>`;
+    rdWrap.appendChild(row);
+  });
+  const rdIo = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        rdWrap.querySelectorAll('.rd-fill').forEach(f => { f.style.width = f.dataset.w + '%'; });
+        rdIo.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  rdIo.observe(rdWrap);
+
+  // avatar colors — deterministic per name, warm gold/amber family
+  function avatarColor(name) {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    const hue = 30 + (Math.abs(hash) % 40); // warm range
+    return `oklch(0.7 0.1 ${hue})`;
+  }
+
+  const rcTrack = document.getElementById('rc-track');
+  const rcViewport = document.getElementById('rc-viewport');
+  const rcDots = document.getElementById('rc-dots');
+  const rcPrev = document.getElementById('rc-prev');
+  const rcNext = document.getElementById('rc-next');
+  const rcProgress = document.getElementById('rc-progress');
+  const PER_PAGE = 5;
+  let currentPage = 0;
+  let pageCount = 1;
+  let autoplayTimer = null;
+
+  function makeCard(r) {
+    const card = document.createElement('a');
+    card.href = GOOGLE_REVIEWS_URL_LOCAL;
+    card.target = '_blank';
+    card.rel = 'noreferrer';
+    card.className = 'rc-card spot';
+    const starsHtml = Array.from({length:5}, (_, i) => `<span class="${i < r.rating ? 'on' : 'off'}">★</span>`).join('');
+    card.innerHTML = `
+      <svg class="rc-gmark" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      <div class="rc-head">
+        <div class="rc-avatar" style="background:${avatarColor(r.name)}">${r.name.trim().charAt(0).toUpperCase()}</div>
+        <div>
+          <div class="rc-name">${r.name}</div>
+          <div class="rc-time">${r.time} · Google</div>
+        </div>
+      </div>
+      <div class="rc-stars">${starsHtml}</div>
+      <p class="rc-text">${r.text}</p>
+    `;
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--sx', (e.clientX - rect.left) + 'px');
+      card.style.setProperty('--sy', (e.clientY - rect.top) + 'px');
+    });
+    return card;
+  }
+
+  function renderReviews(list) {
+    rcTrack.innerHTML = '';
+    rcDots.innerHTML = '';
+    pageCount = Math.max(1, Math.ceil(list.length / PER_PAGE));
+    for (let p = 0; p < pageCount; p++) {
+      const page = document.createElement('div');
+      page.className = 'rc-page';
+      list.slice(p * PER_PAGE, p * PER_PAGE + PER_PAGE).forEach(r => page.appendChild(makeCard(r)));
+      rcTrack.appendChild(page);
+      const dot = document.createElement('span');
+      dot.className = 'rc-dot' + (p === 0 ? ' active' : '');
+      dot.addEventListener('click', () => goToPage(p));
+      rcDots.appendChild(dot);
+    }
+    currentPage = 0;
+    goToPage(0);
+  }
+
+  function goToPage(p) {
+    currentPage = Math.max(0, Math.min(pageCount - 1, p));
+    rcTrack.style.transform = `translateX(-${currentPage * 100}%)`;
+    rcDots.querySelectorAll('.rc-dot').forEach((d, i) => d.classList.toggle('active', i === currentPage));
+    rcPrev.disabled = currentPage === 0;
+    rcNext.disabled = currentPage === pageCount - 1;
+    rcProgress.textContent = (currentPage + 1) + ' / ' + pageCount;
+  }
+  rcPrev.addEventListener('click', () => { goToPage(currentPage - 1); resetAutoplay(); });
+  rcNext.addEventListener('click', () => { goToPage(currentPage + 1); resetAutoplay(); });
+
+  // filters
+  document.querySelectorAll('.rc-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.rc-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      let list = reviews;
+      if (f === '5') list = reviews.filter(r => r.rating === 5);
+      if (f === 'recent') list = reviews.slice(0, 10);
+      renderReviews(list);
+      resetAutoplay();
+    });
+  });
+
+  // autoplay, pauses on hover / interaction
+  function startAutoplay() {
+    autoplayTimer = setInterval(() => {
+      goToPage(currentPage + 1 >= pageCount ? 0 : currentPage + 1);
+    }, 5000);
+  }
+  function resetAutoplay() {
+    clearInterval(autoplayTimer);
+    startAutoplay();
+  }
+  rcViewport.addEventListener('mouseenter', () => clearInterval(autoplayTimer));
+  rcViewport.addEventListener('mouseleave', () => startAutoplay());
+
+  // drag / swipe support
+  let dragStartX = 0, dragCurrentX = 0, isDragging = false;
+  function dragStart(x) {
+    isDragging = true;
+    dragStartX = x;
+    dragCurrentX = x;
+    rcTrack.classList.add('no-transition');
+    rcViewport.classList.add('dragging');
+    clearInterval(autoplayTimer);
+  }
+  function dragMove(x) {
+    if (!isDragging) return;
+    dragCurrentX = x;
+    const delta = dragCurrentX - dragStartX;
+    const viewportWidth = rcViewport.getBoundingClientRect().width;
+    const percentDelta = (delta / viewportWidth) * 100;
+    rcTrack.style.transform = `translateX(calc(-${currentPage * 100}% + ${percentDelta}%))`;
+  }
+  function dragEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    rcTrack.classList.remove('no-transition');
+    rcViewport.classList.remove('dragging');
+    const delta = dragCurrentX - dragStartX;
+    const viewportWidth = rcViewport.getBoundingClientRect().width;
+    if (Math.abs(delta) > viewportWidth * 0.15) {
+      goToPage(delta < 0 ? currentPage + 1 : currentPage - 1);
+    } else {
+      goToPage(currentPage);
+    }
+    resetAutoplay();
+  }
+  rcViewport.addEventListener('pointerdown', (e) => dragStart(e.clientX));
+  window.addEventListener('pointermove', (e) => dragMove(e.clientX));
+  window.addEventListener('pointerup', dragEnd);
+
+  // keyboard navigation when the section is in view
+  document.getElementById('resenas').addEventListener('keydown', () => {});
+  window.addEventListener('keydown', (e) => {
+    const sec = document.getElementById('resenas');
+    const rect = sec.getBoundingClientRect();
+    const inView = rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3;
+    if (!inView) return;
+    if (e.key === 'ArrowLeft') { goToPage(currentPage - 1); resetAutoplay(); }
+    if (e.key === 'ArrowRight') { goToPage(currentPage + 1); resetAutoplay(); }
+  });
+
+  const GOOGLE_REVIEWS_URL_LOCAL = 'https://www.google.com/maps/search/?api=1&query=Demam%C3%A1luis%20Delicatessen%20R%C3%BAa%20do%20Paxaro%202%20Ourense';
+  renderReviews(reviews);
+  startAutoplay();
+
+  // i18n
+  const dict = {
+    es: {
+      'nav.dishes':'Los de siempre','nav.menu':'Carta','nav.reviews':'Reseñas','nav.location':'Ubicación',
+      'hero.eyebrow':'Casco Antiguo de Ourense','hero.sub':'Delicatessen · Tapas &amp; Vinoteca',
+      'hero.desc':'Dos barras, una familia y el ruido bueno de las noches de vino en la Rúa do Paxaro. Se entra sin prisa y se sale con ganas de volver.',
+      'hero.reviews':'748 reseñas en Google','cta.directions':'Cómo llegar','cta.menu':'Ver la carta',
+      'about.eyebrow':'Quiénes somos','about.title':'Servir con calma',
+      'about.p1':'Esto lo llevamos nosotros dos, con nuestros nombres puestos en la puerta y en media carta. Una barra es de mamá Luis y la otra de papá Luis, y entre las dos se cocina lo mismo: comida de casa, hecha con tiempo.',
+      'about.p2':'No tenemos prisa y no queremos tenerla. Nos gusta preguntar qué tal va el día, recomendar el vino que abrimos hoy y que el tomate lo traigamos de nuestra huerta, no de una caja.',
+      'about.sign':'"No se admiten pagos por separado"',
+      'about.quote':'Está escrito en un cartel de la barra, y va con cariño: aquí se invita, se discute quién paga y se arregla luego entre vosotros.',
+      'dishes.eyebrow':'Los de siempre','dishes.title1':'Platos que no cambian','dishes.title2':'porque no hace falta',
+      'm.miniburger':'Miniburger "demamáluis" (1 ud.)','m.tostaSolomillo':'Tosta de solomillo, queso de vaca y pimiento asado','m.tostaRaxo':'Tosta de raxo, queso curado de oveja y mermelada de pimiento','m.tostaBacalao':'Tosta de bacalao ahumado y tomate confitado','m.tostaSardina':'Tosta de sardina ahumada, tomate asado y mermelada de mango','m.croquetas':'Croquetas "da Carmen" (6 ud.)','m.empanada':'Porción de empanada (1 ud.)','m.tortilla':'Media tortilla española','m.vieiras':'Vieiras a la plancha (6 ud.)','m.postre1':'Postre casero','m.pan1':'Ración de pan de Cea',
+      'm.half':'1/2 ración','m.full':'Ración','m.caldeiro':'Carne ao caldeiro','m.lacon':'Lacón con grelos','m.oreja':'Ración de Oreja Cocida','m.carpaccio':'Carpaccio de cachucha','m.pulpoFeira':'Pulpo á feira','m.mejillones':'Mejillones Tigre (8 uds.)','m.boquerones':'Boquerones a la vinagreta','m.champis':'Champiñones "demamáluis"','m.ensalada':'Ensalada de tomate','m.ensaladaVentresca':'Ensalada de tomate con ventresca','m.zorza':'Zorza "da Julia"','m.morunitos':'Morunitos "depapáluis" (6 ud.)','m.postre2':'Postre casero','m.pan2':'Ración de pan de Cea',
+      'reviews.badge':'Reseñas reales, tal cual se escribieron en Google — pulsa una tarjeta para verla en Google',
+      'rcf.all':'Todas','rcf.five':'Solo 5★','rcf.recent':'Más recientes',
+      'value1':'Producto de la huerta propia','value2':'Trato de familia, sin prisa','value3':'Vino de la zona, cada día distinto',
+      'about.aside':'Ah, y no preguntéis quién paga — hay un cartel en la barra que ya lo explica.',
+      'about.wallCaption':'Pintado a mano en la fachada, en la Rúa do Paxaro.',
+      'panel1':'Pan de Cea, tomate de <span class="gold">huerta propia</span> y el vino que toque ese día — así se cocina aquí.',
+      'panel2':'Producto de la tierra, servido <span class="gold">sin prisa</span> — esa es toda la receta.',
+      'press.trip':'4,7/5 · Bar tapería delicatessen, comida casera','press.view':'Ver ficha →',
+      'press.planaje':'"Uno de los mejores establecimientos" — crítica gastronómica','press.read':'Leer la crítica →',
+      'press.kitking':'4,7/5 · Ficha verificada del local','press.view2':'Ver ficha →',
+      'news.title':'Sé de los primeros en enterarte','news.text':'Novedades, el vino de la semana y algún aviso especial — sin spam, cuando haya algo que contar.',
+      'news.placeholder':'tu@email.com','news.cta':'Apuntarme','news.note':'Demo — próximamente activo. Ideal también para un programa de fidelidad por visitas.',
+      'filter.all':'Todos','filter.entrantes':'Entrantes','filter.carne':'Carne','filter.pescado':'Pescado',
+      'al.gluten':'Gluten','al.lacteos':'Lácteos','al.huevo':'Huevo','al.marisco':'Marisco','al.pescado':'Pescado','al.moluscos':'Moluscos',
+      'al.note':'Alérgenos orientativos según ingredientes habituales — confirma siempre en barra.',
+      'dish.tomate.name':'Tomate casero','dish.tomate.tag':'De la huerta a la barra','dish.tomate.text':'Nuestro tomate no necesita nada más que aceite y sal. Sale de la huerta propia, no de una caja.',
+      'dish.pulpo.name':'Pulpo','dish.pulpo.tag':'El de toda la vida','dish.pulpo.text':'Pimentón, aceite y el punto de siempre. No hace falta reinventarlo, hace falta hacerlo bien.',
+      'dish.chicharrones.name':'Chicharrones','dish.chicharrones.tag':'Crujientes, sin pedir perdón','dish.chicharrones.text':'Un clásico de la casa que no se anda con rodeos.',
+      'dish.champinones.name':'Champiñones "demamáluis"','dish.champinones.tag':'La receta que lleva su nombre','dish.champinones.text':'El plato que aparece en las dos cartas, porque en esta casa las recetas también se comparten.',
+      'dish.miniburguer.name':'Miniburguer "demamáluis"','dish.miniburguer.tag':'Lleva nuestro nombre','dish.miniburguer.text':'Así que ya te imaginas el cuidado que le ponemos.',
+      'dish.solomillo.name':'Solomillo con micuit de pato','dish.solomillo.tag':'El lujo discreto de la barra','dish.solomillo.text':'Para los días que piden un poco más que una tapa rápida.',
+      'dish.padron.name':'Pimientos de Padrón','dish.padron.tag':'Unos pican y otros no','dish.padron.text':'El dicho de siempre, tal cual. Nadie sabe cuál te va a tocar.',
+      'menu.eyebrow':'La carta','menu.title':'Dos caras, una misma casa',
+      'menu.note':'Servicio en terraza: suplemento de 0,20€ por bebida y 0,40€ por plato.',
+      'menu.pricenote':'"Postre casero" y "Ración de pan de Cea" aparecen con precio distinto en cada cara de la carta — se muestran tal cual, sin unificar.',
+      'reviews.eyebrow':'Lo que dicen','reviews.title1':'Casi ochocientas veces','reviews.title2':'gracias',
+      'reviews.sub1':'reseñas en Google, con una media de','reviews.sub2':'sobre 5',
+      'reviews.cta':'Ver las 748 reseñas en Google',
+      'reviews.note':'Aquí no ponemos frases nuestras en boca de nadie. Si quieres leer lo que escribe la gente, está todo en Google.',
+      'location.eyebrow':'Dónde estamos','location.title':'En pleno Casco Antiguo','location.address':'Dirección','location.addressSub':'Casco Antiguo de Ourense',
+      'location.noRes':'No cogemos reservas','location.noResText':'La terraza y el aforo van por orden de llegada. Si está lleno, espera un poco: casi siempre se libera algo y mientras tanto te ponemos una copa.',
+      'location.hours':'Horario','location.hoursText':'El horario cambia según la temporada y los festivos, así que lo vamos contando en Instagram. Ahí está siempre lo último.',
+      'location.hoursLink':'Ver horario en @demamaluis',
+      'ig.eyebrow':'El día a día','ig.title':'¿Qué tal va el día?','ig.text':'Lo que entra hoy, el vino que abrimos y el cierre de agosto: todo lo contamos ahí.',
+      'footer.text':'Rúa do Paxaro 2 · Rúa Viriato 12, Ourense. Sin reservas, sin prisa y con la puerta abierta. Nos vemos en la barra.'
+    },
+    gl: {
+      'nav.dishes':'Os de sempre','nav.menu':'Carta','nav.reviews':'Reseñas','nav.location':'Localización',
+      'hero.eyebrow':'Casco Vello de Ourense','hero.sub':'Delicatessen · Tapas &amp; Viñoteca',
+      'hero.desc':'Dúas barras, unha familia e o ruído bo das noites de viño na Rúa do Paxaro. Éntrase sen présa e sáese con gañas de volver.',
+      'hero.reviews':'748 reseñas en Google','cta.directions':'Como chegar','cta.menu':'Ver a carta',
+      'about.eyebrow':'Quen somos','about.title':'Servir con calma',
+      'about.p1':'Isto lévámolo nós dous, cos nosos nomes postos na porta e en media carta. Unha barra é de mamá Luis e a outra de papá Luis, e entre as dúas cocíñase o mesmo: comida de casa, feita con tempo.',
+      'about.p2':'Non temos présa e non queremos telá. Gústanos preguntar que tal vai o día, recomendar o viño que abrimos hoxe e que o tomate o traiamos da nosa horta, non dunha caixa.',
+      'about.sign':'"Non se admiten pagos por separado"',
+      'about.quote':'Está escrito nun cartel da barra, e vai con cariño: aquí convídase, discútese quen paga e arránxase logo entre vós.',
+      'dishes.eyebrow':'Os de sempre','dishes.title1':'Pratos que non cambian','dishes.title2':'porque non fai falta',
+      'm.miniburger':'Miniburger "demamáluis" (1 ud.)','m.tostaSolomillo':'Torrada de lombo, queixo de vaca e pemento asado','m.tostaRaxo':'Torrada de raxo, queixo curado de ovella e marmelada de pemento','m.tostaBacalao':'Torrada de bacallau afumado e tomate confitado','m.tostaSardina':'Torrada de sardiña afumada, tomate asado e marmelada de mango','m.croquetas':'Croquetas "da Carmen" (6 ud.)','m.empanada':'Porción de empanada (1 ud.)','m.tortilla':'Media tortilla española','m.vieiras':'Vieiras á prancha (6 ud.)','m.postre1':'Sobremesa caseira','m.pan1':'Ración de pan de Cea',
+      'm.half':'1/2 ración','m.full':'Ración','m.caldeiro':'Carne ao caldeiro','m.lacon':'Lacón con grelos','m.oreja':'Ración de Orella Cocida','m.carpaccio':'Carpaccio de cachucha','m.pulpoFeira':'Polbo á feira','m.mejillones':'Mexillóns Tigre (8 uds.)','m.boquerones':'Boqueróns en vinagre','m.champis':'Champiñóns "demamáluis"','m.ensalada':'Ensalada de tomate','m.ensaladaVentresca':'Ensalada de tomate con ventresca','m.zorza':'Zorza "da Julia"','m.morunitos':'Morunitos "depapáluis" (6 ud.)','m.postre2':'Sobremesa caseira','m.pan2':'Ración de pan de Cea',
+      'reviews.badge':'Reseñas reais, tal cual se escribiron en Google — preme nunha tarxeta para vela en Google',
+      'rcf.all':'Todas','rcf.five':'Só 5★','rcf.recent':'Máis recentes',
+      'value1':'Produto da horta propia','value2':'Trato de familia, sen présa','value3':'Viño da zona, cada día distinto',
+      'about.aside':'Ah, e non preguntedes quen paga — hai un cartel na barra que xa o explica.',
+      'about.wallCaption':'Pintado a man na fachada, na Rúa do Paxaro.',
+      'panel1':'Pan de Cea, tomate de <span class="gold">horta propia</span> e o viño que toque ese día — así se cociña aquí.',
+      'panel2':'Produto da terra, servido <span class="gold">sen présa</span> — esa é toda a receita.',
+      'press.trip':'4,7/5 · Bar tapería delicatessen, comida caseira','press.view':'Ver ficha →',
+      'press.planaje':'"Un dos mellores establecementos" — crítica gastronómica','press.read':'Ler a crítica →',
+      'press.kitking':'4,7/5 · Ficha verificada do local','press.view2':'Ver ficha →',
+      'news.title':'Sé dos primeiros en enterarte','news.text':'Novidades, o viño da semana e algún aviso especial — sen spam, cando haxa algo que contar.',
+      'news.placeholder':'teu@email.com','news.cta':'Apuntarme','news.note':'Demo — proximamente activo. Ideal tamén para un programa de fidelidade por visitas.',
+      'filter.all':'Todos','filter.entrantes':'Entrantes','filter.carne':'Carne','filter.pescado':'Peixe',
+      'al.gluten':'Glute','al.lacteos':'Lácteos','al.huevo':'Ovo','al.marisco':'Marisco','al.pescado':'Peixe','al.moluscos':'Moluscos',
+      'al.note':'Alérxenos orientativos segundo ingredientes habituais — confirma sempre na barra.',
+      'dish.tomate.name':'Tomate caseiro','dish.tomate.tag':'Da horta á barra','dish.tomate.text':'O noso tomate non precisa nada máis que aceite e sal. Sae da horta propia, non dunha caixa.',
+      'dish.pulpo.name':'Polbo','dish.pulpo.tag':'O de toda a vida','dish.pulpo.text':'Pemento, aceite e o punto de sempre. Non fai falta reinventalo, fai falta facelo ben.',
+      'dish.chicharrones.name':'Chicharróns','dish.chicharrones.tag':'Crocantes, sen pedir perdón','dish.chicharrones.text':'Un clásico da casa que non se anda con rodeos.',
+      'dish.champinones.name':'Champiñóns "demamáluis"','dish.champinones.tag':'A receita que leva o seu nome','dish.champinones.text':'O prato que aparece nas dúas cartas, porque nesta casa as receitas tamén se comparten.',
+      'dish.miniburguer.name':'Miniburguer "demamáluis"','dish.miniburguer.tag':'Leva o noso nome','dish.miniburguer.text':'Así que xa te imaxinas o coidado que lle poñemos.',
+      'dish.solomillo.name':'Lombo con micuit de pato','dish.solomillo.tag':'O luxo discreto da barra','dish.solomillo.text':'Para os días que piden un pouco máis que unha tapa rápida.',
+      'dish.padron.name':'Pementos de Padrón','dish.padron.tag':'Uns pican e outros non','dish.padron.text':'O dito de sempre, tal cual. Ninguén sabe cal che vai tocar.',
+      'menu.eyebrow':'A carta','menu.title':'Dúas caras, unha mesma casa',
+      'menu.note':'Servizo en terraza: suplemento de 0,20€ por bebida e 0,40€ por prato.',
+      'menu.pricenote':'"Postre casero" e "Ración de pan de Cea" aparecen con prezo distinto en cada cara da carta — móstranse tal cual, sen unificar.',
+      'reviews.eyebrow':'O que din','reviews.title1':'Case oitocentas veces','reviews.title2':'grazas',
+      'reviews.sub1':'reseñas en Google, cunha media de','reviews.sub2':'sobre 5',
+      'reviews.cta':'Ver as 748 reseñas en Google',
+      'reviews.note':'Aquí non poñemos frases nosas en boca de ninguén. Se queres ler o que escribe a xente, está todo en Google.',
+      'location.eyebrow':'Onde estamos','location.title':'No corazón do Casco Vello','location.address':'Enderezo','location.addressSub':'Casco Vello de Ourense',
+      'location.noRes':'Non collemos reservas','location.noResText':'A terraza e o aforo van por orde de chegada. Se está cheo, agarda un pouco: case sempre lisca algo e mentres tanto poñémosche unha copa.',
+      'location.hours':'Horario','location.hoursText':'O horario cambia segundo a tempada e os festivos, así que o imos contando en Instagram. Alí está sempre o último.',
+      'location.hoursLink':'Ver horario en @demamaluis',
+      'ig.eyebrow':'O día a día','ig.title':'Que tal vai o día?','ig.text':'O que entra hoxe, o viño que abrimos e o peche de agosto: todo o contamos alí.',
+      'footer.text':'Rúa do Paxaro 2 · Rúa Viriato 12, Ourense. Sen reservas, sen présa e coa porta aberta. Vémonos na barra.'
+    },
+    en: {
+      'nav.dishes':'The regulars','nav.menu':'Menu','nav.reviews':'Reviews','nav.location':'Location',
+      'hero.eyebrow':'Old Town, Ourense','hero.sub':'Delicatessen · Tapas &amp; Wine Bar',
+      'hero.desc':'Two bars, one family, and the good kind of noise from wine nights on Rúa do Paxaro. Walk in unhurried, leave wanting to come back.',
+      'hero.reviews':'748 reviews on Google','cta.directions':'Get directions','cta.menu':'See the menu',
+      'about.eyebrow':'Who we are','about.title':'Serve with calm',
+      'about.p1':'The two of us run this place, with our names on the door and on half the menu. One bar belongs to mamá Luis, the other to papá Luis, and both cook the same thing: home food, made with time.',
+      'about.p2':'We are in no hurry, and we do not want to be. We like to ask how your day is going, recommend whatever wine we opened today, and bring the tomatoes from our own garden, not from a box.',
+      'about.sign':'"Splitting the bill is not allowed"',
+      'about.quote':'It is written on a sign at the bar, and it is said with affection: here you treat each other, argue about who pays, and sort it out afterwards among yourselves.',
+      'dishes.eyebrow':'The regulars','dishes.title1':'Dishes that do not change','dishes.title2':'because they do not need to',
+      'm.miniburger':'"Demamáluis" mini burger (1 pc.)','m.tostaSolomillo':'Sirloin toast with cow cheese and roasted pepper','m.tostaRaxo':'Marinated pork toast with cured sheep cheese and pepper jam','m.tostaBacalao':'Smoked cod toast with confit tomato','m.tostaSardina':'Smoked sardine toast with roasted tomato and mango jam','m.croquetas':'"Da Carmen" croquettes (6 pcs.)','m.empanada':'Slice of empanada (1 pc.)','m.tortilla':'Half Spanish tortilla','m.vieiras':'Grilled scallops (6 pcs.)','m.postre1':'Homemade dessert','m.pan1':'Cea bread',
+      'm.half':'Half portion','m.full':'Full portion','m.caldeiro':'Slow-cooked meat "ao caldeiro"','m.lacon':'Pork shoulder with turnip greens','m.oreja':'Boiled pig ear','m.carpaccio':'Pork cheek carpaccio','m.pulpoFeira':'Galician-style octopus','m.mejillones':'Spicy mussels "Tigre" (8 pcs.)','m.boquerones':'Vinegar-marinated anchovies','m.champis':'"Demamáluis" mushrooms','m.ensalada':'Tomato salad','m.ensaladaVentresca':'Tomato salad with tuna belly','m.zorza':'"Da Julia" marinated pork','m.morunitos':'"Depapáluis" pork skewers (6 pcs.)','m.postre2':'Homemade dessert','m.pan2':'Cea bread',
+      'reviews.badge':'Real reviews, shown exactly as written on Google — tap a card to see it on Google',
+      'rcf.all':'All','rcf.five':'5★ only','rcf.recent':'Most recent',
+      'value1':'Produce from our own garden','value2':'Family treatment, no rush','value3':'Local wine, different every day',
+      'about.aside':'Oh, and do not ask who is paying — there is a sign at the bar that already explains it.',
+      'about.wallCaption':'Hand-painted on the facade, on Rúa do Paxaro.',
+      'panel1':'Cea bread, tomatoes from <span class="gold">our own garden</span>, and whatever wine we open that day — that is how we cook here.',
+      'panel2':'Local produce, served <span class="gold">without rush</span> — that is the whole recipe.',
+      'press.trip':'4.7/5 · Tapas delicatessen bar, homemade food','press.view':'View listing →',
+      'press.planaje':'"One of the best establishments" — food review','press.read':'Read the review →',
+      'press.kitking':'4.7/5 · Verified business listing','press.view2':'View listing →',
+      'news.title':'Be among the first to know','news.text':'News, the wine of the week, and the occasional special notice — no spam, only when there is something to share.',
+      'news.placeholder':'you@email.com','news.cta':'Sign me up','news.note':'Demo — coming soon. Also a great fit for a visit-based loyalty program.',
+      'filter.all':'All','filter.entrantes':'Starters','filter.carne':'Meat','filter.pescado':'Fish',
+      'al.gluten':'Gluten','al.lacteos':'Dairy','al.huevo':'Egg','al.marisco':'Shellfish','al.pescado':'Fish','al.moluscos':'Molluscs',
+      'al.note':'Allergens are indicative, based on typical ingredients — always confirm at the bar.',
+      'dish.tomate.name':'Homegrown tomato','dish.tomate.tag':'From the garden to the bar','dish.tomate.text':'Our tomato needs nothing more than oil and salt. It comes from our own garden, not a box.',
+      'dish.pulpo.name':'Octopus','dish.pulpo.tag':'The old-school way','dish.pulpo.text':'Paprika, oil, and the same touch as always. No need to reinvent it, just to do it right.',
+      'dish.chicharrones.name':'Chicharrones','dish.chicharrones.tag':'Crispy, no apologies','dish.chicharrones.text':'A house classic that does not beat around the bush.',
+      'dish.champinones.name':'"Demamáluis" mushrooms','dish.champinones.tag':'The recipe that carries its name','dish.champinones.text':'The dish that appears on both menus, because in this house recipes are shared too.',
+      'dish.miniburguer.name':'"Demamáluis" mini burger','dish.miniburguer.tag':'It carries our name','dish.miniburguer.text':'So you can already imagine the care we put into it.',
+      'dish.solomillo.name':'Sirloin with duck micuit','dish.solomillo.tag':'The quiet luxury of the bar','dish.solomillo.text':'For the days that call for a bit more than a quick tapa.',
+      'dish.padron.name':'Padrón peppers','dish.padron.tag':'Some are hot, some are not','dish.padron.text':'The old saying, exactly as it is. Nobody knows which one you will get.',
+      'menu.eyebrow':'The menu','menu.title':'Two sides, one same house',
+      'menu.note':'Terrace service: 0.20€ surcharge per drink and 0.40€ per dish.',
+      'menu.pricenote':'"Postre casero" and "Ración de pan de Cea" show a different price on each side of the physical menu — shown as-is, without unifying them.',
+      'reviews.eyebrow':'What people say','reviews.title1':'Nearly eight hundred times','reviews.title2':'thank you',
+      'reviews.sub1':'reviews on Google, averaging','reviews.sub2':'out of 5',
+      'reviews.cta':'See all 748 reviews on Google',
+      'reviews.note':'We do not put our own words in anyone else’s mouth here. If you want to read what people write, it is all on Google.',
+      'location.eyebrow':'Where we are','location.title':'Right in the Old Town','location.address':'Address','location.addressSub':'Old Town, Ourense',
+      'location.noRes':'We do not take reservations','location.noResText':'The terrace and seating are first come, first served. If it is full, wait a little — something usually opens up, and we will pour you a glass while you wait.',
+      'location.hours':'Opening hours','location.hoursText':'Hours change with the season and public holidays, so we keep it updated on Instagram. That is always the latest word.',
+      'location.hoursLink':'See hours on @demamaluis',
+      'ig.eyebrow':'Day to day','ig.title':'How’s your day going?','ig.text':'What comes in today, the wine we open, and the August closing dates: we share it all there.',
+      'footer.text':'Rúa do Paxaro 2 · Rúa Viriato 12, Ourense. No reservations, no rush, door always open. See you at the bar.'
+    }
+  };
+
+  const langButtons = document.querySelectorAll('.langsel button');
+  function setLang(lang) {
+    document.documentElement.lang = lang;
+    langButtons.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (dict[lang][key]) el.innerHTML = dict[lang][key];
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (dict[lang][key]) el.placeholder = dict[lang][key];
+    });
+    buildMarquee(lang);
+  }
+  langButtons.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+  buildMarquee('es');
+
+  // scroll progress bar
+  const progressBar = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progressBar.style.width = scrolled + '%';
+  }, { passive: true });
+</script>
+
+</body>
+</html>
