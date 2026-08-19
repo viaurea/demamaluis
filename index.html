@@ -76,14 +76,16 @@
   .rating-stars{font-size:1.1rem; letter-spacing:0.2em; color:var(--gold);}
   .rating-text{font-size:0.9rem; color:oklch(0.94 0.014 80 / 0.85);}
   .cta-row{margin-top:48px; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:16px;}
-  .btn-gold, .btn-gold-outline{display:inline-flex; align-items:center; justify-content:center; border-radius:2px; padding:16px 36px; font-size:0.72rem; letter-spacing:0.24em; text-transform:uppercase; transition:all 400ms ease; cursor:pointer; font-family:'Jost',sans-serif;}
+  .btn-gold, .btn-gold-outline{display:inline-flex; align-items:center; justify-content:center; border-radius:2px; padding:16px 28px; font-size:0.68rem; letter-spacing:0.18em; text-transform:uppercase; transition:all 400ms ease; cursor:pointer; font-family:'Jost',sans-serif;}
+  @media(min-width:420px){ .btn-gold, .btn-gold-outline{padding:16px 36px; font-size:0.72rem; letter-spacing:0.24em;} }
+  @media(max-width:359px){ .rating-pill{gap:8px; padding:12px 16px;} .rating-num{font-size:1.5rem;} .rating-stars{font-size:0.9rem;} .rating-text{font-size:0.8rem;} }
   .btn-gold{background:var(--gold); color:var(--primary-foreground); border:1px solid var(--gold);}
   .btn-gold:hover{background:var(--gold-soft); border-color:var(--gold-soft);}
   .btn-gold-outline{border:1px solid oklch(0.76 0.1 79 / 0.5); color:var(--gold); background:transparent;}
   .btn-gold-outline:hover{border-color:var(--gold); background:oklch(0.76 0.1 79 / 0.1);}
 
-  section{padding:64px 24px;}
-  @media(min-width:768px){ section{padding:92px 24px;} }
+  section{padding:64px 24px; scroll-margin-top:104px;}
+  @media(min-width:768px){ section{padding:92px 24px; scroll-margin-top:84px;} }
   .center{text-align:center;}
 
   /* values strip — continuous marquee */
