@@ -341,6 +341,20 @@
   .sticky-cta.show{bottom:0;}
   @media(min-width:768px){ .sticky-cta{display:none;} }
 
+  /* back to top */
+  .back-to-top{position:fixed; right:16px; bottom:16px; z-index:56; width:44px; height:44px; border-radius:50%; border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.85); backdrop-filter:blur(8px); color:var(--gold); display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transform:translateY(10px); transition:opacity 300ms ease, transform 300ms ease, background 300ms ease, border-color 300ms ease;}
+  .back-to-top.show{opacity:1; pointer-events:auto; transform:translateY(0);}
+  .back-to-top:hover{border-color:var(--gold); background:oklch(0.76 0.1 79 / 0.16);}
+  .back-to-top svg{width:18px; height:18px;}
+  @media(max-width:767px){ .back-to-top{bottom:16px; right:14px;} .back-to-top.show{bottom:calc(90px + env(safe-area-inset-bottom));} }
+  @media(min-width:768px){ .back-to-top{right:24px; bottom:24px;} }
+
+  /* hero entrance + page fade-in */
+  body.preload{opacity:0;}
+  body{opacity:1; transition:opacity 420ms ease;}
+  .hero-inner{opacity:0; transform:translateY(14px); transition:opacity 900ms ease, transform 900ms cubic-bezier(.16,1,.3,1);}
+  .hero-inner.hero-in{opacity:1; transform:none;}
+
   /* instagram */
   .ig-section{max-width:640px; margin:0 auto; text-align:center;}
   .ig-section h2{font-size:3.4rem; color:var(--gold); margin-top:20px;}
@@ -368,7 +382,7 @@
     transform:translate(-50%,-50%); mix-blend-mode:screen; transition:opacity 300ms ease; opacity:0;}
 </style>
 </head>
-<body>
+<body class="preload">
 
 <div id="scroll-progress"></div>
 <header class="topbar">
@@ -745,6 +759,10 @@
   <a href="https://www.google.com/maps/search/?api=1&query=Demam%C3%A1luis%20Delicatessen%20R%C3%BAa%20do%20Paxaro%202%20Ourense" target="_blank" rel="noreferrer" class="btn-gold spot" style="width:100%; max-width:340px;" data-i18n="cta.directions">Cómo llegar</a>
 </div>
 
+<button type="button" class="back-to-top spot" id="back-to-top" aria-label="Volver arriba" title="Volver arriba">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+</button>
+
 <footer>
   <div class="foot-inner">
     <p class="script">Demamáluis · Depapáluis</p>
@@ -753,7 +771,10 @@
     <div class="foot-links">
       <a href="#carta" class="spot" data-i18n="nav.menu">Carta</a>
       <a href="#ubicacion" class="spot" data-i18n="nav.location">Ubicación</a>
-      <a href="https://www.instagram.com/demamaluis/" target="_blank" rel="noreferrer" class="spot">Instagram</a>
+      <a href="https://www.instagram.com/demamaluis/" target="_blank" rel="noreferrer" class="spot" style="display:inline-flex; align-items:center; gap:6px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px; height:14px; flex-shrink:0;"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="currentColor" stroke="none"/></svg>
+        Instagram
+      </a>
       <a href="privacidad.html" class="spot" data-i18n="footer.privacy">Privacidad</a>
     </div>
     <p class="foot-credit">Desarrollado por <a href="https://wa.me/34611573580?text=Hola%20Brian%2C%20vengo%20de%20la%20web%20de%20Demam%C3%A1luis" target="_blank" rel="noreferrer">Brian</a> — Sistemas de IA para negocios reales. Ya funciona en Ourense.</p>
@@ -1261,12 +1282,23 @@
   // scroll progress bar
   const progressBar = document.getElementById('scroll-progress');
   const stickyCta = document.getElementById('sticky-cta');
+  const backToTop = document.getElementById('back-to-top');
   window.addEventListener('scroll', () => {
     const h = document.documentElement;
     const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
     progressBar.style.width = scrolled + '%';
     stickyCta.classList.toggle('show', window.scrollY > window.innerHeight * 0.7);
+    backToTop.classList.toggle('show', window.scrollY > window.innerHeight * 0.8);
   }, { passive: true });
+  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // page fade-in + hero entrance
+  window.addEventListener('load', () => {
+    document.body.classList.remove('preload');
+    requestAnimationFrame(() => {
+      document.querySelector('.hero-inner').classList.add('hero-in');
+    });
+  });
 </script>
 
 </body>
