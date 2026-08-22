@@ -9,6 +9,58 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cormorant+Garamond:wght@300;400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c9a15f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 2h8l-1 7a3 3 0 0 1-6 0z'/%3E%3Cpath d='M12 9v10'/%3E%3Cpath d='M8 19h8'/%3E%3C/svg%3E">
+<link rel="canonical" href="https://demamaluis-web.vercel.app/">
+<meta name="robots" content="index, follow">
+
+<meta property="og:type" content="restaurant.restaurant">
+<meta property="og:title" content="Demamáluis · Depapáluis — Tapas y vinoteca en Ourense">
+<meta property="og:description" content="Bar de tapas y vinoteca familiar en el Casco Antiguo de Ourense. 4,7★ con 748 reseñas en Google. Sin reservas, sin prisa.">
+<meta property="og:image" content="https://demamaluis-web.vercel.app/demamaluis-assets/fachada.jpg">
+<meta property="og:url" content="https://demamaluis-web.vercel.app/">
+<meta property="og:site_name" content="Demamáluis · Depapáluis">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Demamáluis · Depapáluis — Tapas y vinoteca en Ourense">
+<meta name="twitter:description" content="Bar de tapas y vinoteca familiar en el Casco Antiguo de Ourense. 4,7★ con 748 reseñas. Sin reservas, sin prisa.">
+<meta name="twitter:image" content="https://demamaluis-web.vercel.app/demamaluis-assets/fachada.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BarOrPub",
+  "name": "Demamáluis · Depapáluis",
+  "image": "https://demamaluis-web.vercel.app/demamaluis-assets/fachada.jpg",
+  "servesCuisine": "Tapas españolas",
+  "priceRange": "€€",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Rúa do Paxaro 2 / Rúa Viriato 12",
+    "addressLocality": "Ourense",
+    "addressRegion": "Ourense",
+    "addressCountry": "ES"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.7",
+    "reviewCount": "748",
+    "bestRating": "5"
+  },
+  "sameAs": ["https://www.instagram.com/demamaluis/"],
+  "acceptsReservations": "False"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"¿Puedo reservar mesa?","acceptedAnswer":{"@type":"Answer","text":"No cogemos reservas. La terraza y el aforo van por orden de llegada."}},
+    {"@type":"Question","name":"¿Tenéis terraza?","acceptedAnswer":{"@type":"Answer","text":"Sí, con un pequeño suplemento: 0,20€ por bebida y 0,40€ por plato."}},
+    {"@type":"Question","name":"¿Cuál es el horario?","acceptedAnswer":{"@type":"Answer","text":"Cambia según la temporada y los festivos, se publica en Instagram (@demamaluis)."}},
+    {"@type":"Question","name":"¿Tenéis información de alérgenos?","acceptedAnswer":{"@type":"Answer","text":"Sí, en la carta hay iconos orientativos por plato según ingredientes habituales — confirmar siempre en barra."}}
+  ]
+}
+</script>
 <style>
   :root{
     --background: oklch(0.16 0.014 45);
@@ -274,6 +326,20 @@
   .ig-link:hover{border-color:var(--gold);}
   .map-frame{height:100%; min-height:340px; overflow:hidden; border-radius:10px; border:1px solid var(--border);}
   .map-frame iframe{width:100%; height:100%; min-height:340px; border:0; filter:grayscale(0.35) contrast(1.05);}
+
+  /* faq */
+  .faq-list{max-width:720px; margin:44px auto 0; display:flex; flex-direction:column; gap:14px;}
+  .faq-item{border:1px solid var(--border); border-radius:6px; padding:18px 22px; background:oklch(0.2 0.018 45 / 0.35);}
+  .faq-item summary{cursor:pointer; font-family:'Cormorant Garamond',serif; font-size:1.15rem; color:var(--foreground); list-style:none; display:flex; justify-content:space-between; align-items:center; gap:12px;}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{content:'+'; color:var(--gold); font-size:1.3rem; flex-shrink:0; transition:transform 300ms ease;}
+  .faq-item[open] summary::after{transform:rotate(45deg);}
+  .faq-item p{margin-top:12px; color:var(--muted-foreground); font-size:0.92rem; line-height:1.7;}
+
+  /* sticky mobile CTA */
+  .sticky-cta{position:fixed; left:0; right:0; bottom:-90px; z-index:55; padding:12px 20px calc(12px + env(safe-area-inset-bottom)); background:oklch(0.14 0.014 45 / 0.96); backdrop-filter:blur(10px); border-top:1px solid var(--border); display:flex; justify-content:center; transition:bottom 350ms ease;}
+  .sticky-cta.show{bottom:0;}
+  @media(min-width:768px){ .sticky-cta{display:none;} }
 
   /* instagram */
   .ig-section{max-width:640px; margin:0 auto; text-align:center;}
@@ -638,6 +704,32 @@
     </div>
   </section>
 
+  <section id="faq">
+    <div class="wrap center reveal">
+      <p class="eyebrow" data-i18n="faq.eyebrow">Preguntas frecuentes</p>
+      <h2 class="script sec-title" data-i18n="faq.title">Antes de venir</h2>
+      <div class="hairline center" style="margin-top:32px; width:160px;"></div>
+      <div class="faq-list" style="text-align:left;">
+        <details class="faq-item">
+          <summary data-i18n="faq.q1">¿Puedo reservar mesa?</summary>
+          <p data-i18n="faq.a1">No cogemos reservas. La terraza y el aforo van por orden de llegada.</p>
+        </details>
+        <details class="faq-item">
+          <summary data-i18n="faq.q2">¿Tenéis terraza?</summary>
+          <p data-i18n="faq.a2">Sí, con un pequeño suplemento: 0,20€ por bebida y 0,40€ por plato.</p>
+        </details>
+        <details class="faq-item">
+          <summary data-i18n="faq.q3">¿Cuál es el horario?</summary>
+          <p data-i18n="faq.a3">Cambia según la temporada y los festivos, así que lo vamos contando en Instagram — ahí está siempre lo último.</p>
+        </details>
+        <details class="faq-item">
+          <summary data-i18n="faq.q4">¿Tenéis información de alérgenos?</summary>
+          <p data-i18n="faq.a4">Sí, en la carta hay iconos orientativos por plato según ingredientes habituales — confirma siempre en barra.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <section id="instagram">
     <div class="ig-section reveal">
       <p class="eyebrow" data-i18n="ig.eyebrow">El día a día</p>
@@ -649,6 +741,10 @@
 
 </main>
 
+<div class="sticky-cta" id="sticky-cta">
+  <a href="https://www.google.com/maps/search/?api=1&query=Demam%C3%A1luis%20Delicatessen%20R%C3%BAa%20do%20Paxaro%202%20Ourense" target="_blank" rel="noreferrer" class="btn-gold spot" style="width:100%; max-width:340px;" data-i18n="cta.directions">Cómo llegar</a>
+</div>
+
 <footer>
   <div class="foot-inner">
     <p class="script">Demamáluis · Depapáluis</p>
@@ -658,6 +754,7 @@
       <a href="#carta" class="spot" data-i18n="nav.menu">Carta</a>
       <a href="#ubicacion" class="spot" data-i18n="nav.location">Ubicación</a>
       <a href="https://www.instagram.com/demamaluis/" target="_blank" rel="noreferrer" class="spot">Instagram</a>
+      <a href="privacidad.html" class="spot" data-i18n="footer.privacy">Privacidad</a>
     </div>
     <p class="foot-credit">Desarrollado por <a href="https://wa.me/34611573580?text=Hola%20Brian%2C%20vengo%20de%20la%20web%20de%20Demam%C3%A1luis" target="_blank" rel="noreferrer">Brian</a> — Sistemas de IA para negocios reales. Ya funciona en Ourense.</p>
   </div>
@@ -1024,7 +1121,13 @@
       'location.hours':'Horario','location.hoursText':'El horario cambia según la temporada y los festivos, así que lo vamos contando en Instagram. Ahí está siempre lo último.',
       'location.hoursLink':'Ver horario en @demamaluis',
       'ig.eyebrow':'El día a día','ig.title':'¿Qué tal va el día?','ig.text':'Lo que entra hoy, el vino que abrimos y el cierre de agosto: todo lo contamos ahí.',
-      'footer.text':'Rúa do Paxaro 2 · Rúa Viriato 12, Ourense. Sin reservas, sin prisa y con la puerta abierta. Nos vemos en la barra.'
+      'footer.text':'Rúa do Paxaro 2 · Rúa Viriato 12, Ourense. Sin reservas, sin prisa y con la puerta abierta. Nos vemos en la barra.',
+      'footer.privacy':'Privacidad',
+      'faq.eyebrow':'Preguntas frecuentes','faq.title':'Antes de venir',
+      'faq.q1':'¿Puedo reservar mesa?','faq.a1':'No cogemos reservas. La terraza y el aforo van por orden de llegada.',
+      'faq.q2':'¿Tenéis terraza?','faq.a2':'Sí, con un pequeño suplemento: 0,20€ por bebida y 0,40€ por plato.',
+      'faq.q3':'¿Cuál es el horario?','faq.a3':'Cambia según la temporada y los festivos, así que lo vamos contando en Instagram — ahí está siempre lo último.',
+      'faq.q4':'¿Tenéis información de alérgenos?','faq.a4':'Sí, en la carta hay iconos orientativos por plato según ingredientes habituales — confirma siempre en barra.'
     },
     gl: {
       'nav.dishes':'Os de sempre','nav.menu':'Carta','nav.reviews':'Reseñas','nav.location':'Localización',
@@ -1073,7 +1176,13 @@
       'location.hours':'Horario','location.hoursText':'O horario cambia segundo a tempada e os festivos, así que o imos contando en Instagram. Alí está sempre o último.',
       'location.hoursLink':'Ver horario en @demamaluis',
       'ig.eyebrow':'O día a día','ig.title':'Que tal vai o día?','ig.text':'O que entra hoxe, o viño que abrimos e o peche de agosto: todo o contamos alí.',
-      'footer.text':'Rúa do Paxaro 2 · Rúa Viriato 12, Ourense. Sen reservas, sen présa e coa porta aberta. Vémonos na barra.'
+      'footer.text':'Rúa do Paxaro 2 · Rúa Viriato 12, Ourense. Sen reservas, sen présa e coa porta aberta. Vémonos na barra.',
+      'footer.privacy':'Privacidade',
+      'faq.eyebrow':'Preguntas frecuentes','faq.title':'Antes de vir',
+      'faq.q1':'Podo reservar mesa?','faq.a1':'Non collemos reservas. A terraza e o aforo van por orde de chegada.',
+      'faq.q2':'Tedes terraza?','faq.a2':'Si, cun pequeno suplemento: 0,20€ por bebida e 0,40€ por prato.',
+      'faq.q3':'Cal é o horario?','faq.a3':'Cambia segundo a tempada e os festivos, así que o imos contando en Instagram — alí está sempre o último.',
+      'faq.q4':'Tedes información de alérxenos?','faq.a4':'Si, na carta hai iconas orientativas por prato segundo ingredientes habituais — confirma sempre na barra.'
     },
     en: {
       'nav.dishes':'The regulars','nav.menu':'Menu','nav.reviews':'Reviews','nav.location':'Location',
@@ -1122,7 +1231,13 @@
       'location.hours':'Opening hours','location.hoursText':'Hours change with the season and public holidays, so we keep it updated on Instagram. That is always the latest word.',
       'location.hoursLink':'See hours on @demamaluis',
       'ig.eyebrow':'Day to day','ig.title':'How’s your day going?','ig.text':'What comes in today, the wine we open, and the August closing dates: we share it all there.',
-      'footer.text':'Rúa do Paxaro 2 · Rúa Viriato 12, Ourense. No reservations, no rush, door always open. See you at the bar.'
+      'footer.text':'Rúa do Paxaro 2 · Rúa Viriato 12, Ourense. No reservations, no rush, door always open. See you at the bar.',
+      'footer.privacy':'Privacy',
+      'faq.eyebrow':'FAQ','faq.title':'Before you come',
+      'faq.q1':'Can I book a table?','faq.a1':'We do not take reservations. Seating and the terrace are first come, first served.',
+      'faq.q2':'Do you have a terrace?','faq.a2':'Yes, with a small surcharge: 0.20€ per drink and 0.40€ per dish.',
+      'faq.q3':'What are your opening hours?','faq.a3':'They change with the season and public holidays, so we keep it updated on Instagram — that is always the latest word.',
+      'faq.q4':'Do you have allergen information?','faq.a4':'Yes, the menu has indicative icons per dish based on typical ingredients — always confirm at the bar.'
     }
   };
 
@@ -1145,10 +1260,12 @@
 
   // scroll progress bar
   const progressBar = document.getElementById('scroll-progress');
+  const stickyCta = document.getElementById('sticky-cta');
   window.addEventListener('scroll', () => {
     const h = document.documentElement;
     const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
     progressBar.style.width = scrolled + '%';
+    stickyCta.classList.toggle('show', window.scrollY > window.innerHeight * 0.7);
   }, { passive: true });
 </script>
 
