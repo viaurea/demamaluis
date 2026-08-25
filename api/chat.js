@@ -7,7 +7,7 @@
 // project (Settings → Environment Variables). Get a key at
 // https://aistudio.google.com/apikey
 
-const GEMINI_MODEL = 'gemini-2.5-flash';
+const GEMINI_MODEL = 'gemini-2.0-flash';
 
 const SYSTEM_PROMPT = `Eres el "camarero virtual" de Demamáluis · Depapáluis, un bar de tapas y vinoteca familiar en el Casco Antiguo de Ourense (Rúa do Paxaro 2 / Rúa Viriato 12). Responde siempre en el mismo idioma en que te escribe el cliente (normalmente español, gallego o inglés). Tono: cercano, cálido, informal pero cuidado, sin prisa — como hablarían los dueños del bar.
 
@@ -113,9 +113,7 @@ module.exports = async (req, res) => {
     if (!upstream.ok) {
       const errText = await upstream.text();
       console.error('Gemini API error', upstream.status, errText);
-      // TEMP DEBUG: surfacing the upstream error to the client to diagnose a
-      // 502 in production. Remove the `debug` field once this is confirmed working.
-      res.status(502).json({ error: 'upstream_error', debug: { status: upstream.status, body: errText.slice(0, 500) } });
+      res.status(502).json({ error: 'upstream_error' });
       return;
     }
 
