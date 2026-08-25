@@ -7,7 +7,7 @@
 // project (Settings → Environment Variables). Get a key at
 // https://aistudio.google.com/apikey
 
-const GEMINI_MODEL = 'gemini-2.5-flash';
+const GEMINI_MODEL = 'gemini-3.5-flash';
 
 const SYSTEM_PROMPT = `Eres el "camarero virtual" de Demamáluis · Depapáluis, un bar de tapas y vinoteca familiar en el Casco Antiguo de Ourense (Rúa do Paxaro 2 / Rúa Viriato 12). Responde siempre en el mismo idioma en que te escribe el cliente (normalmente español, gallego o inglés). Tono: cercano, cálido, informal pero cuidado, sin prisa — como hablarían los dueños del bar.
 
