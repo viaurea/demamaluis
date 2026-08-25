@@ -387,8 +387,14 @@
   .bot-toggle svg{width:24px; height:24px;}
   .bot-toggle .bot-pulse{position:absolute; inset:-5px; border-radius:50%; border:1px solid var(--gold); opacity:0; animation:botPulse 2.8s ease-out infinite; pointer-events:none;}
   @keyframes botPulse{0%{opacity:0.55; transform:scale(0.88);} 100%{opacity:0; transform:scale(1.4);}}
-  @media(max-width:767px){ .bot-toggle.cta-up{bottom:calc(90px + env(safe-area-inset-bottom));} }
+  @media(max-width:767px){ .bot-toggle.cta-up{bottom:calc(90px + env(safe-area-inset-bottom));} .bot-badge.cta-up{bottom:calc(94px + env(safe-area-inset-bottom));} }
   @media(min-width:768px){ .bot-toggle{left:24px; bottom:24px; width:58px; height:58px;} .bot-toggle svg{width:27px; height:27px;} }
+
+  .bot-badge{position:fixed; left:72px; bottom:20px; z-index:57; background:var(--gold); color:var(--primary-foreground); font-size:0.82rem; font-weight:600; line-height:1.35; padding:8px 14px; border-radius:10px; box-shadow:var(--shadow-warm); max-width:200px; pointer-events:none; opacity:0; transform:translateX(-8px); animation:badgeIn 600ms 1.5s ease forwards;}
+  .bot-badge::before{content:''; position:absolute; left:-6px; top:50%; translate:0 -50%; border:6px solid transparent; border-right-color:var(--gold);}
+  .bot-badge.hide{opacity:0!important; transition:opacity 400ms ease;}
+  @keyframes badgeIn{to{opacity:1; transform:none;}}
+  @media(min-width:768px){ .bot-badge{left:88px; bottom:30px;} }
 
   .bot-panel{position:fixed; z-index:58; left:12px; right:12px; bottom:80px; max-height:min(560px,72vh); display:flex; flex-direction:column; border-radius:14px; border:1px solid var(--border); background:oklch(0.17 0.015 45 / 0.98); backdrop-filter:blur(10px); box-shadow:var(--shadow-warm); opacity:0; transform:translateY(16px) scale(0.98); pointer-events:none; transition:opacity 280ms ease, transform 280ms cubic-bezier(.16,1,.3,1); overflow:hidden;}
   .bot-panel.open{opacity:1; transform:none; pointer-events:auto;}
@@ -815,6 +821,8 @@
   <span class="bot-pulse" aria-hidden="true"></span>
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="4"/><path d="M12 8V4"/><circle cx="12" cy="3" r="1.4" fill="currentColor" stroke="none"/><circle cx="9" cy="14" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="14" r="1.3" fill="currentColor" stroke="none"/><path d="M2 13v3M22 13v3"/></svg>
 </button>
+
+<div class="bot-badge" id="bot-badge" aria-hidden="true"><span data-i18n="bot.badge">¿No sabes qué pedir? ¡Pregúntale al camarero!</span></div>
 
 <div class="bot-panel" id="bot-panel" role="dialog" aria-modal="false" aria-labelledby="bot-title">
   <div class="bot-head">
@@ -1244,6 +1252,7 @@
       'bot.chip1':'¿Qué me recomiendas para compartir?','bot.chip2':'Tengo alergia al gluten, ¿qué puedo pedir?','bot.chip3':'¿Tenéis terraza? ¿Hay que reservar?','bot.chip4':'Recomiéndame algo con pescado',
       'bot.placeholder':'Escribe tu pregunta...',
       'bot.error':'Se me ha ido el santo al cielo — prueba otra vez en un momento o pregunta directamente en barra.',
+      'bot.badge':'¿No sabes qué pedir? ¡Pregúntale al camarero!',
       'bot.toggleAria':'Abrir camarero virtual','bot.closeAria':'Cerrar','bot.sendAria':'Enviar'
     },
     gl: {
@@ -1305,6 +1314,7 @@
       'bot.chip1':'Que me recomendas para compartir?','bot.chip2':'Teño alerxia ao glute, que podo pedir?','bot.chip3':'Tedes terraza? Hai que reservar?','bot.chip4':'Recoméndame algo con peixe',
       'bot.placeholder':'Escribe a túa pregunta...',
       'bot.error':'Foiseme o santo ao ceo — proba de novo nun momento ou pregunta directamente na barra.',
+      'bot.badge':'Non sabes que pedir? Pregúntalle ao camareiro!',
       'bot.toggleAria':'Abrir camareiro virtual','bot.closeAria':'Pechar','bot.sendAria':'Enviar'
     },
     en: {
@@ -1366,6 +1376,7 @@
       'bot.chip1':'What do you recommend to share?','bot.chip2':'I\'m gluten intolerant, what can I have?','bot.chip3':'Do you have a terrace? Do I need to book?','bot.chip4':'Recommend something with fish',
       'bot.placeholder':'Type your question...',
       'bot.error':'Lost my train of thought — try again in a moment, or just ask at the bar.',
+      'bot.badge':'Not sure what to order? Ask our virtual waiter!',
       'bot.toggleAria':'Open virtual waiter','bot.closeAria':'Close','bot.sendAria':'Send'
     }
   };
@@ -1403,6 +1414,7 @@
     stickyCta.classList.toggle('show', window.scrollY > window.innerHeight * 0.7);
     backToTop.classList.toggle('show', window.scrollY > window.innerHeight * 0.8);
     botToggleEl.classList.toggle('cta-up', window.scrollY > window.innerHeight * 0.7);
+    document.getElementById('bot-badge').classList.toggle('cta-up', window.scrollY > window.innerHeight * 0.7);
   }, { passive: true });
   backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
@@ -1416,6 +1428,11 @@
     const form = document.getElementById('bot-form');
     const input = document.getElementById('bot-input');
     const sendBtn = document.getElementById('bot-send');
+
+    const badge = document.getElementById('bot-badge');
+    function hideBadge(){ badge.classList.add('hide'); }
+    toggle.addEventListener('click', hideBadge);
+    setTimeout(hideBadge, 8000);
 
     let history = [];
     let busy = false;
