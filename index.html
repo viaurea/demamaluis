@@ -410,8 +410,13 @@
   .bot-close:hover{color:var(--gold); border-color:var(--gold);}
   .bot-close svg{width:15px; height:15px;}
 
-  .bot-messages{flex:1; min-height:120px; overflow-y:auto; padding:16px 18px; display:flex; flex-direction:column; gap:10px;}
-  .bot-msg{display:flex;}
+  .bot-messages{flex:1; min-height:120px; overflow-y:auto; overscroll-behavior:contain; scroll-behavior:smooth; padding:16px 18px; display:flex; flex-direction:column; gap:10px; -webkit-overflow-scrolling:touch;}
+  .bot-messages::-webkit-scrollbar{width:5px;}
+  .bot-messages::-webkit-scrollbar-track{background:transparent;}
+  .bot-messages::-webkit-scrollbar-thumb{background:oklch(0.35 0.015 45 / 0.5); border-radius:10px;}
+  .bot-messages::-webkit-scrollbar-thumb:hover{background:var(--gold-soft);}
+  .bot-msg{display:flex; opacity:0; transform:translateY(10px); animation:msgIn 300ms ease forwards;}
+  @keyframes msgIn{to{opacity:1; transform:none;}}
   .bot-msg p{max-width:84%; padding:10px 14px; border-radius:12px; font-size:0.86rem; line-height:1.55;}
   .bot-msg-bot{justify-content:flex-start;}
   .bot-msg-bot p{background:oklch(0.22 0.018 45 / 0.75); border:1px solid var(--border); color:var(--foreground); border-bottom-left-radius:3px;}
@@ -423,9 +428,12 @@
   .bot-typing span:nth-child(3){animation-delay:0.3s;}
   @keyframes botTyping{0%,60%,100%{opacity:0.3; transform:translateY(0);} 30%{opacity:1; transform:translateY(-3px);}}
 
+  .bot-messages-wrap{position:relative; flex:1; min-height:0; display:flex; flex-direction:column;}
+  .bot-messages-wrap::before{content:''; position:absolute; top:0; left:0; right:0; height:24px; background:linear-gradient(oklch(0.17 0.015 45 / 0.98), transparent); z-index:1; pointer-events:none; opacity:0; transition:opacity 300ms ease;}
+  .bot-messages-wrap.scrolled::before{opacity:1;}
   .bot-chips{display:flex; flex-wrap:wrap; gap:8px; padding:0 18px 12px;}
-  .bot-chip{border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.5); color:var(--muted-foreground); border-radius:14px; padding:7px 12px; font-size:0.74rem; line-height:1.3; text-align:left; transition:all 250ms ease;}
-  .bot-chip:hover{border-color:var(--gold); color:var(--gold);}
+  .bot-chip{border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.5); color:var(--muted-foreground); border-radius:14px; padding:7px 12px; font-size:0.74rem; line-height:1.3; text-align:left; transition:all 250ms ease; cursor:pointer;}
+  .bot-chip:hover{border-color:var(--gold); color:var(--gold); background:oklch(0.2 0.018 45 / 0.8);}
 
   .bot-form{display:flex; align-items:center; gap:8px; padding:12px 14px; border-top:1px solid var(--border);}
   .bot-input{flex:1; background:oklch(0.14 0.014 45); border:1px solid var(--border); border-radius:20px; padding:10px 16px; color:var(--foreground); font-family:'Jost',sans-serif; font-size:0.86rem;}
@@ -840,10 +848,12 @@
     </button>
   </div>
 
+  <div class="bot-messages-wrap" id="bot-messages-wrap">
   <div class="bot-messages" id="bot-messages">
     <div class="bot-msg bot-msg-bot">
       <p data-i18n="bot.greeting">¡Hola! Soy el camarero virtual de Demamáluis · Depapáluis. Pregúntame por la carta, alergias o si tenemos terraza — te recomiendo encantado.</p>
     </div>
+  </div>
   </div>
 
   <div class="bot-chips" id="bot-chips">
@@ -1437,7 +1447,11 @@
     let history = [];
     let busy = false;
 
-    function scrollToBottom(){ messagesEl.scrollTop = messagesEl.scrollHeight; }
+    const messagesWrap = document.getElementById('bot-messages-wrap');
+    function scrollToBottom(){ messagesEl.scrollTo({ top: messagesEl.scrollHeight, behavior: 'smooth' }); }
+    messagesEl.addEventListener('scroll', () => {
+      messagesWrap.classList.toggle('scrolled', messagesEl.scrollTop > 12);
+    }, { passive: true });
 
     function addBubble(role, text){
       const row = document.createElement('div');
