@@ -7,7 +7,7 @@
 // project (Settings → Environment Variables). Get a key at
 // https://aistudio.google.com/apikey
 
-const GEMINI_MODEL = 'gemini-3.5-flash';
+const GEMINI_MODELS = ['gemini-3.5-flash', 'gemini-3.7-flash', 'gemini-3.5-flash-lite'];
 
 const SYSTEM_PROMPT = `Eres el "camarero virtual" de Demamáluis · Depapáluis, un bar de tapas y vinoteca familiar en el Casco Antiguo de Ourense (Rúa do Paxaro 2 / Rúa Viriato 12). Responde siempre en el mismo idioma en que te escribe el cliente (normalmente español, gallego o inglés). Tono: cercano, cálido, informal pero cuidado, sin prisa — como hablarían los dueños del bar.
 
@@ -96,24 +96,26 @@ module.exports = async (req, res) => {
     return;
   }
 
+  const payload = JSON.stringify({
+    contents: turns,
+    systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+    generationConfig: { maxOutputTokens: 2048, temperature: 0.7 },
+  });
+
   try {
-    const upstream = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          contents: turns,
-          systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-          generationConfig: { maxOutputTokens: 2048, temperature: 0.7 },
-        }),
-      }
-    );
+    let upstream;
+    for (const model of GEMINI_MODELS) {
+      upstream = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+        { method: 'POST', headers: { 'content-type': 'application/json' }, body: payload }
+      );
+      if (upstream.ok || (upstream.status !== 503 && upstream.status !== 429)) break;
+    }
 
     if (!upstream.ok) {
       const errText = await upstream.text();
       console.error('Gemini API error', upstream.status, errText);
-      res.status(502).json({ error: 'upstream_error', gemini_status: upstream.status, gemini_error: errText.slice(0, 800) });
+      res.status(502).json({ error: 'upstream_error' });
       return;
     }
 
