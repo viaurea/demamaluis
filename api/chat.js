@@ -113,7 +113,9 @@ module.exports = async (req, res) => {
     if (!upstream.ok) {
       const errText = await upstream.text();
       console.error('Gemini API error', upstream.status, errText);
-      res.status(502).json({ error: 'upstream_error' });
+      // TEMP DEBUG: surfacing the upstream error to the client to diagnose a
+      // 502 in production. Remove the `debug` field once this is confirmed working.
+      res.status(502).json({ error: 'upstream_error', debug: { status: upstream.status, body: errText.slice(0, 500) } });
       return;
     }
 
