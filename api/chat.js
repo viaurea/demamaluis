@@ -1,12 +1,13 @@
 // Vercel Serverless Function — "camarero virtual" chat endpoint.
-// Proxies messages to the Anthropic Messages API using a fixed system prompt
-// scoped to the Demamáluis · Depapáluis menu.
+// Proxies messages to the Gemini API using a fixed system prompt scoped to
+// the Demamáluis · Depapáluis menu, so it recommends dishes without
+// inventing items, prices or policies that aren't real.
 //
-// Requires the ANTHROPIC_API_KEY environment variable to be set in the Vercel
+// Requires the GEMINI_API_KEY environment variable to be set in the Vercel
 // project (Settings → Environment Variables). Get a key at
-// https://console.anthropic.com/
+// https://aistudio.google.com/apikey
 
-const CLAUDE_MODEL = 'claude-haiku-4-5-20251001';
+const GEMINI_MODELS = ['gemini-3.5-flash', 'gemini-3.7-flash', 'gemini-3.5-flash-lite'];
 
 const SYSTEM_PROMPT = `Eres el "camarero virtual" de Demamáluis · Depapáluis, un bar de tapas y vinoteca familiar en el Casco Antiguo de Ourense (Rúa do Paxaro 2 / Rúa Viriato 12). Responde siempre en el mismo idioma en que te escribe el cliente (normalmente español, gallego o inglés). Tono: cercano, cálido, informal pero cuidado, sin prisa — como hablarían los dueños del bar.
 
@@ -69,7 +70,7 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     res.status(500).json({ error: 'missing_api_key' });
     return;
@@ -81,41 +82,45 @@ module.exports = async (req, res) => {
   }
   const incoming = Array.isArray(body && body.messages) ? body.messages : [];
 
-  const messages = incoming
+  const turns = incoming
     .filter((m) => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
     .slice(-12)
-    .map((m) => ({ role: m.role, content: m.content.slice(0, 1200) }));
+    .map((m) => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content.slice(0, 1200) }],
+    }));
 
-  if (messages.length === 0 || messages[messages.length - 1].role !== 'user') {
+  if (turns.length === 0 || turns[turns.length - 1].role !== 'user') {
     res.status(400).json({ error: 'invalid_messages' });
     return;
   }
 
+  const payload = JSON.stringify({
+    contents: turns,
+    systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+    generationConfig: { maxOutputTokens: 2048, temperature: 0.7 },
+  });
+
   try {
-    const upstream = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: CLAUDE_MODEL,
-        max_tokens: 1024,
-        system: SYSTEM_PROMPT,
-        messages,
-      }),
-    });
+    let upstream;
+    for (const model of GEMINI_MODELS) {
+      upstream = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+        { method: 'POST', headers: { 'content-type': 'application/json' }, body: payload }
+      );
+      if (upstream.ok || (upstream.status !== 503 && upstream.status !== 429)) break;
+    }
 
     if (!upstream.ok) {
       const errText = await upstream.text();
-      console.error('Anthropic API error', upstream.status, errText);
+      console.error('Gemini API error', upstream.status, errText);
       res.status(502).json({ error: 'upstream_error' });
       return;
     }
 
     const data = await upstream.json();
-    const reply = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('').trim();
+    const parts = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) || [];
+    const reply = parts.map((p) => p.text || '').join('').trim();
     res.status(200).json({ reply: reply || 'Perdona, no te he entendido bien — ¿me lo dices de otra forma?' });
   } catch (err) {
     console.error('chat function failed', err);
