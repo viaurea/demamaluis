@@ -1411,7 +1411,7 @@
           return;
         }
 
-        const duration = Math.min(1800, Math.max(400, text.length * 14));
+        const duration = Math.min(3200, Math.max(700, text.length * 24));
         const start = performance.now();
         function tick(now){
           const progress = Math.min(1, (now - start) / duration);
