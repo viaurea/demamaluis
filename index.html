@@ -1489,12 +1489,17 @@
       input.value = '';
       setTyping(true);
       try {
-        const res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: history.slice(-12) }),
-        });
-        const data = await res.json().catch(() => ({}));
+        let res, data;
+        for (let attempt = 0; attempt < 2; attempt++) {
+          res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages: history.slice(-12) }),
+          });
+          data = await res.json().catch(() => ({}));
+          if (res.ok && data.reply) break;
+          if (attempt === 0) await new Promise((r) => setTimeout(r, 600));
+        }
         setTyping(false);
         if (!res.ok || !data.reply) throw new Error('bad_response');
         addBubble('assistant', data.reply);

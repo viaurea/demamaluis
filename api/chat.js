@@ -104,11 +104,16 @@ module.exports = async (req, res) => {
   try {
     let upstream;
     for (const model of GEMINI_MODELS) {
-      upstream = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
-        { method: 'POST', headers: { 'content-type': 'application/json' }, body: payload }
-      );
-      if (upstream.ok || (upstream.status !== 503 && upstream.status !== 429)) break;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        upstream = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+          { method: 'POST', headers: { 'content-type': 'application/json' }, body: payload }
+        );
+        if (upstream.ok) break;
+        if (upstream.status !== 503 && upstream.status !== 429) break;
+        await new Promise((r) => setTimeout(r, 400));
+      }
+      if (upstream.ok) break;
     }
 
     if (!upstream.ok) {
