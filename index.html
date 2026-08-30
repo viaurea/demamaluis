@@ -1536,6 +1536,14 @@
         toggle.setAttribute('aria-expanded', 'false');
       }
     });
+
+    // opened via QR code / direct link: auto-open the panel
+    if (/[?&]bot=1\b/.test(location.search)) {
+      hideBadge();
+      panel.classList.add('open');
+      toggle.setAttribute('aria-expanded', 'true');
+      setTimeout(() => input.focus(), 400);
+    }
   })();
 
   // page fade-in + hero entrance
