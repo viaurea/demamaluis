@@ -128,16 +128,15 @@
   .hero img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:contrast(1.06) saturate(1.08) brightness(0.72);}
   .hero .overlay{position:absolute; inset:0; background:var(--gradient-hero);}
 
-  .hero-aurora{position:absolute; inset:0; overflow:hidden; pointer-events:none; mix-blend-mode:screen; opacity:0.95;}
-  .hero-aurora span{position:absolute; border-radius:50%; filter:blur(85px); opacity:0.8; will-change:transform,opacity;}
-  .hero-aurora span:nth-child(1){width:620px; height:620px; top:16%; left:50%; margin-left:-310px; background:oklch(0.82 0.14 82 / 0.85); animation:auroraDrift1 16s ease-in-out infinite, auroraPulse 6s ease-in-out infinite;}
-  .hero-aurora span:nth-child(2){width:420px; height:420px; top:-14%; left:2%; background:oklch(0.74 0.11 76 / 0.6); animation:auroraDrift2 22s ease-in-out infinite;}
-  .hero-aurora span:nth-child(3){width:400px; height:400px; bottom:-14%; right:2%; background:oklch(0.68 0.11 50 / 0.55); animation:auroraDrift3 26s ease-in-out infinite;}
-  @keyframes auroraDrift1{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(50px,30px) scale(1.12);}}
-  @keyframes auroraDrift2{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(60px,40px) scale(1.15);}}
-  @keyframes auroraDrift3{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-50px,-40px) scale(1.15);}}
-  @keyframes auroraPulse{0%,100%{opacity:0.6;} 50%{opacity:0.95;}}
-  @media(max-width:600px){ .hero-aurora span{filter:blur(56px);} .hero-aurora span:nth-child(1){width:380px; height:380px; margin-left:-190px;} .hero-aurora span:nth-child(2){width:260px; height:260px;} .hero-aurora span:nth-child(3){width:240px; height:240px;} }
+  .hero-aurora{position:absolute; inset:0; overflow:hidden; pointer-events:none; mix-blend-mode:screen; opacity:0.6;}
+  .hero-aurora span{position:absolute; border-radius:50%; filter:blur(70px); opacity:0.55; will-change:transform;}
+  .hero-aurora span:nth-child(1){width:420px; height:420px; top:-12%; left:6%; background:oklch(0.76 0.1 79 / 0.55); animation:auroraDrift1 22s ease-in-out infinite;}
+  .hero-aurora span:nth-child(2){width:360px; height:360px; bottom:-16%; right:8%; background:oklch(0.66 0.07 76 / 0.5); animation:auroraDrift2 27s ease-in-out infinite;}
+  .hero-aurora span:nth-child(3){width:300px; height:300px; top:28%; right:26%; background:oklch(0.6 0.09 40 / 0.4); animation:auroraDrift3 31s ease-in-out infinite;}
+  @keyframes auroraDrift1{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(60px,40px) scale(1.15);}}
+  @keyframes auroraDrift2{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-50px,-30px) scale(1.1);}}
+  @keyframes auroraDrift3{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-40px,50px) scale(1.2);}}
+  @media(max-width:600px){ .hero-aurora span{filter:blur(46px);} .hero-aurora span:nth-child(1){width:260px; height:260px;} .hero-aurora span:nth-child(2){width:220px; height:220px;} .hero-aurora span:nth-child(3){width:190px; height:190px;} }
   @media(prefers-reduced-motion: reduce){ .hero-aurora span{animation:none;} }
   .hero-inner{position:relative; max-width:760px; margin:0 auto; padding:96px 0; text-align:center;}
   .hero-inner h1{font-size:clamp(1.9rem, 11vw, 6.4rem); margin-top:24px; line-height:1;}
