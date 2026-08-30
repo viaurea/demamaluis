@@ -433,6 +433,8 @@
   .bot-msg p{max-width:84%; padding:10px 14px; border-radius:12px; font-size:0.86rem; line-height:1.55;}
   .bot-msg-bot{justify-content:flex-start;}
   .bot-msg-bot p{background:oklch(0.22 0.018 45 / 0.75); border:1px solid var(--border); color:var(--foreground); border-bottom-left-radius:3px;}
+  .bot-cursor{display:inline-block; width:2px; height:1em; margin-left:1px; background:var(--gold); vertical-align:text-bottom; animation:botCursorBlink 0.9s steps(1) infinite;}
+  @keyframes botCursorBlink{50%{opacity:0;}}
   .bot-msg-user{justify-content:flex-end;}
   .bot-msg-user p{background:var(--gold); color:var(--primary-foreground); border-bottom-right-radius:3px;}
   .bot-typing{padding:2px 0;}
@@ -1394,6 +1396,42 @@
       scrollToBottom();
     }
 
+    // bot replies "type" themselves out, like a real person answering
+    function addBubbleTyped(text){
+      return new Promise((resolve) => {
+        const row = document.createElement('div');
+        row.className = 'bot-msg bot-msg-bot';
+        const p = document.createElement('p');
+        const textNode = document.createTextNode('');
+        const cursor = document.createElement('span');
+        cursor.className = 'bot-cursor';
+        p.appendChild(textNode);
+        p.appendChild(cursor);
+        row.appendChild(p);
+        messagesEl.appendChild(row);
+        scrollToBottom();
+
+        const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduceMotion || !text) {
+          textNode.textContent = text;
+          cursor.remove();
+          resolve();
+          return;
+        }
+
+        const duration = Math.min(1800, Math.max(400, text.length * 14));
+        const start = performance.now();
+        function tick(now){
+          const progress = Math.min(1, (now - start) / duration);
+          textNode.textContent = text.slice(0, Math.round(progress * text.length));
+          scrollToBottom();
+          if (progress < 1) requestAnimationFrame(tick);
+          else { cursor.remove(); resolve(); }
+        }
+        requestAnimationFrame(tick);
+      });
+    }
+
     function setTyping(on){
       let row = document.getElementById('bot-typing-row');
       if (on) {
@@ -1433,7 +1471,7 @@
         }
         setTyping(false);
         if (!res.ok || !data.reply) throw new Error('bad_response');
-        addBubble('assistant', data.reply);
+        await addBubbleTyped(data.reply);
         history.push({ role: 'assistant', content: data.reply });
       } catch (err) {
         setTyping(false);
