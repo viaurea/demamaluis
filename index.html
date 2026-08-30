@@ -160,11 +160,17 @@
   @media(min-width:768px){ section{padding:92px 24px; scroll-margin-top:84px;} }
   .center{text-align:center;}
 
-  /* values strip — continuous marquee */
-  .values-strip{padding:20px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:oklch(0.13 0.014 45 / 0.6); overflow:hidden;}
+  /* values strip — continuous marquee, whole panel tilted in 3D space like a sign */
+  .values-strip-stage{perspective:380px; padding:34px 0 66px;}
+  .values-strip{
+    padding:46px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+    background:oklch(0.13 0.014 45 / 0.7); overflow:hidden;
+    transform:rotateX(34deg); box-shadow:0 40px 60px -30px oklch(0.05 0.01 45 / 0.9);
+  }
   .marquee-track{display:flex; align-items:center; gap:56px; flex-wrap:nowrap; width:max-content; will-change:transform; animation:marquee 32s linear infinite;}
   .values-strip:hover .marquee-track{animation-play-state:paused;}
   @keyframes marquee{ from{transform:translate3d(0,0,0);} to{transform:translate3d(-50%,0,0);} }
+  @media(prefers-reduced-motion: reduce){ .values-strip{transform:none;} }
   .value-item{display:flex; align-items:center; gap:12px; white-space:nowrap;}
   .value-item .ico{width:20px; height:20px; color:var(--gold); flex-shrink:0; opacity:0.85;}
   .value-item span.txt{font-family:'Cormorant Garamond',serif; font-size:1.3rem; letter-spacing:0.02em; color:oklch(0.76 0.1 79 / 0.55);}
@@ -514,8 +520,10 @@
     </div>
   </header>
 
-  <div class="values-strip">
-    <div class="marquee-track" id="marquee-track"></div>
+  <div class="values-strip-stage">
+    <div class="values-strip">
+      <div class="marquee-track" id="marquee-track"></div>
+    </div>
   </div>
 
   <section id="nosotros">
