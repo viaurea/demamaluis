@@ -890,27 +890,6 @@
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
-<script>
-  // smooth, inertia-based scrolling (macOS trackpad feel) on wheel input.
-  // Falls back silently to native scroll if the CDN script didn't load.
-  // Touch devices are left alone — their native momentum scroll is already smooth.
-  let lenis = null;
-  if (typeof Lenis !== 'undefined') {
-    lenis = new Lenis({ duration: 1.05, smoothWheel: true, syncTouch: false });
-    requestAnimationFrame(function raf(time){ lenis.raf(time); requestAnimationFrame(raf); });
-    document.querySelectorAll('a[href^="#"]').forEach((a) => {
-      a.addEventListener('click', (e) => {
-        const id = a.getAttribute('href');
-        if (id.length < 2) return;
-        const target = document.querySelector(id);
-        if (!target) return;
-        e.preventDefault();
-        lenis.scrollTo(target);
-      });
-    });
-  }
-</script>
 <script>
   // icon library (inline SVG, replaces emoji)
   const ICONS = {
