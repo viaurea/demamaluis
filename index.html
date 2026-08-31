@@ -162,8 +162,13 @@
   .center{text-align:center;}
 
   /* values strip — continuous marquee */
-  .values-strip{padding:20px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:oklch(0.13 0.014 45 / 0.6); overflow:hidden;}
-  .marquee-track{display:flex; align-items:center; gap:56px; flex-wrap:nowrap; width:max-content; will-change:transform; animation:marquee 32s linear infinite;}
+  .values-strip{
+    padding:20px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+    background:oklch(0.13 0.014 45 / 0.6); overflow:hidden;
+    -webkit-mask-image:linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    mask-image:linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+  .marquee-track{display:flex; align-items:center; gap:56px; flex-wrap:nowrap; width:max-content; will-change:transform; animation:marquee 58s linear infinite;}
   .values-strip:hover .marquee-track{animation-play-state:paused;}
   @keyframes marquee{ from{transform:translate3d(0,0,0);} to{transform:translate3d(-50%,0,0);} }
   .value-item{display:flex; align-items:center; gap:12px; white-space:nowrap;}
@@ -179,7 +184,15 @@
   .taberna-strip .ts-ico{width:26px; height:26px; color:var(--gold); opacity:0.8; margin:0 auto 14px;}
   .taberna-strip p{max-width:620px; margin:0 auto; font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-style:italic; line-height:1.55; color:oklch(0.94 0.014 80 / 0.9);}
   @media(min-width:768px){ .taberna-strip p{font-size:1.55rem;} }
-  .taberna-strip p .gold{color:var(--gold); font-style:normal;}
+  .taberna-strip p .gold{position:relative; color:var(--gold); font-style:normal; display:inline-block;}
+  .taberna-strip p .gold::after{
+    content:''; position:absolute; left:-2px; right:-2px; bottom:-5px; height:9px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 20' preserveAspectRatio='none'%3E%3Cpath d='M2,12 Q75,3 150,12 Q225,21 298,10' stroke='%23c9a76b' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-size:100% 100%;
+    clip-path:inset(0 100% 0 0);
+    transition:clip-path 900ms 250ms cubic-bezier(.16,1,.3,1);
+  }
+  .taberna-strip.visible p .gold::after{clip-path:inset(0 0 0 0);}
 
   /* interactive spotlight cursor */
   .spot{position:relative; isolation:isolate;}
@@ -903,6 +916,11 @@
     f: '<path d="M4 12c3-4 8-6 13-4 2 1 3 2.5 3 4s-1 3-3 4c-5 2-10 0-13-4Z"/><circle cx="16" cy="11" r="0.6" fill="currentColor"/><path d="M2 9c1 1 1.5 2 1.5 3S3 14 2 15"/>',
     m: '<path d="M12 3c4 0 7 3 7 7 0 3-1 5-2 7M12 3c-4 0-7 3-7 7 0 3 1 5 2 7"/><path d="M9 20c0-2 1-3 1-5M12 20c0-2 0.5-3.5 0-6M15 20c0-2-1-3-1-5"/>',
     c: '<path d="M6 12c-2.5 0-4 2-3.5 4.5C3 19 5 20 7 19c1.5-.7 1-2.3 2.3-3M18 12c2.5 0 4 2 3.5 4.5-.5 2.5-2.5 3.5-4.5 2.5-1.5-.7-1-2.3-2.3-3"/><path d="M9.3 16c-1.8-1.6-2.8-4-2.1-6.6C8.1 6 11 4 14 4.7c2.7.6 4.4 3.2 4.4 5.9 0 2.3-1 4-2.7 5.3"/>',
+    star: '<path d="M12 2.5l2.9 6.5 7.1.6-5.4 4.7 1.7 7-6.3-3.9L5.7 21l1.7-7-5.4-4.7 7.1-.6z"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
+    bread: '<path d="M4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8-8-3.6-8-8Z"/><path d="M9 8v8M15 8v8"/>',
+    mappin: '<path d="M12 21s7-6.7 7-12a7 7 0 0 0-14 0c0 5.3 7 12 7 12Z"/><circle cx="12" cy="9" r="2.3"/>',
+    door: '<path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/><path d="M3 21h18"/><circle cx="15" cy="12" r="0.8" fill="currentColor" stroke="none"/>',
   };
   function iconSvg(name) {
     return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS[name] || ''}</svg>`;
@@ -916,6 +934,11 @@
     { icon:'leaf', key:'value1' },
     { icon:'heart', key:'value2' },
     { icon:'wine', key:'value3' },
+    { icon:'star', key:'value4' },
+    { icon:'mappin', key:'value5' },
+    { icon:'bread', key:'value6' },
+    { icon:'clock', key:'value7' },
+    { icon:'door', key:'value8' },
   ];
   const marqueeTrack = document.getElementById('marquee-track');
   function buildMarquee(lang) {
@@ -1145,6 +1168,7 @@
       'reviews.badge':'Reseñas reales, tal cual se escribieron en Google — pulsa una tarjeta para verla en Google',
       'rcf.all':'Todas','rcf.five':'Solo 5★','rcf.recent':'Más recientes',
       'value1':'Producto de la huerta propia','value2':'Trato de familia, sin prisa','value3':'Vino de la zona, cada día distinto',
+      'value4':'4,7★ con 748 reseñas en Google','value5':'En pleno Casco Antiguo de Ourense','value6':'Pan de Cea recién horneado','value7':'Sin reservas, por orden de llegada','value8':'Dos barras, una misma familia',
       'about.aside':'Ah, y no preguntéis quién paga — hay un cartel en la barra que ya lo explica.',
       'about.wallCaption':'Pintado a mano en la fachada, en la Rúa do Paxaro.',
       'panel1':'Pan de Cea, tomate de <span class="gold">huerta propia</span> y el vino que toque ese día — así se cocina aquí.',
@@ -1207,6 +1231,7 @@
       'reviews.badge':'Reseñas reais, tal cual se escribiron en Google — preme nunha tarxeta para vela en Google',
       'rcf.all':'Todas','rcf.five':'Só 5★','rcf.recent':'Máis recentes',
       'value1':'Produto da horta propia','value2':'Trato de familia, sen présa','value3':'Viño da zona, cada día distinto',
+      'value4':'4,7★ con 748 reseñas en Google','value5':'No Casco Vello de Ourense','value6':'Pan de Cea recén cocido','value7':'Sen reservas, por orde de chegada','value8':'Dúas barras, unha mesma familia',
       'about.aside':'Ah, e non preguntedes quen paga — hai un cartel na barra que xa o explica.',
       'about.wallCaption':'Pintado a man na fachada, na Rúa do Paxaro.',
       'panel1':'Pan de Cea, tomate de <span class="gold">horta propia</span> e o viño que toque ese día — así se cociña aquí.',
@@ -1269,6 +1294,7 @@
       'reviews.badge':'Real reviews, shown exactly as written on Google — tap a card to see it on Google',
       'rcf.all':'All','rcf.five':'5★ only','rcf.recent':'Most recent',
       'value1':'Produce from our own garden','value2':'Family treatment, no rush','value3':'Local wine, different every day',
+      'value4':'4.7★ with 748 Google reviews','value5':'Right in Ourense\'s Old Town','value6':'Fresh-baked Pan de Cea bread','value7':'No reservations, first come first served','value8':'Two bars, one family',
       'about.aside':'Oh, and do not ask who is paying — there is a sign at the bar that already explains it.',
       'about.wallCaption':'Hand-painted on the facade, on Rúa do Paxaro.',
       'panel1':'Cea bread, tomatoes from <span class="gold">our own garden</span>, and whatever wine we open that day — that is how we cook here.',
