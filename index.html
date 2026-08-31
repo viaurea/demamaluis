@@ -133,9 +133,10 @@
   .hero-aurora span:nth-child(1){width:420px; height:420px; top:-12%; left:6%; background:oklch(0.76 0.1 79 / 0.55); animation:auroraDrift1 22s ease-in-out infinite;}
   .hero-aurora span:nth-child(2){width:360px; height:360px; bottom:-16%; right:8%; background:oklch(0.66 0.07 76 / 0.5); animation:auroraDrift2 27s ease-in-out infinite;}
   .hero-aurora span:nth-child(3){width:300px; height:300px; top:28%; right:26%; background:oklch(0.6 0.09 40 / 0.4); animation:auroraDrift3 31s ease-in-out infinite;}
-  @keyframes auroraDrift1{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(60px,40px) scale(1.15);}}
-  @keyframes auroraDrift2{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-50px,-30px) scale(1.1);}}
-  @keyframes auroraDrift3{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-40px,50px) scale(1.2);}}
+  .hero-aurora.paused span{animation-play-state:paused;}
+  @keyframes auroraDrift1{0%,100%{transform:translate(0,0);} 50%{transform:translate(60px,40px);}}
+  @keyframes auroraDrift2{0%,100%{transform:translate(0,0);} 50%{transform:translate(-50px,-30px);}}
+  @keyframes auroraDrift3{0%,100%{transform:translate(0,0);} 50%{transform:translate(-40px,50px);}}
   @media(max-width:600px){ .hero-aurora span{filter:blur(46px);} .hero-aurora span:nth-child(1){width:260px; height:260px;} .hero-aurora span:nth-child(2){width:220px; height:220px;} .hero-aurora span:nth-child(3){width:190px; height:190px;} }
   @media(prefers-reduced-motion: reduce){ .hero-aurora span{animation:none;} }
   .hero-inner{position:relative; max-width:760px; margin:0 auto; padding:96px 0; text-align:center;}
@@ -1342,16 +1343,35 @@
   const stickyCta = document.getElementById('sticky-cta');
   const backToTop = document.getElementById('back-to-top');
   const botToggleEl = document.getElementById('bot-toggle');
-  window.addEventListener('scroll', () => {
+  const botBadgeEl = document.getElementById('bot-badge');
+  let scrollTicking = false;
+  function onScroll(){
     const h = document.documentElement;
     const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
     progressBar.style.width = scrolled + '%';
-    stickyCta.classList.toggle('show', window.scrollY > window.innerHeight * 0.7);
+    const past = window.scrollY > window.innerHeight * 0.7;
+    stickyCta.classList.toggle('show', past);
     backToTop.classList.toggle('show', window.scrollY > window.innerHeight * 0.8);
-    botToggleEl.classList.toggle('cta-up', window.scrollY > window.innerHeight * 0.7);
-    document.getElementById('bot-badge').classList.toggle('cta-up', window.scrollY > window.innerHeight * 0.7);
+    botToggleEl.classList.toggle('cta-up', past);
+    botBadgeEl.classList.toggle('cta-up', past);
+    scrollTicking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!scrollTicking) {
+      requestAnimationFrame(onScroll);
+      scrollTicking = true;
+    }
   }, { passive: true });
   backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // pause the blurred aurora animation once the hero scrolls out of view — cheap when off-screen
+  const heroAuroraEl = document.querySelector('.hero-aurora');
+  if (heroAuroraEl) {
+    const heroIo = new IntersectionObserver((entries) => {
+      entries.forEach(e => heroAuroraEl.classList.toggle('paused', !e.isIntersecting));
+    }, { threshold: 0 });
+    heroIo.observe(document.getElementById('top'));
+  }
 
   // virtual waiter (AI chat)
   (function initBot(){
