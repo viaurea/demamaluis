@@ -219,19 +219,31 @@
   .sec-title .gold{color:var(--gold); display:block; font-size:3rem;}
   @media(min-width:768px){ .sec-title .gold{font-size:3.7rem;} }
 
-  /* dishes */
-  .dishes-grid{margin-top:56px; display:grid; gap:52px 36px; grid-template-columns:1fr;}
-  @media(min-width:640px){ .dishes-grid{grid-template-columns:1fr 1fr;} }
-  @media(min-width:1024px){ .dishes-grid{grid-template-columns:1fr 1fr 1fr;} }
-  .dish:last-child{grid-column:1 / -1; max-width:340px; margin:0 auto;}
-  @media(min-width:640px) and (max-width:1023px){ .dish:last-child{max-width:none; grid-column:1 / -1;} .dish:last-child figure{max-width:340px; margin:0 auto;} .dish:last-child h3, .dish:last-child p{text-align:center;} }
-  .dish figure{position:relative; overflow:hidden; aspect-ratio:4/5; border-radius:3px; border:1px solid var(--border);}
-  .dish figure img{width:100%; height:100%; object-fit:cover; filter:contrast(1.08) saturate(0.96) brightness(0.98) sepia(0.08) hue-rotate(-4deg); transition:transform 800ms cubic-bezier(.16,1,.3,1), filter 500ms ease;}
-  .dish figure:hover img{transform:scale(1.045); filter:contrast(1.1) saturate(1) brightness(1.03) sepia(0.05) hue-rotate(-4deg);}
-  .dish figure::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center, transparent 55%, oklch(0.08 0.01 45 / 0.4) 100%);}
-  .dish h3{margin-top:20px; font-size:1.55rem;}
-  .dish p.script{margin-top:2px; font-size:2.1rem; color:var(--gold);}
-  .dish p.desc{margin-top:12px; font-size:1rem; line-height:1.7; color:var(--muted-foreground);}
+  /* dishes — 3D rotating carousel */
+  .dish3d-stage{margin-top:56px; perspective:1400px;}
+  .dish3d-cylinder{position:relative; height:230px; margin:0 auto; width:100%; max-width:900px; transform-style:preserve-3d; touch-action:pan-y; cursor:grab; user-select:none;}
+  .dish3d-cylinder.dragging{cursor:grabbing;}
+  .dish3d-cylinder.dragging .dish3d-face{transition:none;}
+  .dish3d-face{position:absolute; top:0; left:50%; width:180px; height:100%; margin-left:-90px; border-radius:5px; overflow:hidden; border:1px solid var(--border); cursor:pointer; backface-visibility:hidden; transition:opacity 500ms ease, filter 500ms ease;}
+  .dish3d-face img{width:100%; height:100%; object-fit:cover; pointer-events:none; filter:contrast(1.08) saturate(0.96) brightness(0.9) sepia(0.08) hue-rotate(-4deg);}
+  .dish3d-face::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top, oklch(0.08 0.01 45 / 0.88), transparent 55%);}
+  .dish3d-face .fname{position:absolute; left:0; right:0; bottom:10px; padding:0 12px; font-size:0.86rem; color:var(--foreground); text-align:center; line-height:1.25;}
+  .dish3d-face:not(.active){filter:brightness(0.62) saturate(0.85);}
+  .dish3d-face.active{border-color:var(--gold);}
+  @media(max-width:640px){ .dish3d-cylinder{height:190px;} .dish3d-face{width:140px; margin-left:-70px;} }
+
+  .dish3d-nav{margin-top:22px; display:flex; align-items:center; justify-content:center; gap:18px;}
+  .dish3d-arrow{width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.5); color:var(--gold); display:flex; align-items:center; justify-content:center; transition:all 300ms ease; flex-shrink:0;}
+  .dish3d-arrow:hover{border-color:var(--gold); background:oklch(0.76 0.1 79 / 0.12);}
+  .dish3d-arrow svg{width:15px; height:15px;}
+  .dish3d-dots{display:flex; gap:7px;}
+  .dish3d-dots span{width:6px; height:6px; border-radius:50%; background:oklch(0.72 0.02 80 / 0.3); transition:all 300ms ease; cursor:pointer;}
+  .dish3d-dots span.active{background:var(--gold); width:16px; border-radius:3px;}
+
+  .dish3d-detail{margin-top:34px; max-width:560px; margin-left:auto; margin-right:auto; text-align:center; min-height:150px;}
+  .dish3d-detail h3{font-size:1.55rem; transition:opacity 250ms ease;}
+  .dish3d-detail p.script{margin-top:2px; font-size:2rem; color:var(--gold);}
+  .dish3d-detail p.desc{margin-top:12px; font-size:1rem; line-height:1.7; color:var(--muted-foreground);}
 
   /* menu */
   .menu-grid{margin-top:48px; display:grid; gap:48px; grid-template-columns:1fr;}
@@ -581,56 +593,21 @@
         <div class="hairline center" style="margin-top:32px; width:160px;"></div>
       </div>
 
-      <div class="dishes-grid">
-        <article class="dish reveal spot">
-          <figure><img src="demamaluis-assets/tomate.png" alt="Tomates grandes de huerta propia sobre la barra" loading="lazy"></figure>
-          <h3 data-i18n="dish.tomate.name">Tomate casero</h3>
-          <p class="script" data-i18n="dish.tomate.tag">De la huerta a la barra</p>
-          <p class="desc" data-i18n="dish.tomate.text">Nuestro tomate no necesita nada más que aceite y sal. Sale de la huerta propia, no de una caja.</p>
-        </article>
-
-        <article class="dish reveal spot">
-          <figure><img src="demamaluis-assets/pulpo.png" alt="Plato de pulpo á feira con pimentón y aceite" loading="lazy"></figure>
-          <h3 data-i18n="dish.pulpo.name">Pulpo</h3>
-          <p class="script" data-i18n="dish.pulpo.tag">El de toda la vida</p>
-          <p class="desc" data-i18n="dish.pulpo.text">Pimentón, aceite y el punto de siempre. No hace falta reinventarlo, hace falta hacerlo bien.</p>
-        </article>
-
-        <article class="dish reveal spot">
-          <figure><img src="demamaluis-assets/chicharrones.png" alt="Chicharrones crujientes servidos con una botella de vino blanco" loading="lazy"></figure>
-          <h3 data-i18n="dish.chicharrones.name">Chicharrones</h3>
-          <p class="script" data-i18n="dish.chicharrones.tag">Crujientes, sin pedir perdón</p>
-          <p class="desc" data-i18n="dish.chicharrones.text">Un clásico de la casa que no se anda con rodeos.</p>
-        </article>
-
-        <article class="dish reveal spot">
-          <figure><img src="demamaluis-assets/champinones.png" alt="Champiñones a la plancha en brochetas sobre pan" loading="lazy"></figure>
-          <h3 data-i18n="dish.champinones.name">Champiñones "demamáluis"</h3>
-          <p class="script" data-i18n="dish.champinones.tag">La receta que lleva su nombre</p>
-          <p class="desc" data-i18n="dish.champinones.text">El plato que aparece en las dos cartas, porque en esta casa las recetas también se comparten.</p>
-        </article>
-
-        <article class="dish reveal spot">
-          <figure><img src="demamaluis-assets/miniburguer.png" alt="Miniburguer casera con pan brioche y albahaca" loading="lazy"></figure>
-          <h3 data-i18n="dish.miniburguer.name">Miniburguer "demamáluis"</h3>
-          <p class="script" data-i18n="dish.miniburguer.tag">Lleva nuestro nombre</p>
-          <p class="desc" data-i18n="dish.miniburguer.text">Así que ya te imaginas el cuidado que le ponemos.</p>
-        </article>
-
-        <article class="dish reveal spot">
-          <figure><img src="demamaluis-assets/solomillo.png" alt="Tapa de solomillo con micuit de pato en plato blanco" loading="lazy"></figure>
-          <h3 data-i18n="dish.solomillo.name">Solomillo con micuit de pato</h3>
-          <p class="script" data-i18n="dish.solomillo.tag">El lujo discreto de la barra</p>
-          <p class="desc" data-i18n="dish.solomillo.text">Para los días que piden un poco más que una tapa rápida.</p>
-        </article>
-
-        <article class="dish reveal spot">
-          <figure><img src="demamaluis-assets/padron.png" alt="Ración de pimientos de Padrón fritos con sal gruesa" loading="lazy"></figure>
-          <h3 data-i18n="dish.padron.name">Pimientos de Padrón</h3>
-          <p class="script" data-i18n="dish.padron.tag">Unos pican y otros no</p>
-          <p class="desc" data-i18n="dish.padron.text">El dicho de siempre, tal cual. Nadie sabe cuál te va a tocar.</p>
-        </article>
+      <div class="dish3d-stage reveal">
+        <div class="dish3d-cylinder" id="dish3d-cylinder"></div>
       </div>
+
+      <div class="dish3d-nav">
+        <button type="button" class="dish3d-arrow spot" id="dish3d-prev" aria-label="Plato anterior">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="dish3d-dots" id="dish3d-dots"></div>
+        <button type="button" class="dish3d-arrow spot" id="dish3d-next" aria-label="Siguiente plato">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+
+      <div class="dish3d-detail" id="dish3d-detail"></div>
     </div>
   </section>
 
@@ -1018,6 +995,107 @@
     }
   }
   setInterval(() => buildHours(document.documentElement.lang || 'es'), 60000);
+
+  // dishes — 3D rotating carousel (replaces the old 7-card grid: same photos and
+  // copy, far less vertical space and scroll)
+  const DISHES_3D = [
+    { key:'tomate', img:'demamaluis-assets/tomate.png', alt:'Tomates grandes de huerta propia sobre la barra' },
+    { key:'pulpo', img:'demamaluis-assets/pulpo.png', alt:'Plato de pulpo á feira con pimentón y aceite' },
+    { key:'chicharrones', img:'demamaluis-assets/chicharrones.png', alt:'Chicharrones crujientes servidos con una botella de vino blanco' },
+    { key:'champinones', img:'demamaluis-assets/champinones.png', alt:'Champiñones a la plancha en brochetas sobre pan' },
+    { key:'miniburguer', img:'demamaluis-assets/miniburguer.png', alt:'Miniburguer casera con pan brioche y albahaca' },
+    { key:'solomillo', img:'demamaluis-assets/solomillo.png', alt:'Tapa de solomillo con micuit de pato en plato blanco' },
+    { key:'padron', img:'demamaluis-assets/padron.png', alt:'Ración de pimientos de Padrón fritos con sal gruesa' },
+  ];
+  const d3dCyl = document.getElementById('dish3d-cylinder');
+  const d3dDotsWrap = document.getElementById('dish3d-dots');
+  const d3dDetail = document.getElementById('dish3d-detail');
+  const d3dPrev = document.getElementById('dish3d-prev');
+  const d3dNext = document.getElementById('dish3d-next');
+  const D3D_COUNT = DISHES_3D.length;
+  const D3D_ANGLE = 360 / D3D_COUNT;
+  let d3dFaceWidth = window.innerWidth <= 640 ? 140 : 180;
+  let d3dRadius = Math.round(d3dFaceWidth / (2 * Math.tan(Math.PI / D3D_COUNT)));
+  let d3dRotation = 0;
+  let d3dActive = 0;
+  let d3dLang = 'es';
+  let d3dDragging = false;
+  let d3dDragged = false;
+  let d3dStartX = 0;
+  let d3dStartRotation = 0;
+
+  DISHES_3D.forEach((d, i) => {
+    const face = document.createElement('div');
+    face.className = 'dish3d-face';
+    face.style.transform = `rotateY(${i * D3D_ANGLE}deg) translateZ(${d3dRadius}px)`;
+    face.innerHTML = `<img src="${d.img}" alt="${d.alt}" loading="lazy"><span class="fname"></span>`;
+    face.addEventListener('click', () => { if (!d3dDragged) dish3dGoTo(i); });
+    d3dCyl.appendChild(face);
+  });
+  const d3dFaces = Array.from(d3dCyl.querySelectorAll('.dish3d-face'));
+  DISHES_3D.forEach((d, i) => {
+    const dot = document.createElement('span');
+    dot.addEventListener('click', () => dish3dGoTo(i));
+    d3dDotsWrap.appendChild(dot);
+  });
+  const d3dDots = Array.from(d3dDotsWrap.children);
+
+  function dish3dRender(){
+    d3dCyl.style.transform = `rotateY(${-d3dRotation}deg)`;
+    d3dFaces.forEach((f, i) => f.classList.toggle('active', i === d3dActive));
+    d3dDots.forEach((el, i) => el.classList.toggle('active', i === d3dActive));
+  }
+  function dish3dUpdateText(){
+    d3dFaces.forEach((f, i) => {
+      f.querySelector('.fname').textContent = dict[d3dLang][`dish.${DISHES_3D[i].key}.name`] || '';
+    });
+    const d = DISHES_3D[d3dActive];
+    d3dDetail.innerHTML = `<h3>${dict[d3dLang][`dish.${d.key}.name`]}</h3><p class="script">${dict[d3dLang][`dish.${d.key}.tag`]}</p><p class="desc">${dict[d3dLang][`dish.${d.key}.text`]}</p>`;
+  }
+  function dish3dGoTo(i){
+    d3dActive = ((i % D3D_COUNT) + D3D_COUNT) % D3D_COUNT;
+    d3dRotation = d3dActive * D3D_ANGLE;
+    dish3dRender();
+    dish3dUpdateText();
+  }
+  function buildDishes3D(lang){ d3dLang = lang; dish3dUpdateText(); }
+
+  d3dPrev.addEventListener('click', () => dish3dGoTo(d3dActive - 1));
+  d3dNext.addEventListener('click', () => dish3dGoTo(d3dActive + 1));
+
+  function d3dPointerDown(x){
+    d3dDragging = true; d3dDragged = false;
+    d3dStartX = x; d3dStartRotation = d3dRotation;
+    d3dCyl.classList.add('dragging');
+  }
+  function d3dPointerMove(x){
+    if (!d3dDragging) return;
+    const delta = x - d3dStartX;
+    if (Math.abs(delta) > 4) d3dDragged = true;
+    d3dRotation = d3dStartRotation - delta * 0.4;
+    d3dCyl.style.transform = `rotateY(${-d3dRotation}deg)`;
+  }
+  function d3dPointerUp(){
+    if (!d3dDragging) return;
+    d3dDragging = false;
+    d3dCyl.classList.remove('dragging');
+    dish3dGoTo(Math.round(d3dRotation / D3D_ANGLE));
+    setTimeout(() => { d3dDragged = false; }, 50);
+  }
+  d3dCyl.addEventListener('pointerdown', (e) => d3dPointerDown(e.clientX));
+  window.addEventListener('pointermove', (e) => d3dPointerMove(e.clientX));
+  window.addEventListener('pointerup', d3dPointerUp);
+
+  window.addEventListener('resize', () => {
+    const nfw = window.innerWidth <= 640 ? 140 : 180;
+    if (nfw !== d3dFaceWidth) {
+      d3dFaceWidth = nfw;
+      d3dRadius = Math.round(d3dFaceWidth / (2 * Math.tan(Math.PI / D3D_COUNT)));
+      d3dFaces.forEach((f, i) => { f.style.transform = `rotateY(${i * D3D_ANGLE}deg) translateZ(${d3dRadius}px)`; });
+    }
+  });
+
+  dish3dRender();
 
   const marqueeTrack = document.getElementById('marquee-track');
   function buildMarquee(lang) {
@@ -1446,10 +1524,12 @@
     });
     buildMarquee(lang);
     buildHours(lang);
+    buildDishes3D(lang);
   }
   langButtons.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
   buildMarquee('es');
   buildHours('es');
+  buildDishes3D('es');
 
   // scroll progress bar
   const progressBar = document.getElementById('scroll-progress');
