@@ -220,19 +220,19 @@
   @media(min-width:768px){ .sec-title .gold{font-size:3.7rem;} }
 
   /* dishes — 3D rotating carousel */
-  .dish3d-stage{margin-top:56px; perspective:1400px;}
-  .dish3d-cylinder{position:relative; height:300px; margin:0 auto; width:100%; max-width:960px; transform-style:preserve-3d; touch-action:pan-y; cursor:grab; user-select:none; transition:transform 750ms cubic-bezier(.22,1,.36,1);}
+  .dish3d-stage{margin-top:56px; perspective:3800px;}
+  .dish3d-cylinder{position:relative; height:380px; margin:0 auto; width:100%; max-width:960px; transform-style:preserve-3d; touch-action:pan-y; cursor:grab; user-select:none; transition:transform 750ms cubic-bezier(.22,1,.36,1);}
   .dish3d-cylinder.dragging{cursor:grabbing; transition:none;}
   .dish3d-cylinder.dragging .dish3d-face{transition:none;}
-  .dish3d-face{position:absolute; top:0; left:50%; width:240px; height:100%; margin-left:-120px; border-radius:6px; overflow:hidden; border:1px solid var(--border); cursor:pointer; backface-visibility:hidden; transition:opacity 500ms ease, filter 500ms ease;}
+  .dish3d-face{position:absolute; top:0; left:50%; width:300px; height:100%; margin-left:-150px; border-radius:6px; overflow:hidden; border:1px solid var(--border); cursor:pointer; backface-visibility:hidden; transition:opacity 500ms ease, filter 500ms ease;}
   .dish3d-face img{width:100%; height:100%; object-fit:cover; pointer-events:none; filter:contrast(1.08) saturate(0.96) brightness(0.9) sepia(0.08) hue-rotate(-4deg);}
   .dish3d-face::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top, oklch(0.08 0.01 45 / 0.88), transparent 55%);}
   .dish3d-face .fname{position:absolute; left:0; right:0; bottom:12px; padding:0 14px; font-size:0.98rem; color:var(--foreground); text-align:center; line-height:1.25;}
   .dish3d-face:not(.active){filter:brightness(0.62) saturate(0.85);}
   .dish3d-face.active{border-color:var(--gold);}
-  @media(max-width:640px){ .dish3d-cylinder{height:230px;} .dish3d-face{width:175px; margin-left:-87px;} }
+  @media(max-width:640px){ .dish3d-cylinder{height:260px;} .dish3d-face{width:210px; margin-left:-105px;} }
 
-  .dish3d-nav{margin-top:22px; display:flex; align-items:center; justify-content:center; gap:18px;}
+  .dish3d-nav{margin-top:40px; display:flex; align-items:center; justify-content:center; gap:18px;}
   .dish3d-arrow{width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.5); color:var(--gold); display:flex; align-items:center; justify-content:center; transition:all 300ms ease; flex-shrink:0;}
   .dish3d-arrow:hover{border-color:var(--gold); background:oklch(0.76 0.1 79 / 0.12);}
   .dish3d-arrow svg{width:15px; height:15px;}
@@ -1014,8 +1014,9 @@
   const d3dNext = document.getElementById('dish3d-next');
   const D3D_COUNT = DISHES_3D.length;
   const D3D_ANGLE = 360 / D3D_COUNT;
-  let d3dFaceWidth = window.innerWidth <= 640 ? 175 : 240;
-  let d3dRadius = Math.round(d3dFaceWidth / (2 * Math.tan(Math.PI / D3D_COUNT)));
+  const D3D_GAP = 1.4; // spacing factor so faces don't touch — lets the ones behind peek through
+  let d3dFaceWidth = window.innerWidth <= 640 ? 210 : 300;
+  let d3dRadius = Math.round((d3dFaceWidth * D3D_GAP) / (2 * Math.tan(Math.PI / D3D_COUNT)));
   let d3dRotation = 0;
   let d3dActive = 0;
   let d3dLang = 'es';
@@ -1097,10 +1098,10 @@
   window.addEventListener('pointerup', d3dPointerUp);
 
   window.addEventListener('resize', () => {
-    const nfw = window.innerWidth <= 640 ? 175 : 240;
+    const nfw = window.innerWidth <= 640 ? 210 : 300;
     if (nfw !== d3dFaceWidth) {
       d3dFaceWidth = nfw;
-      d3dRadius = Math.round(d3dFaceWidth / (2 * Math.tan(Math.PI / D3D_COUNT)));
+      d3dRadius = Math.round((d3dFaceWidth * D3D_GAP) / (2 * Math.tan(Math.PI / D3D_COUNT)));
       d3dFaces.forEach((f, i) => { f.style.transform = `rotateY(${i * D3D_ANGLE}deg) translateZ(${d3dRadius}px)`; });
     }
   });
