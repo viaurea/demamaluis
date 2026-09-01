@@ -344,6 +344,21 @@
   .loc-stack .small{margin-top:8px; font-size:0.85rem; color:var(--muted-foreground);}
   .loc-stack .desc{margin-top:12px; font-size:0.85rem; line-height:1.7; color:var(--muted-foreground);}
   .ig-link{margin-top:16px; display:inline-block; border-bottom:1px solid oklch(0.76 0.1 79 / 0.5); padding-bottom:4px; font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); transition:border-color 400ms ease;}
+
+  .hours-badge{display:inline-flex; align-items:center; gap:8px; margin:10px 0 14px; padding:7px 14px; border-radius:20px; font-size:0.8rem; font-weight:500; border:1px solid var(--border); transition:all 300ms ease;}
+  .hours-badge .dot{width:7px; height:7px; border-radius:50%; flex-shrink:0; background:var(--muted-foreground);}
+  .hours-badge.open{color:var(--gold); border-color:oklch(0.76 0.1 79 / 0.4); background:oklch(0.76 0.1 79 / 0.1);}
+  .hours-badge.open .dot{background:var(--gold); animation:hoursPulse 2.2s ease-in-out infinite;}
+  .hours-badge.closed{color:oklch(0.64 0.19 27); border-color:oklch(0.64 0.19 27 / 0.4); background:oklch(0.64 0.19 27 / 0.1);}
+  .hours-badge.closed .dot{background:oklch(0.64 0.19 27);}
+  @keyframes hoursPulse{0%,100%{box-shadow:0 0 0 0 oklch(0.76 0.1 79 / 0.4);} 50%{box-shadow:0 0 0 5px oklch(0.76 0.1 79 / 0);}}
+
+  .hours-list{margin-top:6px; display:flex; flex-direction:column; gap:5px; font-size:0.82rem;}
+  .hours-list li{display:flex; justify-content:space-between; gap:16px; color:var(--muted-foreground);}
+  .hours-list li span:first-child{color:var(--foreground);}
+  .hours-list li.today{color:var(--gold);}
+  .hours-list li.today span:first-child{color:var(--gold); font-weight:500;}
+  .hours-list li.closed-day span:last-child{color:oklch(0.64 0.19 27 / 0.8);}
   .ig-link:hover{border-color:var(--gold);}
   .map-frame{height:100%; min-height:340px; overflow:hidden; border-radius:10px; border:1px solid var(--border);}
   .map-frame iframe{width:100%; height:100%; min-height:340px; border:0; filter:grayscale(0.35) contrast(1.05);}
@@ -781,7 +796,9 @@
           <div class="hairline"></div>
           <div>
             <p class="eyebrow" data-i18n="location.hours">Horario</p>
-            <p class="desc" data-i18n="location.hoursText">El horario cambia según la temporada y los festivos, así que lo vamos contando en Instagram. Ahí está siempre lo último.</p>
+            <div class="hours-badge" id="hours-badge"><span class="dot"></span><span id="hours-badge-text">—</span></div>
+            <ul class="hours-list" id="hours-list"></ul>
+            <p class="desc" style="margin-top:10px;" data-i18n="location.hoursText">Puede variar en festivos — mira Instagram si tienes dudas.</p>
             <a href="https://www.instagram.com/demamaluis/" target="_blank" rel="noreferrer" class="ig-link spot" data-i18n="location.hoursLink">Ver horario en @demamaluis</a>
           </div>
           <a href="https://www.google.com/maps/search/?api=1&query=Demam%C3%A1luis%20Delicatessen%20R%C3%BAa%20do%20Paxaro%202%20Ourense" target="_blank" rel="noreferrer" class="btn-gold spot" data-i18n="cta.directions">Cómo llegar</a>
@@ -940,6 +957,68 @@
     { icon:'clock', key:'value7' },
     { icon:'door', key:'value8' },
   ];
+  // opening hours — real weekly schedule, closed only Wednesdays
+  const HOURS_SCHEDULE = {
+    0: [[12,16],[20,24]], // Sunday
+    1: [[12,16],[20,24]], // Monday
+    2: [[12,16],[20,24]], // Tuesday
+    3: [],                // Wednesday — closed
+    4: [[12,16],[20,24]], // Thursday
+    5: [[12,16],[20,24]], // Friday
+    6: [[12,16],[20,24]], // Saturday
+  };
+  const HOURS_DAY_KEYS = ['hours.sun','hours.mon','hours.tue','hours.wed','hours.thu','hours.fri','hours.sat'];
+  function madridNow() {
+    return new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Madrid' }));
+  }
+  function fmtHour(h) {
+    return String(h).padStart(2, '0') + ':00';
+  }
+  function buildHours(lang) {
+    const now = madridNow();
+    const day = now.getDay();
+    const hour = now.getHours() + now.getMinutes() / 60;
+    const windows = HOURS_SCHEDULE[day];
+    const isOpen = windows.some(([start, end]) => hour >= start && hour < end);
+
+    const badge = document.getElementById('hours-badge');
+    const badgeText = document.getElementById('hours-badge-text');
+    if (badge && badgeText) {
+      badge.classList.toggle('open', isOpen);
+      badge.classList.toggle('closed', !isOpen);
+      if (isOpen) {
+        badgeText.textContent = dict[lang]['hours.openNow'];
+      } else {
+        const nextToday = windows.find(([start]) => hour < start);
+        if (nextToday) {
+          badgeText.textContent = `${dict[lang]['hours.closedNow']} — ${dict[lang]['hours.opensAt']} ${fmtHour(nextToday[0])}`;
+        } else {
+          let nextWindow = null;
+          for (let d = 1; d <= 7; d++) {
+            const w = HOURS_SCHEDULE[(day + d) % 7];
+            if (w.length) { nextWindow = { offset: d, hour: w[0][0] }; break; }
+          }
+          if (nextWindow && nextWindow.offset === 1) {
+            badgeText.textContent = `${dict[lang]['hours.closedNow']} — ${dict[lang]['hours.opensTomorrow']} ${fmtHour(nextWindow.hour)}`;
+          } else {
+            badgeText.textContent = dict[lang]['hours.closedNow'];
+          }
+        }
+      }
+    }
+
+    const list = document.getElementById('hours-list');
+    if (list) {
+      list.innerHTML = HOURS_DAY_KEYS.map((key, i) => {
+        const w = HOURS_SCHEDULE[i];
+        const isToday = i === day;
+        const hoursText = w.length ? w.map(([s, e]) => `${fmtHour(s)}–${fmtHour(e)}`).join(' · ') : dict[lang]['hours.closed'];
+        return `<li class="${isToday ? 'today' : ''}${w.length ? '' : ' closed-day'}"><span>${dict[lang][key]}</span><span>${hoursText}</span></li>`;
+      }).join('');
+    }
+  }
+  setInterval(() => buildHours(document.documentElement.lang || 'es'), 60000);
+
   const marqueeTrack = document.getElementById('marquee-track');
   function buildMarquee(lang) {
     const set = marqueeItems.map(it => `<div class="value-item">${iconSvg(it.icon)}<span class="txt">${dict[lang][it.key]}</span></div><span class="value-sep">✦</span>`).join('');
@@ -1197,7 +1276,9 @@
       'reviews.note':'Aquí no ponemos frases nuestras en boca de nadie. Si quieres leer lo que escribe la gente, está todo en Google.',
       'location.eyebrow':'Dónde estamos','location.title':'En pleno Casco Antiguo','location.address':'Dirección','location.addressSub':'Casco Antiguo de Ourense',
       'location.noRes':'No cogemos reservas','location.noResText':'La terraza y el aforo van por orden de llegada. Si está lleno, espera un poco: casi siempre se libera algo y mientras tanto te ponemos una copa.',
-      'location.hours':'Horario','location.hoursText':'El horario cambia según la temporada y los festivos, así que lo vamos contando en Instagram. Ahí está siempre lo último.',
+      'location.hours':'Horario','location.hoursText':'Puede variar en festivos — mira Instagram si tienes dudas.',
+      'hours.mon':'Lunes','hours.tue':'Martes','hours.wed':'Miércoles','hours.thu':'Jueves','hours.fri':'Viernes','hours.sat':'Sábado','hours.sun':'Domingo','hours.closed':'Cerrado',
+      'hours.openNow':'Abierto ahora','hours.closedNow':'Cerrado ahora','hours.opensAt':'Abre a las','hours.opensTomorrow':'Abre mañana a las',
       'location.hoursLink':'Ver horario en @demamaluis',
       'ig.eyebrow':'El día a día','ig.title':'¿Qué tal va el día?','ig.text':'Lo que entra hoy, el vino que abrimos y el cierre de agosto: todo lo contamos ahí.',
       'footer.text':'Rúa do Paxaro 2 · Rúa Viriato 12, Ourense. Sin reservas, sin prisa y con la puerta abierta. Nos vemos en la barra.',
@@ -1260,7 +1341,9 @@
       'reviews.note':'Aquí non poñemos frases nosas en boca de ninguén. Se queres ler o que escribe a xente, está todo en Google.',
       'location.eyebrow':'Onde estamos','location.title':'No corazón do Casco Vello','location.address':'Enderezo','location.addressSub':'Casco Vello de Ourense',
       'location.noRes':'Non collemos reservas','location.noResText':'A terraza e o aforo van por orde de chegada. Se está cheo, agarda un pouco: case sempre lisca algo e mentres tanto poñémosche unha copa.',
-      'location.hours':'Horario','location.hoursText':'O horario cambia segundo a tempada e os festivos, así que o imos contando en Instagram. Alí está sempre o último.',
+      'location.hours':'Horario','location.hoursText':'Pode variar en festivos — mira Instagram se tes dúbidas.',
+      'hours.mon':'Luns','hours.tue':'Martes','hours.wed':'Mércores','hours.thu':'Xoves','hours.fri':'Venres','hours.sat':'Sábado','hours.sun':'Domingo','hours.closed':'Pechado',
+      'hours.openNow':'Aberto agora','hours.closedNow':'Pechado agora','hours.opensAt':'Abre ás','hours.opensTomorrow':'Abre mañá ás',
       'location.hoursLink':'Ver horario en @demamaluis',
       'ig.eyebrow':'O día a día','ig.title':'Que tal vai o día?','ig.text':'O que entra hoxe, o viño que abrimos e o peche de agosto: todo o contamos alí.',
       'footer.text':'Rúa do Paxaro 2 · Rúa Viriato 12, Ourense. Sen reservas, sen présa e coa porta aberta. Vémonos na barra.',
@@ -1323,7 +1406,9 @@
       'reviews.note':'We do not put our own words in anyone else’s mouth here. If you want to read what people write, it is all on Google.',
       'location.eyebrow':'Where we are','location.title':'Right in the Old Town','location.address':'Address','location.addressSub':'Old Town, Ourense',
       'location.noRes':'We do not take reservations','location.noResText':'The terrace and seating are first come, first served. If it is full, wait a little — something usually opens up, and we will pour you a glass while you wait.',
-      'location.hours':'Opening hours','location.hoursText':'Hours change with the season and public holidays, so we keep it updated on Instagram. That is always the latest word.',
+      'location.hours':'Opening hours','location.hoursText':'May vary on public holidays — check Instagram if unsure.',
+      'hours.mon':'Monday','hours.tue':'Tuesday','hours.wed':'Wednesday','hours.thu':'Thursday','hours.fri':'Friday','hours.sat':'Saturday','hours.sun':'Sunday','hours.closed':'Closed',
+      'hours.openNow':'Open now','hours.closedNow':'Closed now','hours.opensAt':'Opens at','hours.opensTomorrow':'Opens tomorrow at',
       'location.hoursLink':'See hours on @demamaluis',
       'ig.eyebrow':'Day to day','ig.title':'How’s your day going?','ig.text':'What comes in today, the wine we open, and the August closing dates: we share it all there.',
       'footer.text':'Rúa do Paxaro 2 · Rúa Viriato 12, Ourense. No reservations, no rush, door always open. See you at the bar.',
@@ -1360,9 +1445,11 @@
       if (dict[lang][key]) el.setAttribute('aria-label', dict[lang][key]);
     });
     buildMarquee(lang);
+    buildHours(lang);
   }
   langButtons.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
   buildMarquee('es');
+  buildHours('es');
 
   // scroll progress bar
   const progressBar = document.getElementById('scroll-progress');
