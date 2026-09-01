@@ -221,16 +221,16 @@
 
   /* dishes — 3D rotating carousel */
   .dish3d-stage{margin-top:56px; perspective:1400px;}
-  .dish3d-cylinder{position:relative; height:230px; margin:0 auto; width:100%; max-width:900px; transform-style:preserve-3d; touch-action:pan-y; cursor:grab; user-select:none;}
-  .dish3d-cylinder.dragging{cursor:grabbing;}
+  .dish3d-cylinder{position:relative; height:300px; margin:0 auto; width:100%; max-width:960px; transform-style:preserve-3d; touch-action:pan-y; cursor:grab; user-select:none; transition:transform 750ms cubic-bezier(.22,1,.36,1);}
+  .dish3d-cylinder.dragging{cursor:grabbing; transition:none;}
   .dish3d-cylinder.dragging .dish3d-face{transition:none;}
-  .dish3d-face{position:absolute; top:0; left:50%; width:180px; height:100%; margin-left:-90px; border-radius:5px; overflow:hidden; border:1px solid var(--border); cursor:pointer; backface-visibility:hidden; transition:opacity 500ms ease, filter 500ms ease;}
+  .dish3d-face{position:absolute; top:0; left:50%; width:240px; height:100%; margin-left:-120px; border-radius:6px; overflow:hidden; border:1px solid var(--border); cursor:pointer; backface-visibility:hidden; transition:opacity 500ms ease, filter 500ms ease;}
   .dish3d-face img{width:100%; height:100%; object-fit:cover; pointer-events:none; filter:contrast(1.08) saturate(0.96) brightness(0.9) sepia(0.08) hue-rotate(-4deg);}
   .dish3d-face::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top, oklch(0.08 0.01 45 / 0.88), transparent 55%);}
-  .dish3d-face .fname{position:absolute; left:0; right:0; bottom:10px; padding:0 12px; font-size:0.86rem; color:var(--foreground); text-align:center; line-height:1.25;}
+  .dish3d-face .fname{position:absolute; left:0; right:0; bottom:12px; padding:0 14px; font-size:0.98rem; color:var(--foreground); text-align:center; line-height:1.25;}
   .dish3d-face:not(.active){filter:brightness(0.62) saturate(0.85);}
   .dish3d-face.active{border-color:var(--gold);}
-  @media(max-width:640px){ .dish3d-cylinder{height:190px;} .dish3d-face{width:140px; margin-left:-70px;} }
+  @media(max-width:640px){ .dish3d-cylinder{height:230px;} .dish3d-face{width:175px; margin-left:-87px;} }
 
   .dish3d-nav{margin-top:22px; display:flex; align-items:center; justify-content:center; gap:18px;}
   .dish3d-arrow{width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.5); color:var(--gold); display:flex; align-items:center; justify-content:center; transition:all 300ms ease; flex-shrink:0;}
@@ -1014,7 +1014,7 @@
   const d3dNext = document.getElementById('dish3d-next');
   const D3D_COUNT = DISHES_3D.length;
   const D3D_ANGLE = 360 / D3D_COUNT;
-  let d3dFaceWidth = window.innerWidth <= 640 ? 140 : 180;
+  let d3dFaceWidth = window.innerWidth <= 640 ? 175 : 240;
   let d3dRadius = Math.round(d3dFaceWidth / (2 * Math.tan(Math.PI / D3D_COUNT)));
   let d3dRotation = 0;
   let d3dActive = 0;
@@ -1023,6 +1023,9 @@
   let d3dDragged = false;
   let d3dStartX = 0;
   let d3dStartRotation = 0;
+  let d3dLastX = 0;
+  let d3dLastT = 0;
+  let d3dVelocity = 0;
 
   DISHES_3D.forEach((d, i) => {
     const face = document.createElement('div');
@@ -1066,6 +1069,7 @@
   function d3dPointerDown(x){
     d3dDragging = true; d3dDragged = false;
     d3dStartX = x; d3dStartRotation = d3dRotation;
+    d3dLastX = x; d3dLastT = performance.now(); d3dVelocity = 0;
     d3dCyl.classList.add('dragging');
   }
   function d3dPointerMove(x){
@@ -1074,12 +1078,18 @@
     if (Math.abs(delta) > 4) d3dDragged = true;
     d3dRotation = d3dStartRotation - delta * 0.4;
     d3dCyl.style.transform = `rotateY(${-d3dRotation}deg)`;
+    const now = performance.now();
+    const dt = now - d3dLastT;
+    if (dt > 0) d3dVelocity = (x - d3dLastX) / dt;
+    d3dLastX = x; d3dLastT = now;
   }
   function d3dPointerUp(){
     if (!d3dDragging) return;
     d3dDragging = false;
     d3dCyl.classList.remove('dragging');
-    dish3dGoTo(Math.round(d3dRotation / D3D_ANGLE));
+    // project a bit further using release velocity, like a real slide with inertia
+    const projected = d3dRotation - d3dVelocity * 90 * 0.4;
+    dish3dGoTo(Math.round(projected / D3D_ANGLE));
     setTimeout(() => { d3dDragged = false; }, 50);
   }
   d3dCyl.addEventListener('pointerdown', (e) => d3dPointerDown(e.clientX));
@@ -1087,7 +1097,7 @@
   window.addEventListener('pointerup', d3dPointerUp);
 
   window.addEventListener('resize', () => {
-    const nfw = window.innerWidth <= 640 ? 140 : 180;
+    const nfw = window.innerWidth <= 640 ? 175 : 240;
     if (nfw !== d3dFaceWidth) {
       d3dFaceWidth = nfw;
       d3dRadius = Math.round(d3dFaceWidth / (2 * Math.tan(Math.PI / D3D_COUNT)));
