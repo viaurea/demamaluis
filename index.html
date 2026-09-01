@@ -715,7 +715,6 @@
       </div>
       <div class="rc-filters" id="rc-filters">
         <button type="button" class="rc-filter active spot" data-filter="all" data-i18n="rcf.all">Todas</button>
-        <button type="button" class="rc-filter spot" data-filter="5" data-i18n="rcf.five">Solo 5★</button>
         <button type="button" class="rc-filter spot" data-filter="recent" data-i18n="rcf.recent">Más recientes</button>
       </div>
       <div class="rc-wrap reveal">
@@ -1210,8 +1209,6 @@
     { name:'igone2605', rating:5, time:'Hace una semana', text:'Fuimos a cenar y salimos encantados. Todo exquisito, buen producto y excelentes recomendaciones, Yolanda un amor. Volveremos.' },
     { name:'David del Moral López', rating:5, time:'Hace 5 meses', text:'El caldo de la imagen venía incluido con la consumición. Muy buen servicio, restaurante acogedor y con buena comida.' },
     { name:'Diego Delgado Duran', rating:5, time:'Hace un mes', text:'Un local con encanto, y con una oferta en pinchos excelente, las hamburguesas mini son mi debilidad, lo que acompañado de un trato excelente…' },
-    { name:'Ivan G', rating:2, time:'Hace 4 meses', text:'Las croquetas estaban nadando, mejillones tigre picaban, pero no se distinguía el sabor del mismo y a mayores traían cáscaras en el interior.' },
-    { name:'Marta Iglesias', rating:4, time:'Hace 7 meses', text:'Servicio y ambiente de 10. La mujer, encantadora. La comida rica. La tortilla nos flojeó un poco.' },
     { name:'José Luis Moreno', rating:5, time:'Hace 6 meses', text:'Un lugar excepcional que no conocía. El trato fue realmente magnífico. Me encantó. Lugar referente en mis viajes a Ourense.' },
     { name:'ligia lewis', rating:5, time:'Hace 7 meses', text:'Si estas en Ourense no dejes de visitar este pequeño lugar con unas tapas super deliciosas! Recomiendo las mini hamburguesas, las vieiras y la carne típica de la región.' },
     { name:'Shireen Eksteen', rating:5, time:'Hace 7 meses', text:'Trato excelente desde el primer momento. Comimos genial, todo estaba muy rico. Destacamos especialmente la tosta de sardina, el pulpo y la tapa de champiñones.' },
@@ -1309,7 +1306,6 @@
       btn.classList.add('active');
       const f = btn.dataset.filter;
       let list = reviews;
-      if (f === '5') list = reviews.filter(r => r.rating === 5);
       if (f === 'recent') list = reviews.slice(0, 10);
       buildColumns(list);
     });
@@ -1334,7 +1330,7 @@
       'm.miniburger':'Miniburger "demamáluis" (1 ud.)','m.tostaSolomillo':'Tosta de solomillo, queso de vaca y pimiento asado','m.tostaRaxo':'Tosta de raxo, queso curado de oveja y mermelada de pimiento','m.tostaBacalao':'Tosta de bacalao ahumado y tomate confitado','m.tostaSardina':'Tosta de sardina ahumada, tomate asado y mermelada de mango','m.croquetas':'Croquetas "da Carmen" (6 ud.)','m.empanada':'Porción de empanada (1 ud.)','m.tortilla':'Media tortilla española','m.vieiras':'Vieiras a la plancha (6 ud.)','m.postre1':'Postre casero','m.pan1':'Ración de pan de Cea',
       'm.half':'1/2 ración','m.full':'Ración','m.caldeiro':'Carne ao caldeiro','m.lacon':'Lacón con grelos','m.oreja':'Ración de Oreja Cocida','m.carpaccio':'Carpaccio de cachucha','m.pulpoFeira':'Pulpo á feira','m.mejillones':'Mejillones Tigre (8 uds.)','m.boquerones':'Boquerones a la vinagreta','m.champis':'Champiñones "demamáluis"','m.ensalada':'Ensalada de tomate','m.ensaladaVentresca':'Ensalada de tomate con ventresca','m.zorza':'Zorza "da Julia"','m.morunitos':'Morunitos "depapáluis" (6 ud.)','m.postre2':'Postre casero','m.pan2':'Ración de pan de Cea',
       'reviews.badge':'Reseñas reales, tal cual se escribieron en Google — pulsa una tarjeta para verla en Google',
-      'rcf.all':'Todas','rcf.five':'Solo 5★','rcf.recent':'Más recientes',
+      'rcf.all':'Todas','rcf.recent':'Más recientes',
       'value1':'Producto de la huerta propia','value2':'Trato de familia, sin prisa','value3':'Vino de la zona, cada día distinto',
       'value4':'4,7★ con 748 reseñas en Google','value5':'En pleno Casco Antiguo de Ourense','value6':'Pan de Cea recién horneado','value7':'Sin reservas, por orden de llegada','value8':'Dos barras, una misma familia',
       'about.aside':'Ah, y no preguntéis quién paga — hay un cartel en la barra que ya lo explica.',
@@ -1399,7 +1395,7 @@
       'm.miniburger':'Miniburger "demamáluis" (1 ud.)','m.tostaSolomillo':'Torrada de lombo, queixo de vaca e pemento asado','m.tostaRaxo':'Torrada de raxo, queixo curado de ovella e marmelada de pemento','m.tostaBacalao':'Torrada de bacallau afumado e tomate confitado','m.tostaSardina':'Torrada de sardiña afumada, tomate asado e marmelada de mango','m.croquetas':'Croquetas "da Carmen" (6 ud.)','m.empanada':'Porción de empanada (1 ud.)','m.tortilla':'Media tortilla española','m.vieiras':'Vieiras á prancha (6 ud.)','m.postre1':'Sobremesa caseira','m.pan1':'Ración de pan de Cea',
       'm.half':'1/2 ración','m.full':'Ración','m.caldeiro':'Carne ao caldeiro','m.lacon':'Lacón con grelos','m.oreja':'Ración de Orella Cocida','m.carpaccio':'Carpaccio de cachucha','m.pulpoFeira':'Polbo á feira','m.mejillones':'Mexillóns Tigre (8 uds.)','m.boquerones':'Boqueróns en vinagre','m.champis':'Champiñóns "demamáluis"','m.ensalada':'Ensalada de tomate','m.ensaladaVentresca':'Ensalada de tomate con ventresca','m.zorza':'Zorza "da Julia"','m.morunitos':'Morunitos "depapáluis" (6 ud.)','m.postre2':'Sobremesa caseira','m.pan2':'Ración de pan de Cea',
       'reviews.badge':'Reseñas reais, tal cual se escribiron en Google — preme nunha tarxeta para vela en Google',
-      'rcf.all':'Todas','rcf.five':'Só 5★','rcf.recent':'Máis recentes',
+      'rcf.all':'Todas','rcf.recent':'Máis recentes',
       'value1':'Produto da horta propia','value2':'Trato de familia, sen présa','value3':'Viño da zona, cada día distinto',
       'value4':'4,7★ con 748 reseñas en Google','value5':'No Casco Vello de Ourense','value6':'Pan de Cea recén cocido','value7':'Sen reservas, por orde de chegada','value8':'Dúas barras, unha mesma familia',
       'about.aside':'Ah, e non preguntedes quen paga — hai un cartel na barra que xa o explica.',
@@ -1464,7 +1460,7 @@
       'm.miniburger':'"Demamáluis" mini burger (1 pc.)','m.tostaSolomillo':'Sirloin toast with cow cheese and roasted pepper','m.tostaRaxo':'Marinated pork toast with cured sheep cheese and pepper jam','m.tostaBacalao':'Smoked cod toast with confit tomato','m.tostaSardina':'Smoked sardine toast with roasted tomato and mango jam','m.croquetas':'"Da Carmen" croquettes (6 pcs.)','m.empanada':'Slice of empanada (1 pc.)','m.tortilla':'Half Spanish tortilla','m.vieiras':'Grilled scallops (6 pcs.)','m.postre1':'Homemade dessert','m.pan1':'Cea bread',
       'm.half':'Half portion','m.full':'Full portion','m.caldeiro':'Slow-cooked meat "ao caldeiro"','m.lacon':'Pork shoulder with turnip greens','m.oreja':'Boiled pig ear','m.carpaccio':'Pork cheek carpaccio','m.pulpoFeira':'Galician-style octopus','m.mejillones':'Spicy mussels "Tigre" (8 pcs.)','m.boquerones':'Vinegar-marinated anchovies','m.champis':'"Demamáluis" mushrooms','m.ensalada':'Tomato salad','m.ensaladaVentresca':'Tomato salad with tuna belly','m.zorza':'"Da Julia" marinated pork','m.morunitos':'"Depapáluis" pork skewers (6 pcs.)','m.postre2':'Homemade dessert','m.pan2':'Cea bread',
       'reviews.badge':'Real reviews, shown exactly as written on Google — tap a card to see it on Google',
-      'rcf.all':'All','rcf.five':'5★ only','rcf.recent':'Most recent',
+      'rcf.all':'All','rcf.recent':'Most recent',
       'value1':'Produce from our own garden','value2':'Family treatment, no rush','value3':'Local wine, different every day',
       'value4':'4.7★ with 748 Google reviews','value5':'Right in Ourense\'s Old Town','value6':'Fresh-baked Pan de Cea bread','value7':'No reservations, first come first served','value8':'Two bars, one family',
       'about.aside':'Oh, and do not ask who is paying — there is a sign at the bar that already explains it.',
