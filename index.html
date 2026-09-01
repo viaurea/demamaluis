@@ -219,20 +219,18 @@
   .sec-title .gold{color:var(--gold); display:block; font-size:3rem;}
   @media(min-width:768px){ .sec-title .gold{font-size:3.7rem;} }
 
-  /* dishes — 3D fan carousel (coverflow-style: every dish stays visible,
-     the ones away from center recede and tilt instead of disappearing
-     around the back of a cylinder) */
-  .dish3d-stage{margin-top:56px; perspective:2200px;}
-  .dish3d-cylinder{position:relative; height:380px; margin:0 auto; width:100%; max-width:960px; transform-style:preserve-3d; touch-action:pan-y; cursor:grab; user-select:none;}
-  .dish3d-cylinder.dragging{cursor:grabbing;}
+  /* dishes — 3D rotating carousel */
+  .dish3d-stage{margin-top:56px; perspective:3800px;}
+  .dish3d-cylinder{position:relative; height:380px; margin:0 auto; width:100%; max-width:960px; transform-style:preserve-3d; touch-action:pan-y; cursor:grab; user-select:none; transition:transform 750ms cubic-bezier(.22,1,.36,1);}
+  .dish3d-cylinder.dragging{cursor:grabbing; transition:none;}
   .dish3d-cylinder.dragging .dish3d-face{transition:none;}
-  .dish3d-face{position:absolute; top:0; left:50%; width:280px; height:100%; margin-left:-140px; border-radius:6px; overflow:hidden; border:1px solid var(--border); cursor:pointer; transition:transform 700ms cubic-bezier(.22,1,.36,1), opacity 500ms ease, filter 500ms ease;}
+  .dish3d-face{position:absolute; top:0; left:50%; width:300px; height:100%; margin-left:-150px; border-radius:6px; overflow:hidden; border:1px solid var(--border); cursor:pointer; backface-visibility:hidden; transition:opacity 500ms ease, filter 500ms ease;}
   .dish3d-face img{width:100%; height:100%; object-fit:cover; pointer-events:none; filter:contrast(1.08) saturate(0.96) brightness(0.9) sepia(0.08) hue-rotate(-4deg);}
   .dish3d-face::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top, oklch(0.08 0.01 45 / 0.88), transparent 55%);}
-  .dish3d-face .fname{position:absolute; left:0; right:0; bottom:12px; padding:0 14px; font-size:0.95rem; color:var(--foreground); text-align:center; line-height:1.25;}
-  .dish3d-face:not(.active){filter:brightness(0.6) saturate(0.85);}
+  .dish3d-face .fname{position:absolute; left:0; right:0; bottom:12px; padding:0 14px; font-size:0.98rem; color:var(--foreground); text-align:center; line-height:1.25;}
+  .dish3d-face:not(.active){filter:brightness(0.62) saturate(0.85);}
   .dish3d-face.active{border-color:var(--gold);}
-  @media(max-width:640px){ .dish3d-cylinder{height:250px;} .dish3d-face{width:190px; margin-left:-95px;} }
+  @media(max-width:640px){ .dish3d-cylinder{height:260px;} .dish3d-face{width:210px; margin-left:-105px;} }
 
   .dish3d-nav{margin-top:40px; display:flex; align-items:center; justify-content:center; gap:18px;}
   .dish3d-arrow{width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.5); color:var(--gold); display:flex; align-items:center; justify-content:center; transition:all 300ms ease; flex-shrink:0;}
@@ -1015,17 +1013,17 @@
   const d3dPrev = document.getElementById('dish3d-prev');
   const d3dNext = document.getElementById('dish3d-next');
   const D3D_COUNT = DISHES_3D.length;
-  const D3D_TILT = 34; // deg — fixed side tilt, so every dish stays face-on enough to be visible
-  const D3D_SPACING_FACTOR = 0.56;
-  const D3D_DEPTH = 70; // px each step recedes into the screen
-  let d3dFaceWidth = window.innerWidth <= 640 ? 190 : 280;
-  let d3dIndex = 0; // fractional "continuous" position while dragging
+  const D3D_ANGLE = 360 / D3D_COUNT;
+  const D3D_GAP = 1.4; // spacing factor so faces don't touch — lets the ones behind peek through
+  let d3dFaceWidth = window.innerWidth <= 640 ? 210 : 300;
+  let d3dRadius = Math.round((d3dFaceWidth * D3D_GAP) / (2 * Math.tan(Math.PI / D3D_COUNT)));
+  let d3dRotation = 0;
   let d3dActive = 0;
   let d3dLang = 'es';
   let d3dDragging = false;
   let d3dDragged = false;
   let d3dStartX = 0;
-  let d3dStartIndex = 0;
+  let d3dStartRotation = 0;
   let d3dLastX = 0;
   let d3dLastT = 0;
   let d3dVelocity = 0;
@@ -1033,6 +1031,7 @@
   DISHES_3D.forEach((d, i) => {
     const face = document.createElement('div');
     face.className = 'dish3d-face';
+    face.style.transform = `rotateY(${i * D3D_ANGLE}deg) translateZ(${d3dRadius}px)`;
     face.innerHTML = `<img src="${d.img}" alt="${d.alt}" loading="lazy"><span class="fname"></span>`;
     face.addEventListener('click', () => { if (!d3dDragged) dish3dGoTo(i); });
     d3dCyl.appendChild(face);
@@ -1045,21 +1044,10 @@
   });
   const d3dDots = Array.from(d3dDotsWrap.children);
 
-  function d3dLayout(){
-    const spacing = d3dFaceWidth * D3D_SPACING_FACTOR;
-    d3dFaces.forEach((f, i) => {
-      let offset = i - d3dIndex;
-      if (offset > D3D_COUNT / 2) offset -= D3D_COUNT;
-      if (offset < -D3D_COUNT / 2) offset += D3D_COUNT;
-      const abs = Math.abs(offset);
-      const sign = offset === 0 ? 0 : (offset > 0 ? 1 : -1);
-      f.style.transform = `translateX(${offset * spacing}px) translateZ(${-abs * D3D_DEPTH}px) rotateY(${sign * D3D_TILT}deg)`;
-      f.style.opacity = abs > 3.3 ? '0' : '1';
-      f.style.zIndex = String(Math.round((10 - abs) * 10));
-    });
-    const nearest = ((Math.round(d3dIndex) % D3D_COUNT) + D3D_COUNT) % D3D_COUNT;
-    d3dFaces.forEach((f, i) => f.classList.toggle('active', i === nearest));
-    d3dDots.forEach((el, i) => el.classList.toggle('active', i === nearest));
+  function dish3dRender(){
+    d3dCyl.style.transform = `rotateY(${-d3dRotation}deg)`;
+    d3dFaces.forEach((f, i) => f.classList.toggle('active', i === d3dActive));
+    d3dDots.forEach((el, i) => el.classList.toggle('active', i === d3dActive));
   }
   function dish3dUpdateText(){
     d3dFaces.forEach((f, i) => {
@@ -1070,8 +1058,8 @@
   }
   function dish3dGoTo(i){
     d3dActive = ((i % D3D_COUNT) + D3D_COUNT) % D3D_COUNT;
-    d3dIndex = d3dActive;
-    d3dLayout();
+    d3dRotation = d3dActive * D3D_ANGLE;
+    dish3dRender();
     dish3dUpdateText();
   }
   function buildDishes3D(lang){ d3dLang = lang; dish3dUpdateText(); }
@@ -1081,7 +1069,7 @@
 
   function d3dPointerDown(x){
     d3dDragging = true; d3dDragged = false;
-    d3dStartX = x; d3dStartIndex = d3dIndex;
+    d3dStartX = x; d3dStartRotation = d3dRotation;
     d3dLastX = x; d3dLastT = performance.now(); d3dVelocity = 0;
     d3dCyl.classList.add('dragging');
   }
@@ -1089,9 +1077,8 @@
     if (!d3dDragging) return;
     const delta = x - d3dStartX;
     if (Math.abs(delta) > 4) d3dDragged = true;
-    const spacing = d3dFaceWidth * D3D_SPACING_FACTOR;
-    d3dIndex = d3dStartIndex - delta / spacing;
-    d3dLayout();
+    d3dRotation = d3dStartRotation - delta * 0.4;
+    d3dCyl.style.transform = `rotateY(${-d3dRotation}deg)`;
     const now = performance.now();
     const dt = now - d3dLastT;
     if (dt > 0) d3dVelocity = (x - d3dLastX) / dt;
@@ -1101,9 +1088,9 @@
     if (!d3dDragging) return;
     d3dDragging = false;
     d3dCyl.classList.remove('dragging');
-    const spacing = d3dFaceWidth * D3D_SPACING_FACTOR;
-    const projected = d3dIndex - (d3dVelocity * 140) / spacing;
-    dish3dGoTo(Math.round(projected));
+    // project a bit further using release velocity, like a real slide with inertia
+    const projected = d3dRotation - d3dVelocity * 90 * 0.4;
+    dish3dGoTo(Math.round(projected / D3D_ANGLE));
     setTimeout(() => { d3dDragged = false; }, 50);
   }
   d3dCyl.addEventListener('pointerdown', (e) => d3dPointerDown(e.clientX));
@@ -1111,14 +1098,15 @@
   window.addEventListener('pointerup', d3dPointerUp);
 
   window.addEventListener('resize', () => {
-    const nfw = window.innerWidth <= 640 ? 190 : 280;
+    const nfw = window.innerWidth <= 640 ? 210 : 300;
     if (nfw !== d3dFaceWidth) {
       d3dFaceWidth = nfw;
-      d3dLayout();
+      d3dRadius = Math.round((d3dFaceWidth * D3D_GAP) / (2 * Math.tan(Math.PI / D3D_COUNT)));
+      d3dFaces.forEach((f, i) => { f.style.transform = `rotateY(${i * D3D_ANGLE}deg) translateZ(${d3dRadius}px)`; });
     }
   });
 
-  d3dLayout();
+  dish3dRender();
 
   const marqueeTrack = document.getElementById('marquee-track');
   function buildMarquee(lang) {
