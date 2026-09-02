@@ -194,6 +194,22 @@
   }
   .taberna-strip.visible p .gold::after{clip-path:inset(0 0 0 0);}
 
+  /* cita destacada rotativa (reseñas reales, texto literal) */
+  .pq-band{padding:64px 24px; border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:oklch(0.13 0.014 45 / 0.5);}
+  @media(min-width:768px){ .pq-band{padding:80px 24px;} }
+  .pq-stage{position:relative; max-width:760px; margin:26px auto 0; transition:height 420ms cubic-bezier(.16,1,.3,1);}
+  .pq-item{position:absolute; inset:0 0 auto 0; opacity:0; transform:translateY(8px); transition:opacity 700ms ease, transform 700ms cubic-bezier(.16,1,.3,1); pointer-events:none;}
+  .pq-item.on{opacity:1; transform:none; pointer-events:auto;}
+  .pq-quote{font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.5rem; line-height:1.45; color:var(--foreground); text-wrap:balance;}
+  @media(min-width:768px){ .pq-quote{font-size:2.1rem;} }
+  .pq-quote .qm{color:var(--gold); opacity:0.75;}
+  .pq-cite{margin-top:18px; display:inline-flex; align-items:center; gap:8px; font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold-soft); font-style:normal;}
+  .pq-cite svg{width:14px; height:14px; flex-shrink:0;}
+  .pq-dots{margin-top:26px; display:flex; justify-content:center; gap:7px;}
+  .pq-dots button{width:6px; height:6px; padding:0; border:none; border-radius:50%; background:oklch(0.72 0.02 80 / 0.3); transition:all 300ms ease; cursor:pointer;}
+  .pq-dots button.active{background:var(--gold); width:16px; border-radius:3px;}
+  @media(prefers-reduced-motion: reduce){ .pq-item{transition:opacity 200ms ease;} .pq-stage{transition:none;} }
+
   /* interactive spotlight cursor */
   .spot{position:relative; isolation:isolate;}
   .spot::before{content:'';position:absolute; inset:-1px; z-index:-1; pointer-events:none; opacity:0; transition:opacity 350ms ease; border-radius:inherit;
@@ -593,6 +609,17 @@
       </div>
     </div>
   </section>
+
+  <!-- Cita destacada: fragmentos LITERALES de reseñas reales de Google. El texto
+       sale del array `reviews` y se verifica en tiempo de ejecución (ver buildPullQuotes):
+       si una cita no aparece tal cual en su reseña, no se muestra. -->
+  <div class="pq-band reveal" id="pq-band">
+    <div class="wrap center">
+      <p class="eyebrow" data-i18n="pq.eyebrow">Lo que dicen en Google</p>
+      <div class="pq-stage" id="pq-stage"></div>
+      <div class="pq-dots" id="pq-dots"></div>
+    </div>
+  </div>
 
   <section id="platos">
     <div class="wrap">
@@ -1229,6 +1256,80 @@
     { name:'Carlos Gesto Rodríguez', rating:5, time:'Hace un año', text:'Fuimos ayer mi pareja y yo. No hay palabras para describir la comida. La tosta de sardina es un espectáculo, con una mermelada de mango súper sabrosa.' }
   ];
 
+  // ---- cita destacada rotativa -------------------------------------------
+  // Cada cita es un fragmento LITERAL de una reseña real del array `reviews`.
+  // Antes de pintar nada se comprueba que el fragmento aparezca tal cual en la
+  // reseña de esa persona: si alguien edita el array y la cita deja de coincidir,
+  // se descarta en vez de mostrar palabras que nadie escribió.
+  const PULL_QUOTES = [
+    { name:'igone2605', quote:'Todo exquisito, buen producto y excelentes recomendaciones, Yolanda un amor.' },
+    { name:'ALBERTO de Miguel', quote:'Un sitio muy pequeño en cuanto a espacio pero grande en cuanto a sabores.' },
+    { name:'Carlos Gesto Rodríguez', quote:'No hay palabras para describir la comida.' },
+    { name:'claudia molina', quote:'Increíble sinceramente, son encantadores y la comida es una locura.' },
+  ];
+
+  const pqStage = document.getElementById('pq-stage');
+  const pqDots = document.getElementById('pq-dots');
+  let pqItems = [];
+  let pqIndex = 0;
+  let pqTimer = null;
+
+  function buildPullQuotes() {
+    if (!pqStage) return;
+    const verified = PULL_QUOTES.filter(pq => {
+      const source = reviews.find(r => r.name === pq.name);
+      if (!source || !source.text.includes(pq.quote)) {
+        console.warn('Cita descartada (no coincide literalmente con la reseña):', pq.name);
+        return false;
+      }
+      return true;
+    });
+    if (!verified.length) { pqStage.closest('.pq-band').style.display = 'none'; return; }
+
+    const gmark = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>';
+
+    pqStage.innerHTML = verified.map((pq, i) => `
+      <figure class="pq-item${i === 0 ? ' on' : ''}">
+        <blockquote class="pq-quote"><span class="qm">“</span>${pq.quote}<span class="qm">”</span></blockquote>
+        <figcaption class="pq-cite">${gmark}${pq.name}</figcaption>
+      </figure>`).join('');
+    pqDots.innerHTML = verified.map((pq, i) =>
+      `<button type="button" class="${i === 0 ? 'active' : ''}" aria-label="Cita ${i + 1}"></button>`).join('');
+
+    pqItems = Array.from(pqStage.querySelectorAll('.pq-item'));
+    const dotEls = Array.from(pqDots.children);
+    dotEls.forEach((d, i) => d.addEventListener('click', () => { pqGoTo(i); restartPqTimer(); }));
+
+    // el escenario es de posición absoluta: fija su alto al de la cita más larga
+    // para que el fundido no dé saltos de maquetación
+    const sizeStage = () => {
+      const tallest = pqItems.reduce((max, el) => Math.max(max, el.offsetHeight), 0);
+      pqStage.style.height = tallest + 'px';
+    };
+    sizeStage();
+    window.addEventListener('resize', sizeStage);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeStage);
+  }
+
+  function pqGoTo(i) {
+    if (!pqItems.length) return;
+    pqIndex = ((i % pqItems.length) + pqItems.length) % pqItems.length;
+    pqItems.forEach((el, n) => el.classList.toggle('on', n === pqIndex));
+    Array.from(pqDots.children).forEach((el, n) => el.classList.toggle('active', n === pqIndex));
+  }
+  function restartPqTimer() {
+    if (pqTimer) clearInterval(pqTimer);
+    const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (still || pqItems.length < 2) return;
+    pqTimer = setInterval(() => pqGoTo(pqIndex + 1), 6500);
+  }
+  buildPullQuotes();
+  restartPqTimer();
+  if (pqStage) {
+    pqStage.addEventListener('mouseenter', () => { if (pqTimer) clearInterval(pqTimer); });
+    pqStage.addEventListener('mouseleave', restartPqTimer);
+  }
+
   // rating distribution (real, computed from the data above)
   const rdWrap = document.getElementById('rd-wrap');
   const dist = [5,4,3,2,1].map(star => reviews.filter(r => r.rating === star).length);
@@ -1341,6 +1442,7 @@
       'dishes.eyebrow':'Los de siempre','dishes.title1':'Platos que no cambian','dishes.title2':'porque no hace falta',
       'm.miniburger':'Miniburger "demamáluis" (1 ud.)','m.tostaSolomillo':'Tosta de solomillo, queso de vaca y pimiento asado','m.tostaRaxo':'Tosta de raxo, queso curado de oveja y mermelada de pimiento','m.tostaBacalao':'Tosta de bacalao ahumado y tomate confitado','m.tostaSardina':'Tosta de sardina ahumada, tomate asado y mermelada de mango','m.croquetas':'Croquetas "da Carmen" (6 ud.)','m.empanada':'Porción de empanada (1 ud.)','m.tortilla':'Media tortilla española','m.vieiras':'Vieiras a la plancha (6 ud.)','m.postre1':'Postre casero','m.pan1':'Ración de pan de Cea',
       'm.half':'1/2 ración','m.full':'Ración','m.caldeiro':'Carne ao caldeiro','m.lacon':'Lacón con grelos','m.oreja':'Ración de Oreja Cocida','m.carpaccio':'Carpaccio de cachucha','m.pulpoFeira':'Pulpo á feira','m.mejillones':'Mejillones Tigre (8 uds.)','m.boquerones':'Boquerones a la vinagreta','m.champis':'Champiñones "demamáluis"','m.ensalada':'Ensalada de tomate','m.ensaladaVentresca':'Ensalada de tomate con ventresca','m.zorza':'Zorza "da Julia"','m.morunitos':'Morunitos "depapáluis" (6 ud.)','m.postre2':'Postre casero','m.pan2':'Ración de pan de Cea',
+      'pq.eyebrow':'Lo que dicen en Google',
       'reviews.badge':'Reseñas reales, tal cual se escribieron en Google — pulsa una tarjeta para verla en Google',
       'rcf.all':'Todas','rcf.recent':'Más recientes',
       'value1':'Producto de la huerta propia','value2':'Trato de familia, sin prisa','value3':'Vino de la zona, cada día distinto',
@@ -1406,6 +1508,7 @@
       'dishes.eyebrow':'Os de sempre','dishes.title1':'Pratos que non cambian','dishes.title2':'porque non fai falta',
       'm.miniburger':'Miniburger "demamáluis" (1 ud.)','m.tostaSolomillo':'Torrada de lombo, queixo de vaca e pemento asado','m.tostaRaxo':'Torrada de raxo, queixo curado de ovella e marmelada de pemento','m.tostaBacalao':'Torrada de bacallau afumado e tomate confitado','m.tostaSardina':'Torrada de sardiña afumada, tomate asado e marmelada de mango','m.croquetas':'Croquetas "da Carmen" (6 ud.)','m.empanada':'Porción de empanada (1 ud.)','m.tortilla':'Media tortilla española','m.vieiras':'Vieiras á prancha (6 ud.)','m.postre1':'Sobremesa caseira','m.pan1':'Ración de pan de Cea',
       'm.half':'1/2 ración','m.full':'Ración','m.caldeiro':'Carne ao caldeiro','m.lacon':'Lacón con grelos','m.oreja':'Ración de Orella Cocida','m.carpaccio':'Carpaccio de cachucha','m.pulpoFeira':'Polbo á feira','m.mejillones':'Mexillóns Tigre (8 uds.)','m.boquerones':'Boqueróns en vinagre','m.champis':'Champiñóns "demamáluis"','m.ensalada':'Ensalada de tomate','m.ensaladaVentresca':'Ensalada de tomate con ventresca','m.zorza':'Zorza "da Julia"','m.morunitos':'Morunitos "depapáluis" (6 ud.)','m.postre2':'Sobremesa caseira','m.pan2':'Ración de pan de Cea',
+      'pq.eyebrow':'O que din en Google',
       'reviews.badge':'Reseñas reais, tal cual se escribiron en Google — preme nunha tarxeta para vela en Google',
       'rcf.all':'Todas','rcf.recent':'Máis recentes',
       'value1':'Produto da horta propia','value2':'Trato de familia, sen présa','value3':'Viño da zona, cada día distinto',
@@ -1471,6 +1574,7 @@
       'dishes.eyebrow':'The regulars','dishes.title1':'Dishes that do not change','dishes.title2':'because they do not need to',
       'm.miniburger':'"Demamáluis" mini burger (1 pc.)','m.tostaSolomillo':'Sirloin toast with cow cheese and roasted pepper','m.tostaRaxo':'Marinated pork toast with cured sheep cheese and pepper jam','m.tostaBacalao':'Smoked cod toast with confit tomato','m.tostaSardina':'Smoked sardine toast with roasted tomato and mango jam','m.croquetas':'"Da Carmen" croquettes (6 pcs.)','m.empanada':'Slice of empanada (1 pc.)','m.tortilla':'Half Spanish tortilla','m.vieiras':'Grilled scallops (6 pcs.)','m.postre1':'Homemade dessert','m.pan1':'Cea bread',
       'm.half':'Half portion','m.full':'Full portion','m.caldeiro':'Slow-cooked meat "ao caldeiro"','m.lacon':'Pork shoulder with turnip greens','m.oreja':'Boiled pig ear','m.carpaccio':'Pork cheek carpaccio','m.pulpoFeira':'Galician-style octopus','m.mejillones':'Spicy mussels "Tigre" (8 pcs.)','m.boquerones':'Vinegar-marinated anchovies','m.champis':'"Demamáluis" mushrooms','m.ensalada':'Tomato salad','m.ensaladaVentresca':'Tomato salad with tuna belly','m.zorza':'"Da Julia" marinated pork','m.morunitos':'"Depapáluis" pork skewers (6 pcs.)','m.postre2':'Homemade dessert','m.pan2':'Cea bread',
+      'pq.eyebrow':'What they say on Google',
       'reviews.badge':'Real reviews, shown exactly as written on Google — tap a card to see it on Google',
       'rcf.all':'All','rcf.recent':'Most recent',
       'value1':'Produce from our own garden','value2':'Family treatment, no rush','value3':'Local wine, different every day',
