@@ -965,12 +965,8 @@
   </div>
   </div>
 
-  <div class="bot-chips" id="bot-chips">
-    <button type="button" class="bot-chip spot" data-i18n="bot.chip1">¿Qué me recomiendas para compartir?</button>
-    <button type="button" class="bot-chip spot" data-i18n="bot.chip2">Tengo alergia al gluten, ¿qué puedo pedir?</button>
-    <button type="button" class="bot-chip spot" data-i18n="bot.chip3">¿Tenéis terraza? ¿Hay que reservar?</button>
-    <button type="button" class="bot-chip spot" data-i18n="bot.chip4">Recomiéndame algo con pescado</button>
-  </div>
+  <!-- las sugerencias las pinta buildBotChips() según la hora real de Ourense -->
+  <div class="bot-chips" id="bot-chips"></div>
 
   <form class="bot-form" id="bot-form">
     <input type="text" id="bot-input" class="bot-input" autocomplete="off" maxlength="300" data-i18n-placeholder="bot.placeholder" placeholder="Escribe tu pregunta...">
@@ -1096,6 +1092,30 @@
     }
   }
   setInterval(() => buildHours(document.documentElement.lang || 'es'), 60000);
+
+  // Sugerencias del camarero según la hora real de Ourense: a mediodía apetece otra
+  // cosa que a las once de la noche, y con el bar cerrado lo primero que se pregunta
+  // es cuándo abrimos. La pregunta de alergias va siempre, que es la que más importa.
+  function botDaypart() {
+    const now = madridNow();
+    const h = now.getHours() + now.getMinutes() / 60;
+    if (h >= 12 && h < 16) return 'Lunch';
+    if (h >= 20 && h < 24) return 'Dinner';
+    return 'Off';
+  }
+  function buildBotChips(lang) {
+    const wrap = document.getElementById('bot-chips');
+    if (!wrap) return;
+    const part = botDaypart();
+    const keys = [`bot.chip${part}1`, `bot.chip${part}2`, `bot.chip${part}3`, 'bot.chipAllergy'];
+    wrap.innerHTML = keys
+      .map(k => (dict[lang] && dict[lang][k]) || '')
+      .filter(Boolean)
+      .map(txt => `<button type="button" class="bot-chip spot">${txt}</button>`)
+      .join('');
+  }
+  // si alguien deja la pestaña abierta y cambia el tramo horario, se actualizan solas
+  setInterval(() => buildBotChips(document.documentElement.lang || 'es'), 60000);
 
   // dishes — 3D rotating carousel (replaces the old 7-card grid: same photos and
   // copy, far less vertical space and scroll)
@@ -1605,7 +1625,10 @@
       'faq.q4':'¿Tenéis información de alérgenos?','faq.a4':'Sí, en la carta hay iconos orientativos por plato según ingredientes habituales — confirma siempre en barra.',
       'bot.title':'Camarero virtual','bot.subtitle':'Te recomienda y resuelve dudas de la carta',
       'bot.greeting':'¡Hola! Soy el camarero virtual de Demamáluis · Depapáluis. Pregúntame por la carta, alergias o si tenemos terraza — te recomiendo encantado.',
-      'bot.chip1':'¿Qué me recomiendas para compartir?','bot.chip2':'Tengo alergia al gluten, ¿qué puedo pedir?','bot.chip3':'¿Tenéis terraza? ¿Hay que reservar?','bot.chip4':'Recomiéndame algo con pescado',
+      'bot.chipLunch1':'¿Qué me recomiendas para compartir?','bot.chipLunch2':'Algo ligero para comer hoy','bot.chipLunch3':'¿Cuál es la tapa de la casa?',
+      'bot.chipDinner1':'Vengo a cenar, ¿qué me pongo?','bot.chipDinner2':'¿Qué vino habéis abierto hoy?','bot.chipDinner3':'Algo para picar con la copa',
+      'bot.chipOff1':'¿A qué hora abrís hoy?','bot.chipOff2':'¿Tenéis terraza? ¿Hay que reservar?','bot.chipOff3':'¿Qué es lo que más pide la gente?',
+      'bot.chipAllergy':'Tengo alergia al gluten, ¿qué puedo pedir?',
       'bot.placeholder':'Escribe tu pregunta...',
       'bot.error':'Se me ha ido el santo al cielo — prueba otra vez en un momento o pregunta directamente en barra.',
       'bot.badge':'¿No sabes qué pedir? ¡Pregúntale al camarero!',
@@ -1677,7 +1700,10 @@
       'faq.q4':'Tedes información de alérxenos?','faq.a4':'Si, na carta hai iconas orientativas por prato segundo ingredientes habituais — confirma sempre na barra.',
       'bot.title':'Camareiro virtual','bot.subtitle':'Recoméndache e resolve dúbidas da carta',
       'bot.greeting':'Ola! Son o camareiro virtual de Demamáluis · Depapáluis. Pregúntame pola carta, alerxias ou se temos terraza — recoméndoche encantado.',
-      'bot.chip1':'Que me recomendas para compartir?','bot.chip2':'Teño alerxia ao glute, que podo pedir?','bot.chip3':'Tedes terraza? Hai que reservar?','bot.chip4':'Recoméndame algo con peixe',
+      'bot.chipLunch1':'Que me recomendas para compartir?','bot.chipLunch2':'Algo lixeiro para comer hoxe','bot.chipLunch3':'Cal é a tapa da casa?',
+      'bot.chipDinner1':'Veño cear, que me poño?','bot.chipDinner2':'Que viño abristes hoxe?','bot.chipDinner3':'Algo para picar coa copa',
+      'bot.chipOff1':'A que hora abrides hoxe?','bot.chipOff2':'Tedes terraza? Hai que reservar?','bot.chipOff3':'Que é o que máis pide a xente?',
+      'bot.chipAllergy':'Teño alerxia ao glute, que podo pedir?',
       'bot.placeholder':'Escribe a túa pregunta...',
       'bot.error':'Foiseme o santo ao ceo — proba de novo nun momento ou pregunta directamente na barra.',
       'bot.badge':'Non sabes que pedir? Pregúntalle ao camareiro!',
@@ -1749,7 +1775,10 @@
       'faq.q4':'Do you have allergen information?','faq.a4':'Yes, the menu has indicative icons per dish based on typical ingredients — always confirm at the bar.',
       'bot.title':'Virtual waiter','bot.subtitle':'Recommends dishes and answers menu questions',
       'bot.greeting':'Hi! I\'m the virtual waiter at Demamáluis · Depapáluis. Ask me about the menu, allergies, or the terrace — happy to recommend something.',
-      'bot.chip1':'What do you recommend to share?','bot.chip2':'I\'m gluten intolerant, what can I have?','bot.chip3':'Do you have a terrace? Do I need to book?','bot.chip4':'Recommend something with fish',
+      'bot.chipLunch1':'What do you recommend to share?','bot.chipLunch2':'Something light for lunch','bot.chipLunch3':'What is the house tapa?',
+      'bot.chipDinner1':'I am here for dinner — what should I get?','bot.chipDinner2':'What wine did you open today?','bot.chipDinner3':'Something to nibble with a drink',
+      'bot.chipOff1':'What time do you open today?','bot.chipOff2':'Do you have a terrace? Do I need to book?','bot.chipOff3':'What do people order most?',
+      'bot.chipAllergy':'I am gluten intolerant — what can I have?',
       'bot.placeholder':'Type your question...',
       'bot.error':'Lost my train of thought — try again in a moment, or just ask at the bar.',
       'bot.badge':'Not sure what to order? Ask our virtual waiter!',
@@ -1776,11 +1805,13 @@
     buildMarquee(lang);
     buildHours(lang);
     buildDishes3D(lang);
+    buildBotChips(lang);
   }
   langButtons.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
   buildMarquee('es');
   buildHours('es');
   buildDishes3D('es');
+  buildBotChips('es');
 
   // scroll progress bar
   const progressBar = document.getElementById('scroll-progress');
