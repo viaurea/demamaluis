@@ -218,6 +218,16 @@
   @media(min-width:768px){ .sec-title{font-size:3.7rem;} }
   .sec-title .gold{color:var(--gold); display:block; font-size:3rem;}
   @media(min-width:768px){ .sec-title .gold{font-size:3.7rem;} }
+  /* la de Ubicación va en serif, no manuscrita: pide un cuerpo algo menor */
+  .sec-title-serif{font-family:'Cormorant Garamond',serif; font-size:2.6rem;}
+  @media(min-width:768px){ .sec-title-serif{font-size:3.1rem;} }
+  /* en móvil los títulos manuscritos se comían media pantalla y rompían el ritmo del scroll */
+  @media(max-width:600px){
+    .sec-title, .sec-title .gold{font-size:2.3rem;}
+    .sec-title-serif{font-size:2.1rem;}
+    .about-grid h2, .ig-section h2{font-size:2.6rem;}
+    .foot-inner .script{font-size:2.1rem;}
+  }
 
   /* dishes — 3D rotating carousel */
   .dish3d-stage{margin-top:56px; perspective:3800px;}
@@ -438,7 +448,9 @@
   @media(max-width:767px){ .bot-toggle.cta-up{bottom:calc(90px + env(safe-area-inset-bottom));} .bot-badge.cta-up{bottom:calc(94px + env(safe-area-inset-bottom));} }
   @media(min-width:768px){ .bot-toggle{left:24px; bottom:24px; width:58px; height:58px;} .bot-toggle svg{width:27px; height:27px;} }
 
-  .bot-badge{position:fixed; left:72px; bottom:20px; z-index:57; background:var(--gold); color:var(--primary-foreground); font-size:0.82rem; font-weight:600; line-height:1.35; padding:8px 14px; border-radius:10px; box-shadow:var(--shadow-warm); max-width:200px; pointer-events:none; opacity:0; transform:translateX(-8px); animation:badgeIn 600ms 1.5s ease forwards;}
+  .bot-badge{position:fixed; left:72px; bottom:20px; z-index:57; background:var(--gold); color:var(--primary-foreground); font-size:0.82rem; font-weight:600; line-height:1.35; padding:8px 30px 8px 14px; border-radius:10px; box-shadow:var(--shadow-warm); max-width:200px; cursor:pointer; opacity:0; transform:translateX(-8px); animation:badgeIn 600ms 1.5s ease forwards;}
+  .bot-badge .badge-x{position:absolute; top:4px; right:6px; width:18px; height:18px; display:flex; align-items:center; justify-content:center; font-size:0.95rem; line-height:1; opacity:0.55;}
+  .bot-badge:hover .badge-x{opacity:1;}
   .bot-badge::before{content:''; position:absolute; left:-6px; top:50%; translate:0 -50%; border:6px solid transparent; border-right-color:var(--gold);}
   .bot-badge.hide{opacity:0!important; transition:opacity 400ms ease;}
   @keyframes badgeIn{to{opacity:1; transform:none;}}
@@ -620,7 +632,7 @@
     <div class="wrap">
       <div class="reveal center">
         <p class="eyebrow" data-i18n="menu.eyebrow">La carta</p>
-        <h2 class="script sec-title" style="font-size:3.5rem;" data-i18n="menu.title">Dos caras, una misma casa</h2>
+        <h2 class="script sec-title" data-i18n="menu.title">Dos caras, una misma casa</h2>
         <div class="hairline center" style="margin-top:32px; width:160px;"></div>
       </div>
 
@@ -752,7 +764,7 @@
     <div class="wrap">
       <div class="reveal center">
         <p class="eyebrow" data-i18n="location.eyebrow">Dónde estamos</p>
-        <h2 class="sec-title" style="font-family:'Cormorant Garamond',serif; font-size:2.6rem;" data-i18n="location.title">En pleno Casco Antiguo</h2>
+        <h2 class="sec-title sec-title-serif" data-i18n="location.title">En pleno Casco Antiguo</h2>
         <div class="hairline center" style="margin-top:32px; width:160px;"></div>
       </div>
 
@@ -837,7 +849,7 @@
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="4"/><path d="M12 8V4"/><circle cx="12" cy="3" r="1.4" fill="currentColor" stroke="none"/><circle cx="9" cy="14" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="14" r="1.3" fill="currentColor" stroke="none"/><path d="M2 13v3M22 13v3"/></svg>
 </button>
 
-<div class="bot-badge" id="bot-badge" aria-hidden="true"><span data-i18n="bot.badge">¿No sabes qué pedir? ¡Pregúntale al camarero!</span></div>
+<div class="bot-badge" id="bot-badge" role="button" tabindex="0" aria-label="Cerrar aviso del camarero virtual"><span data-i18n="bot.badge">¿No sabes qué pedir? ¡Pregúntale al camarero!</span><span class="badge-x" aria-hidden="true">×</span></div>
 
 <div class="bot-panel" id="bot-panel" role="dialog" aria-modal="false" aria-labelledby="bot-title">
   <div class="bot-head">
@@ -1584,10 +1596,32 @@
     const input = document.getElementById('bot-input');
     const sendBtn = document.getElementById('bot-send');
 
+    // Aviso de entrada del camarero: se cierra a mano, al abrir el chat, al hacer
+    // scroll (ya cumplió su función) o solo. Una vez visto, no reaparece en la sesión.
     const badge = document.getElementById('bot-badge');
-    function hideBadge(){ badge.classList.add('hide'); }
-    toggle.addEventListener('click', hideBadge);
-    setTimeout(hideBadge, 8000);
+    const BADGE_KEY = 'dm_badge_dismissed';
+    let badgeGone = false;
+    function hideBadge(){
+      if (badgeGone) return;
+      badgeGone = true;
+      badge.classList.add('hide');
+      try { sessionStorage.setItem(BADGE_KEY, '1'); } catch (e) {}
+    }
+    let badgeSeen = false;
+    try { badgeSeen = sessionStorage.getItem(BADGE_KEY) === '1'; } catch (e) {}
+    if (badgeSeen) {
+      badge.classList.add('hide');
+      badgeGone = true;
+    } else {
+      badge.addEventListener('click', hideBadge);
+      badge.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hideBadge(); }
+      });
+      toggle.addEventListener('click', hideBadge);
+      setTimeout(hideBadge, 8000);
+      // en cuanto el visitante empieza a bajar, el aviso estorba más que ayuda
+      window.addEventListener('scroll', () => { if (window.scrollY > 60) hideBadge(); }, { passive: true });
+    }
 
     let history = [];
     let busy = false;
@@ -1728,12 +1762,24 @@
   })();
 
   // page fade-in + hero entrance
-  window.addEventListener('load', () => {
+  // Antes esperaba al evento 'load' (es decir, a que cargara hasta la última imagen),
+  // lo que dejaba la página en blanco de más con conexión lenta. Ahora entra en cuanto
+  // el DOM está listo, con red de seguridad por si algo se atasca.
+  function revealPage(){
+    if (!document.body.classList.contains('preload')) return;
     document.body.classList.remove('preload');
     requestAnimationFrame(() => {
-      document.querySelector('.hero-inner').classList.add('hero-in');
+      const heroInner = document.querySelector('.hero-inner');
+      if (heroInner) heroInner.classList.add('hero-in');
     });
-  });
+  }
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    requestAnimationFrame(revealPage);
+  } else {
+    document.addEventListener('DOMContentLoaded', revealPage);
+  }
+  window.addEventListener('load', revealPage);
+  setTimeout(revealPage, 2000);
 </script>
 
 </body>
