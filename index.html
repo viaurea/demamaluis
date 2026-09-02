@@ -194,6 +194,22 @@
   }
   .taberna-strip.visible p .gold::after{clip-path:inset(0 0 0 0);}
 
+  /* tira de ambiente — fotos reales del local, scroll-snap horizontal */
+  .amb-rail{margin-top:44px; display:flex; gap:16px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; padding-bottom:4px; -webkit-overflow-scrolling:touch; scrollbar-width:none;}
+  .amb-rail::-webkit-scrollbar{display:none;}
+  .amb-item{flex:0 0 84%; scroll-snap-align:center; border-radius:8px; overflow:hidden; border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.45); transition:border-color 300ms ease;}
+  @media(min-width:700px){ .amb-item{flex-basis:47%; scroll-snap-align:start;} }
+  @media(min-width:1024px){ .amb-item{flex-basis:31.6%;} }
+  .amb-item:hover{border-color:oklch(0.76 0.1 79 / 0.4);}
+  .amb-item img{width:100%; height:220px; object-fit:cover; filter:contrast(1.05) saturate(1.02) brightness(0.9);}
+  @media(min-width:768px){ .amb-item img{height:250px;} }
+  .amb-item figcaption{padding:14px 16px; font-size:0.85rem; line-height:1.55; color:var(--muted-foreground);}
+  .amb-nav{margin-top:26px; display:flex; align-items:center; justify-content:center; gap:18px;}
+  .amb-dots{display:flex; gap:7px;}
+  .amb-dots button{width:6px; height:6px; padding:0; border:none; border-radius:50%; background:oklch(0.72 0.02 80 / 0.3); transition:all 300ms ease; cursor:pointer;}
+  .amb-dots button.active{background:var(--gold); width:16px; border-radius:3px;}
+  @media(prefers-reduced-motion: reduce){ .amb-rail{scroll-behavior:auto;} }
+
   /* cita destacada rotativa (reseñas reales, texto literal) */
   .pq-band{padding:64px 24px; border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:oklch(0.13 0.014 45 / 0.5);}
   @media(min-width:768px){ .pq-band{padding:80px 24px;} }
@@ -259,9 +275,10 @@
   @media(max-width:640px){ .dish3d-cylinder{height:260px;} .dish3d-face{width:210px; margin-left:-105px;} }
 
   .dish3d-nav{margin-top:40px; display:flex; align-items:center; justify-content:center; gap:18px;}
-  .dish3d-arrow{width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.5); color:var(--gold); display:flex; align-items:center; justify-content:center; transition:all 300ms ease; flex-shrink:0;}
-  .dish3d-arrow:hover{border-color:var(--gold); background:oklch(0.76 0.1 79 / 0.12);}
-  .dish3d-arrow svg{width:15px; height:15px;}
+  .dish3d-arrow, .amb-arrow{width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:oklch(0.2 0.018 45 / 0.5); color:var(--gold); display:flex; align-items:center; justify-content:center; transition:all 300ms ease; flex-shrink:0;}
+  .dish3d-arrow:hover, .amb-arrow:hover:not(:disabled){border-color:var(--gold); background:oklch(0.76 0.1 79 / 0.12);}
+  .dish3d-arrow svg, .amb-arrow svg{width:15px; height:15px;}
+  .amb-arrow:disabled{opacity:0.28; cursor:default;}
   .dish3d-dots{display:flex; gap:7px;}
   .dish3d-dots span{width:6px; height:6px; border-radius:50%; background:oklch(0.72 0.02 80 / 0.3); transition:all 300ms ease; cursor:pointer;}
   .dish3d-dots span.active{background:var(--gold); width:16px; border-radius:3px;}
@@ -468,8 +485,14 @@
   .bot-badge .badge-x{position:absolute; top:4px; right:6px; width:18px; height:18px; display:flex; align-items:center; justify-content:center; font-size:0.95rem; line-height:1; opacity:0.55;}
   .bot-badge:hover .badge-x{opacity:1;}
   .bot-badge::before{content:''; position:absolute; left:-6px; top:50%; translate:0 -50%; border:6px solid transparent; border-right-color:var(--gold);}
-  .bot-badge.hide{opacity:0!important; transition:opacity 400ms ease;}
+  /* El aviso entra con una animación 'forwards', que Chrome compone en su propia capa:
+     un opacity:0!important NO la cancela y la burbuja se seguía viendo aunque el DOM
+     dijera lo contrario. Para ocultarla hay que sustituir la animación, no pelearse
+     con ella desde la cascada. */
+  .bot-badge.hide{animation:badgeOut 320ms ease forwards!important; pointer-events:none!important;}
+  .bot-badge.gone{display:none!important;}
   @keyframes badgeIn{to{opacity:1; transform:none;}}
+  @keyframes badgeOut{from{opacity:1; transform:none;} to{opacity:0; transform:translateX(-8px);}}
   @media(min-width:768px){ .bot-badge{left:88px; bottom:30px;} }
 
   .bot-panel{position:fixed; z-index:58; left:12px; right:12px; bottom:80px; max-height:min(560px,72vh); display:flex; flex-direction:column; border-radius:14px; border:1px solid var(--border); background:oklch(0.17 0.015 45 / 0.98); backdrop-filter:blur(10px); box-shadow:var(--shadow-warm); opacity:0; transform:translateY(16px) scale(0.98); pointer-events:none; transition:opacity 280ms ease, transform 280ms cubic-bezier(.16,1,.3,1); overflow:hidden;}
@@ -554,6 +577,7 @@
       <a href="#platos" class="spot" data-i18n="nav.dishes">Los de siempre</a>
       <a href="#carta" class="spot" data-i18n="nav.menu">Carta</a>
       <a href="#resenas" class="spot" data-i18n="nav.reviews">Reseñas</a>
+      <a href="#ambiente" class="spot" data-i18n="nav.ambiente">El sitio</a>
       <a href="#ubicacion" class="spot" data-i18n="nav.location">Ubicación</a>
     </nav>
   </div>
@@ -786,6 +810,45 @@
     <svg class="ts-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8l-1 7a3 3 0 0 1-6 0z"/><path d="M12 9v10"/><path d="M8 19h8"/></svg>
     <p data-i18n="panel2">Producto de la tierra, servido <span class="gold">sin prisa</span> — esa es toda la receta.</p>
   </div>
+
+  <section id="ambiente">
+    <div class="wrap">
+      <div class="reveal center">
+        <p class="eyebrow" data-i18n="amb.eyebrow">El sitio</p>
+        <h2 class="script sec-title" data-i18n="amb.title">Así es esto por dentro</h2>
+        <div class="hairline center" style="margin-top:32px; width:160px;"></div>
+      </div>
+
+      <div class="amb-rail reveal" id="amb-rail">
+        <figure class="amb-item">
+          <img src="demamaluis-assets/barra-interior-1.jpg" alt="Barra de Demamáluis con copas colgadas del techo, botellas de vino y una cubitera" loading="lazy" width="576" height="378">
+          <figcaption data-i18n="amb.cap1">Detrás de la barra: las copas colgadas y el vino que toque ese día.</figcaption>
+        </figure>
+        <figure class="amb-item">
+          <img src="demamaluis-assets/barra-interior-2.jpg" alt="Interior de Demamáluis con un cliente sentado en un taburete frente a la barra" loading="lazy" width="576" height="378">
+          <figcaption data-i18n="amb.cap2">Sitio en la barra, que es donde mejor se está.</figcaption>
+        </figure>
+        <figure class="amb-item">
+          <img src="demamaluis-assets/pinchos-terraza.jpg" alt="Pinchos de champiñón con gamba y una caña en una mesa de la terraza, con la calle del Casco Antiguo detrás" loading="lazy" width="554" height="554">
+          <figcaption data-i18n="amb.cap3">En la terraza, con el Casco Antiguo pasando por delante.</figcaption>
+        </figure>
+        <figure class="amb-item">
+          <img src="demamaluis-assets/miniburgers-mesa.jpg" alt="Dos miniburguer de la casa en una mesa, con una copa de vino blanco y un vermut" loading="lazy" width="554" height="554">
+          <figcaption data-i18n="amb.cap4">Las miniburguer, que llevan el nombre de la casa por algo.</figcaption>
+        </figure>
+      </div>
+
+      <div class="amb-nav">
+        <button type="button" class="amb-arrow spot" id="amb-prev" aria-label="Foto anterior" aria-controls="amb-rail">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="amb-dots" id="amb-dots"></div>
+        <button type="button" class="amb-arrow spot" id="amb-next" aria-label="Siguiente foto" aria-controls="amb-rail">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
 
   <section id="ubicacion">
     <div class="wrap">
@@ -1256,6 +1319,53 @@
     { name:'Carlos Gesto Rodríguez', rating:5, time:'Hace un año', text:'Fuimos ayer mi pareja y yo. No hay palabras para describir la comida. La tosta de sardina es un espectáculo, con una mermelada de mango súper sabrosa.' }
   ];
 
+  // ---- tira de ambiente ---------------------------------------------------
+  // Carril con scroll-snap nativo: en móvil se pasa con el dedo y en escritorio
+  // con las flechas. Los puntos siguen la posición real del scroll.
+  (function initAmbienteRail(){
+    const rail = document.getElementById('amb-rail');
+    const dotsWrap = document.getElementById('amb-dots');
+    const prev = document.getElementById('amb-prev');
+    const next = document.getElementById('amb-next');
+    if (!rail || !dotsWrap) return;
+
+    const items = Array.from(rail.querySelectorAll('.amb-item'));
+    if (!items.length) return;
+
+    dotsWrap.innerHTML = items.map((_, i) =>
+      `<button type="button" class="${i === 0 ? 'active' : ''}" aria-label="Foto ${i + 1}"></button>`).join('');
+    const dots = Array.from(dotsWrap.children);
+
+    const step = () => {
+      const gap = parseFloat(getComputedStyle(rail).gap) || 16;
+      return items[0].offsetWidth + gap;
+    };
+    const nearest = () => Math.round(rail.scrollLeft / step());
+
+    function syncState(){
+      const i = Math.max(0, Math.min(items.length - 1, nearest()));
+      dots.forEach((d, n) => d.classList.toggle('active', n === i));
+      // margen de 2px: los navegadores no siempre llegan al píxel exacto
+      prev.disabled = rail.scrollLeft <= 2;
+      next.disabled = rail.scrollLeft >= rail.scrollWidth - rail.clientWidth - 2;
+    }
+
+    prev.addEventListener('click', () => rail.scrollBy({ left: -step(), behavior: 'smooth' }));
+    next.addEventListener('click', () => rail.scrollBy({ left: step(), behavior: 'smooth' }));
+    dots.forEach((d, i) => d.addEventListener('click', () => {
+      rail.scrollTo({ left: i * step(), behavior: 'smooth' });
+    }));
+
+    let ticking = false;
+    rail.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { syncState(); ticking = false; });
+    }, { passive: true });
+    window.addEventListener('resize', syncState);
+    syncState();
+  })();
+
   // ---- cita destacada rotativa -------------------------------------------
   // Cada cita es un fragmento LITERAL de una reseña real del array `reviews`.
   // Antes de pintar nada se comprueba que el fragmento aparezca tal cual en la
@@ -1443,6 +1553,12 @@
       'm.miniburger':'Miniburger "demamáluis" (1 ud.)','m.tostaSolomillo':'Tosta de solomillo, queso de vaca y pimiento asado','m.tostaRaxo':'Tosta de raxo, queso curado de oveja y mermelada de pimiento','m.tostaBacalao':'Tosta de bacalao ahumado y tomate confitado','m.tostaSardina':'Tosta de sardina ahumada, tomate asado y mermelada de mango','m.croquetas':'Croquetas "da Carmen" (6 ud.)','m.empanada':'Porción de empanada (1 ud.)','m.tortilla':'Media tortilla española','m.vieiras':'Vieiras a la plancha (6 ud.)','m.postre1':'Postre casero','m.pan1':'Ración de pan de Cea',
       'm.half':'1/2 ración','m.full':'Ración','m.caldeiro':'Carne ao caldeiro','m.lacon':'Lacón con grelos','m.oreja':'Ración de Oreja Cocida','m.carpaccio':'Carpaccio de cachucha','m.pulpoFeira':'Pulpo á feira','m.mejillones':'Mejillones Tigre (8 uds.)','m.boquerones':'Boquerones a la vinagreta','m.champis':'Champiñones "demamáluis"','m.ensalada':'Ensalada de tomate','m.ensaladaVentresca':'Ensalada de tomate con ventresca','m.zorza':'Zorza "da Julia"','m.morunitos':'Morunitos "depapáluis" (6 ud.)','m.postre2':'Postre casero','m.pan2':'Ración de pan de Cea',
       'pq.eyebrow':'Lo que dicen en Google',
+      'amb.eyebrow':'El sitio','amb.title':'Así es esto por dentro',
+      'amb.cap1':'Detrás de la barra: las copas colgadas y el vino que toque ese día.',
+      'amb.cap2':'Sitio en la barra, que es donde mejor se está.',
+      'amb.cap3':'En la terraza, con el Casco Antiguo pasando por delante.',
+      'amb.cap4':'Las miniburguer, que llevan el nombre de la casa por algo.',
+      'nav.ambiente':'El sitio',
       'reviews.badge':'Reseñas reales, tal cual se escribieron en Google — pulsa una tarjeta para verla en Google',
       'rcf.all':'Todas','rcf.recent':'Más recientes',
       'value1':'Producto de la huerta propia','value2':'Trato de familia, sin prisa','value3':'Vino de la zona, cada día distinto',
@@ -1509,6 +1625,12 @@
       'm.miniburger':'Miniburger "demamáluis" (1 ud.)','m.tostaSolomillo':'Torrada de lombo, queixo de vaca e pemento asado','m.tostaRaxo':'Torrada de raxo, queixo curado de ovella e marmelada de pemento','m.tostaBacalao':'Torrada de bacallau afumado e tomate confitado','m.tostaSardina':'Torrada de sardiña afumada, tomate asado e marmelada de mango','m.croquetas':'Croquetas "da Carmen" (6 ud.)','m.empanada':'Porción de empanada (1 ud.)','m.tortilla':'Media tortilla española','m.vieiras':'Vieiras á prancha (6 ud.)','m.postre1':'Sobremesa caseira','m.pan1':'Ración de pan de Cea',
       'm.half':'1/2 ración','m.full':'Ración','m.caldeiro':'Carne ao caldeiro','m.lacon':'Lacón con grelos','m.oreja':'Ración de Orella Cocida','m.carpaccio':'Carpaccio de cachucha','m.pulpoFeira':'Polbo á feira','m.mejillones':'Mexillóns Tigre (8 uds.)','m.boquerones':'Boqueróns en vinagre','m.champis':'Champiñóns "demamáluis"','m.ensalada':'Ensalada de tomate','m.ensaladaVentresca':'Ensalada de tomate con ventresca','m.zorza':'Zorza "da Julia"','m.morunitos':'Morunitos "depapáluis" (6 ud.)','m.postre2':'Sobremesa caseira','m.pan2':'Ración de pan de Cea',
       'pq.eyebrow':'O que din en Google',
+      'amb.eyebrow':'O sitio','amb.title':'Así é isto por dentro',
+      'amb.cap1':'Detrás da barra: as copas colgadas e o viño que toque ese día.',
+      'amb.cap2':'Sitio na barra, que é onde mellor se está.',
+      'amb.cap3':'Na terraza, co Casco Vello pasando por diante.',
+      'amb.cap4':'As miniburguer, que levan o nome da casa por algo.',
+      'nav.ambiente':'O sitio',
       'reviews.badge':'Reseñas reais, tal cual se escribiron en Google — preme nunha tarxeta para vela en Google',
       'rcf.all':'Todas','rcf.recent':'Máis recentes',
       'value1':'Produto da horta propia','value2':'Trato de familia, sen présa','value3':'Viño da zona, cada día distinto',
@@ -1575,6 +1697,12 @@
       'm.miniburger':'"Demamáluis" mini burger (1 pc.)','m.tostaSolomillo':'Sirloin toast with cow cheese and roasted pepper','m.tostaRaxo':'Marinated pork toast with cured sheep cheese and pepper jam','m.tostaBacalao':'Smoked cod toast with confit tomato','m.tostaSardina':'Smoked sardine toast with roasted tomato and mango jam','m.croquetas':'"Da Carmen" croquettes (6 pcs.)','m.empanada':'Slice of empanada (1 pc.)','m.tortilla':'Half Spanish tortilla','m.vieiras':'Grilled scallops (6 pcs.)','m.postre1':'Homemade dessert','m.pan1':'Cea bread',
       'm.half':'Half portion','m.full':'Full portion','m.caldeiro':'Slow-cooked meat "ao caldeiro"','m.lacon':'Pork shoulder with turnip greens','m.oreja':'Boiled pig ear','m.carpaccio':'Pork cheek carpaccio','m.pulpoFeira':'Galician-style octopus','m.mejillones':'Spicy mussels "Tigre" (8 pcs.)','m.boquerones':'Vinegar-marinated anchovies','m.champis':'"Demamáluis" mushrooms','m.ensalada':'Tomato salad','m.ensaladaVentresca':'Tomato salad with tuna belly','m.zorza':'"Da Julia" marinated pork','m.morunitos':'"Depapáluis" pork skewers (6 pcs.)','m.postre2':'Homemade dessert','m.pan2':'Cea bread',
       'pq.eyebrow':'What they say on Google',
+      'amb.eyebrow':'The place','amb.title':'This is what it looks like inside',
+      'amb.cap1':'Behind the bar: hanging glasses and whichever wine we opened today.',
+      'amb.cap2':'A seat at the bar, which is the best spot in the house.',
+      'amb.cap3':'Out on the terrace, with the Old Town going by.',
+      'amb.cap4':'The miniburguer — it carries the house name for a reason.',
+      'nav.ambiente':'The place',
       'reviews.badge':'Real reviews, shown exactly as written on Google — tap a card to see it on Google',
       'rcf.all':'All','rcf.recent':'Most recent',
       'value1':'Produce from our own garden','value2':'Family treatment, no rush','value3':'Local wine, different every day',
@@ -1709,12 +1837,14 @@
       if (badgeGone) return;
       badgeGone = true;
       badge.classList.add('hide');
+      // al acabar el fundido lo sacamos del flujo para que no capture ni un clic
+      setTimeout(() => badge.classList.add('gone'), 360);
       try { sessionStorage.setItem(BADGE_KEY, '1'); } catch (e) {}
     }
     let badgeSeen = false;
     try { badgeSeen = sessionStorage.getItem(BADGE_KEY) === '1'; } catch (e) {}
     if (badgeSeen) {
-      badge.classList.add('hide');
+      badge.classList.add('gone');
       badgeGone = true;
     } else {
       badge.addEventListener('click', hideBadge);
