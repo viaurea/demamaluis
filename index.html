@@ -125,7 +125,10 @@
 
   /* hero */
   .hero{position:relative; min-height:100svh; display:flex; align-items:center; justify-content:center; overflow:hidden; padding:0 24px;}
-  .hero img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:contrast(1.06) saturate(1.08) brightness(0.72);}
+  /* la foto se sirve un 20% más alta y subida un 10%: ese margen es el que consume
+     el parallax al desplazarse, para que nunca asome un borde vacío */
+  .hero img{position:absolute; left:0; right:0; top:-10%; width:100%; height:120%; object-fit:cover; filter:contrast(1.06) saturate(1.08) brightness(0.72); will-change:transform;}
+  @media(prefers-reduced-motion: reduce){ .hero img{transform:none!important;} }
   .hero .overlay{position:absolute; inset:0; background:var(--gradient-hero);}
 
   .hero-aurora{position:absolute; inset:0; overflow:hidden; pointer-events:none; mix-blend-mode:screen; opacity:0.6;}
@@ -602,9 +605,12 @@
         <span class="rating-text" data-i18n="hero.reviews">748 reseñas en Google</span>
       </div>
 
+      <!-- "Ver la carta" pasa a ser la acción principal: retiene al visitante en la
+           página y es lo que le hace decidir si viene. "Cómo llegar" ya está en la
+           barra fija del móvil y otra vez en Ubicación, así que aquí va de secundaria. -->
       <div class="cta-row">
-        <a href="https://www.google.com/maps/search/?api=1&query=Demam%C3%A1luis%20Delicatessen%20R%C3%BAa%20do%20Paxaro%202%20Ourense" target="_blank" rel="noreferrer" class="btn-gold spot" data-i18n="cta.directions">Cómo llegar</a>
-        <a href="#carta" class="btn-gold-outline spot" data-i18n="cta.menu">Ver la carta</a>
+        <a href="#carta" class="btn-gold spot" data-i18n="cta.menu">Ver la carta</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=Demam%C3%A1luis%20Delicatessen%20R%C3%BAa%20do%20Paxaro%202%20Ourense" target="_blank" rel="noreferrer" class="btn-gold-outline spot" data-i18n="cta.directions">Cómo llegar</a>
       </div>
     </div>
   </header>
@@ -1819,11 +1825,28 @@
   const backToTop = document.getElementById('back-to-top');
   const botToggleEl = document.getElementById('bot-toggle');
   const botBadgeEl = document.getElementById('bot-badge');
+  // parallax suave de la foto del hero: se mueve a menor velocidad que el scroll.
+  // El recorrido se limita al margen extra de la imagen (el 10% de arriba), así que
+  // por mucho que se baje nunca descubre un borde. Se apaga si el sistema pide
+  // menos movimiento y deja de calcularse en cuanto el hero sale de pantalla.
+  const heroEl = document.getElementById('top');
+  const heroImg = heroEl ? heroEl.querySelector('img') : null;
+  const quietMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function heroParallax(){
+    if (!heroImg || quietMotion) return;
+    const heroH = heroEl.offsetHeight;
+    if (window.scrollY > heroH) return; // fuera de vista: nada que actualizar
+    const margen = heroH * 0.1;
+    const desplazamiento = Math.min(window.scrollY * 0.14, margen);
+    heroImg.style.transform = `translate3d(0, ${desplazamiento.toFixed(1)}px, 0)`;
+  }
+
   let scrollTicking = false;
   function onScroll(){
     const h = document.documentElement;
     const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
     progressBar.style.width = scrolled + '%';
+    heroParallax();
     const past = window.scrollY > window.innerHeight * 0.7;
     stickyCta.classList.toggle('show', past);
     backToTop.classList.toggle('show', window.scrollY > window.innerHeight * 0.8);
