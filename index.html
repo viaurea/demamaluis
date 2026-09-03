@@ -278,11 +278,16 @@
   .dish3d-cylinder{position:relative; height:380px; margin:0 auto; width:100%; max-width:960px; transform-style:preserve-3d; touch-action:pan-y; cursor:grab; user-select:none; transition:transform 750ms cubic-bezier(.22,1,.36,1);}
   .dish3d-cylinder.dragging{cursor:grabbing; transition:none;}
   .dish3d-cylinder.dragging .dish3d-face{transition:none;}
-  .dish3d-face{position:absolute; top:0; left:50%; width:300px; height:100%; margin-left:-150px; border-radius:6px; overflow:hidden; border:1px solid var(--border); cursor:pointer; backface-visibility:hidden; transition:opacity 500ms ease, filter 500ms ease;}
+  .dish3d-face{position:absolute; top:0; left:50%; width:300px; height:100%; margin-left:-150px; border-radius:6px; overflow:hidden; border:1px solid var(--border); cursor:pointer; transition:opacity 500ms ease, filter 500ms ease;}
   .dish3d-face img{width:100%; height:100%; object-fit:cover; pointer-events:none; filter:contrast(1.08) saturate(0.96) brightness(0.9) sepia(0.08) hue-rotate(-4deg);}
   .dish3d-face::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top, oklch(0.08 0.01 45 / 0.88), transparent 55%);}
   .dish3d-face .fname{position:absolute; left:0; right:0; bottom:12px; padding:0 14px; font-size:0.98rem; color:var(--foreground); text-align:center; line-height:1.25;}
   .dish3d-face:not(.active){filter:brightness(0.62) saturate(0.85);}
+  /* caras del otro lado del cilindro: se ven en espejo, así que sin nombre (saldría
+     del revés) y más apagadas, para que aporten profundidad sin robar atención */
+  .dish3d-face.is-back{filter:brightness(0.4) saturate(0.6);}
+  .dish3d-face.is-back .fname{opacity:0;}
+  .dish3d-face .fname{transition:opacity 300ms ease;}
   .dish3d-face.active{border-color:var(--gold);}
   @media(max-width:640px){ .dish3d-cylinder{height:260px;} .dish3d-face{width:210px; margin-left:-105px;} }
 
@@ -1183,10 +1188,22 @@
   });
   const d3dDots = Array.from(d3dDotsWrap.children);
 
+  // Las caras que quedan al otro lado del cilindro ahora se ven (dan sensación de
+  // profundidad), pero se verían en espejo: marcarlas permite ocultarles el nombre
+  // para que no aparezca el texto del revés.
+  function d3dUpdateFacing(){
+    d3dFaces.forEach((f, i) => {
+      let angulo = (i * D3D_ANGLE - d3dRotation) % 360;
+      if (angulo > 180) angulo -= 360;
+      if (angulo < -180) angulo += 360;
+      f.classList.toggle('is-back', Math.abs(angulo) > 90);
+    });
+  }
   function dish3dRender(){
     d3dCyl.style.transform = `rotateY(${-d3dRotation}deg)`;
     d3dFaces.forEach((f, i) => f.classList.toggle('active', i === d3dActive));
     d3dDots.forEach((el, i) => el.classList.toggle('active', i === d3dActive));
+    d3dUpdateFacing();
   }
   function dish3dUpdateText(){
     d3dFaces.forEach((f, i) => {
@@ -1218,6 +1235,7 @@
     if (Math.abs(delta) > 4) d3dDragged = true;
     d3dRotation = d3dStartRotation - delta * 0.4;
     d3dCyl.style.transform = `rotateY(${-d3dRotation}deg)`;
+    d3dUpdateFacing(); // también mientras se arrastra, si no el nombre parpadea al girar
     const now = performance.now();
     const dt = now - d3dLastT;
     if (dt > 0) d3dVelocity = (x - d3dLastX) / dt;
